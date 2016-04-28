@@ -4,5 +4,6 @@ println("Привет мир!")
 println("kha-khun_kaa")
 print("hello darling")
 add(pickture)
+newClass()
 }
 }
