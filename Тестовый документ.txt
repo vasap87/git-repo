@@ -3,5 +3,6 @@ public void main(){
 println("Привет мир!")
 println("kha-khun")
 print("hello darling")
+add(pickture)
 }
 }
