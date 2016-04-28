@@ -1,6 +1,6 @@
 public class Hello {
 public void main(){
 println("Привет мир!")
-println("kha-khun")
+println("kha-khun_kaa")
 }
 }
