@@ -13,7 +13,7 @@ public class Breakout extends GraphicsProgram {
 /*default*/
 	private static final long serialVersionUID = 1L;
 /** Width and height of application window in pixels */
-	public static final int APPLICATION_WIDTH = 600;
+	public static final int APPLICATION_WIDTH = 500;
 	public static final int APPLICATION_HEIGHT = 800;
 
 /** Dimensions of game board (usually the same) */
@@ -22,7 +22,7 @@ public class Breakout extends GraphicsProgram {
 
 /** Dimensions of the paddle */
 	private static final int PADDLE_WIDTH = 60;
-	private static final int PADDLE_HEIGHT = 10;
+	private static final int PADDLE_HEIGHT = 15;
 
 /** Offset of the paddle up from the bottom */
 	private static final int PADDLE_Y_OFFSET = 30;
@@ -205,44 +205,28 @@ public class Breakout extends GraphicsProgram {
 		if(gobj!=null){
 			if (gobj==paddle)vy=-vy;
 			else if(gobj!=score&&gobj!=lives){
-				//bounceClip.play();
-				remove(gobj);
-				bricks--;
-				updateLabels(NBRICK_ROWS*NBRICKS_PER_ROW-bricks,turn);
-				vy=-vy;
+				vy = removeBreak(gobj, vy);
 			}
 		}
 		gobj = getElementAt(ball.getX()+BALL_RADIUS, ball.getY()+BALL_RADIUS*2+1); //down side
 		if(gobj!=null){
 			if (gobj==paddle)vy=-vy;
 			else if(gobj!=score&&gobj!=lives){
-				//bounceClip.play();
-				remove(gobj);
-				bricks--;
-				updateLabels(NBRICK_ROWS*NBRICKS_PER_ROW-bricks,turn);
-				vy=-vy;
+				vy = removeBreak(gobj, vy);
 			}
 		}
 		gobj = getElementAt(ball.getX()-1, ball.getY()+BALL_RADIUS); //left side
 		if(gobj!=null){
 			if (gobj==paddle)vx=-vx;
 			else if(gobj!=score&&gobj!=lives){
-				//bounceClip.play();
-				remove(gobj);
-				bricks--;
-				updateLabels(NBRICK_ROWS*NBRICKS_PER_ROW-bricks,turn);
-				vx=-vx;
+				vx = removeBreak(gobj, vx);
 			}
 		}
 		gobj = getElementAt(ball.getX()+BALL_RADIUS*2+1, ball.getY()+BALL_RADIUS); //right side
 		if(gobj!=null){
 			if (gobj==paddle)vx=-vx;
 			else if(gobj!=score&&gobj!=lives){
-				//bounceClip.play();
-				remove(gobj);
-				updateLabels(NBRICK_ROWS*NBRICKS_PER_ROW-bricks,turn);
-				bricks--;
-				vx=-vx;
+				vx = removeBreak(gobj, vx);
 			}
 		}
 	}
@@ -254,8 +238,23 @@ public class Breakout extends GraphicsProgram {
 		if (turn>0){
 			lives.setLabel("Lives: "+ turn);
 			score.setLabel("Score: "+ bricks);
-		}
-		
+		}	
+	}
+	
+	private double removeBreak(GObject obj, double vel){
+		addBonus(obj.getX()+BRICK_WIDTH/2, obj.getY()+BRICK_HEIGHT); //add bonus 
+		remove(obj);
+		updateLabels(NBRICK_ROWS*NBRICKS_PER_ROW-bricks,turn);
+		bricks--;
+		return vel=-vel;
+	}
+	
+	/**
+	 * This method add something bonus to user, from the break
+	 * @param x - X-coordinates of break
+	 * @param y - Y-coordinates of break*/
+	private void addBonus(double x, double y){
+	 //write here method to add bonus
 		
 	}
 	
