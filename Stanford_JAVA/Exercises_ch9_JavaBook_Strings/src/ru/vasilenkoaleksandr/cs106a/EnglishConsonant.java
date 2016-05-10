@@ -16,11 +16,11 @@ public class EnglishConsonant extends ConsoleProgram {
 		println("Программа согланые английского алфавита.");
 		for(char ch='A';ch<='Z';ch++){
 			if (isEnglishConsonant(ch))
-				println(ch);
+				println(ch);//выводит только согласные в апперкейсе
 			}
 	}
 	
-	
+	/*Метот выводит true, если ch - согласная*/
 	private boolean isEnglishConsonant(char ch){
 		ch = Character.toLowerCase(ch);
 		if (ch=='a'||ch=='e'||ch=='i'||ch=='o'||ch=='u'){
