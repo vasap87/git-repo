@@ -1,0 +1,55 @@
+package ru.vasilenkoaleksandr.geekbrains.java1.homework1;
+
+/**
+ * ƒомашнее задание по первому уроку в курсе Java 1
+ * @author Vasilenko Aleksandr
+ * */
+
+public class HomeWork {
+    public static void main(String[] args) {
+        //ќбъ€вление пройденных переменных и их инициализаци€
+        byte vByte = 2;
+        short vSort = 3;
+        int vInt = 4;
+        long vLong = 5;
+        float vFloat = 6.2f;
+        double vDouble = 7.123;
+        boolean vBool = false;
+        char vChar = 's';
+
+        //проверка работы метода getRez
+        int a=1;
+        int b=2;
+        int c=3;
+        int d=4;
+        System.out.println("–езультат вычислени€ "+a+"*("+b+"+("+c+"/"+d+")) = "+getRez(a,b,c,d));
+
+        //ѕроверка работы метода isSumBetween10And20
+        int e=10;
+        int f=2;
+        System.out.println("сумма чисел "+e+" + "+ f+" между 10 и 20? - "+isSumBetween10And20(e,f));
+
+        //ѕроверка работы метода вычислени€ високостный ли год
+        int year = 2015;
+        System.out.println("√од "+year+" "+(isYearLaep(year)?"високосный":"не високосный"));
+    }
+
+    /*Ётот метод возвращает результат вычислени€ a * (b + (c / d))
+     * т.к. деление целочисленное, один аргуемет в вычислени делаем double*/
+    private static double getRez(int a,int b, int c, int d){
+        return a*(b+((double)c/d));
+    }
+
+    /*Ётот метод возвращает true, если сумма чисел a и b в промежутке между 10 и 20,
+     * и не равна им*/
+    private static boolean isSumBetween10And20(int a, int b){
+        int sum = a+b;
+        return sum>10&&sum<20;
+    }
+
+    /*ћетот возвращает true, если год високосный, и false если не високостный*/
+    private static boolean isYearLaep(int year){
+        return ( ((year%4==0)&&(year%100!=0))||year%400==0);
+    }
+
+}
