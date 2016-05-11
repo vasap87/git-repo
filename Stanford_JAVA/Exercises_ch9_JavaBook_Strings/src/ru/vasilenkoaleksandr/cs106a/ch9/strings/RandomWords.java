@@ -2,7 +2,7 @@
  * This class define the exercise 2
  * @author vasap87*/
 
-package ru.vasilenkoaleksandr.cs106a;
+package ru.vasilenkoaleksandr.cs106a.ch9.strings;
 
 import acm.program.ConsoleProgram;
 import acm.util.RandomGenerator;
