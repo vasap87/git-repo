@@ -19,6 +19,7 @@ public class RegularPluralForm extends ConsoleProgram {
 	private String regularPluralForm(String s){
 		String end1 = s.substring(s.length()-1);
 		String end2;
+		
 		if(s.length()>1){
 			end2 = s.substring(s.length()-2);	
 		}else 	{
