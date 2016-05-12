@@ -36,7 +36,6 @@ public class OrdinalForm extends ConsoleProgram {
 			} else {
 				return i+"th";
 			}
-			
 		} else {
 			if (lastChar=='1') {
 				return i+"st";
@@ -48,7 +47,5 @@ public class OrdinalForm extends ConsoleProgram {
 				return i+"th";
 			}
 		}
-		
 	}
-	
 }
