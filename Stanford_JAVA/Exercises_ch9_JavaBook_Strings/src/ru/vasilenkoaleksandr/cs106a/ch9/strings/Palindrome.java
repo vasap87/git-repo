@@ -11,7 +11,7 @@ public class Palindrome extends ConsoleProgram {
 	private static final long serialVersionUID = 1L;
 	
 	public void run(){
-		println("Программа вычисляет, является ли введённое число полиндромным.");
+		println("Программа вычисляет, является ли введённое слово полиндромным.");
 		while (true){
 			String word = readLine("Введите слово: ");
 			if(word.length()==0)break;
@@ -21,6 +21,7 @@ public class Palindrome extends ConsoleProgram {
 	}
 	/*Медод вычисляет, является ли введённое слово подиндромным*/
 	private boolean isPolindrome(String s){
+		s=s.toLowerCase();
 		if (s.length()==1){
 			return true;
 		} else{
