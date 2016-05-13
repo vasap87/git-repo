@@ -86,9 +86,15 @@ public class HomeWork {
 			System.out.println(rez);
 			break;
 		case ("/"):
-			rez = a/b;
-			System.out.println(rez);
-			break;
+			if(b!=0){
+				rez = a/b;
+				System.out.println(rez);
+				break;				
+			}else{
+				System.out.println("Делить на ноль нельзя.");
+				break;
+			}
+			
 		case ("%"):
 			rez = a%b;
 			System.out.println(rez);
