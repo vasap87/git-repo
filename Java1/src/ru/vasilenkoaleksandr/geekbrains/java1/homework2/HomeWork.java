@@ -96,6 +96,7 @@ public class HomeWork {
 		default:
 			System.out.println("Неизвестная операция!");
 		}
+		sc.close();
 		
 	}
 
