@@ -25,15 +25,12 @@ public class Palindrome extends ConsoleProgram {
 		if (s.length()==1){
 			return true;
 		} else{
-			String firstPath = "";
-			String lastPath = "";
 			for (int i = 0; i < s.length()/2; i++) {
-				char fCh = s.charAt(i);
-				firstPath+=fCh;
-				char lCh = s.charAt(s.length()-1-i);
-				lastPath+=lCh;
+				if(s.charAt(i)!=s.charAt(s.length()-1-i)){
+					return false;
+				}
 			}
-			return (firstPath.equals(lastPath));
+			return true;
 		}
 	}
 }

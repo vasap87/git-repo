@@ -33,15 +33,12 @@ public class SentencePalindrome extends ConsoleProgram {
 		if (onlyLetters.length()==1){
 			return true;
 		} else{
-			String firstPath = "";
-			String lastPath = "";
 			for (int i = 0; i < onlyLetters.length()/2; i++) {
-				char fCh = onlyLetters.charAt(i);
-				firstPath+=fCh;
-				char lCh = onlyLetters.charAt(onlyLetters.length()-1-i);
-				lastPath+=lCh;
+				if (onlyLetters.charAt(i)!=onlyLetters.charAt(onlyLetters.length()-1-i)){
+					return false;
+				}
 			}
-			return (firstPath.equals(lastPath));
+			return true;
 		}
 	}
 }
