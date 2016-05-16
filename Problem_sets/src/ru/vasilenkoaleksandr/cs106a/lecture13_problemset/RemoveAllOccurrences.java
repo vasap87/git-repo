@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class RemoveAllOccurrences{
 
 
+	/*Основной метод класса*/
 	public static void main(String[] args) {
 		
 		System.out.println("Программа из строки удаляет необходимые символы.");
@@ -18,6 +19,7 @@ public class RemoveAllOccurrences{
 		System.out.println("Результат: "+ removeAllOccurrences(str,ch));
 	} 
 	
+	/*Метод удаляющий необходимый символ*/
 	private static String removeAllOccurrences(String s,char ch){
 		String tString=s;
 		String result="";
