@@ -10,9 +10,9 @@ import java.util.Scanner;
 public class GameXO {
 	
 	/*колличество строк и столбцов*/
-	private static final int NUM_ROW_COLUM=6;
+	private static final int NUM_ROW_COLUM=4;
 	/*для победы достаточно столько символов подряд*/
-	private static final int WIN_NUM=4;
+	private static final int WIN_NUM=3;
 	/*символ хода игрока*/
 	private static final char PLAYER = 'X';
 	/*символ хода искуственного интелекта*/
@@ -90,6 +90,8 @@ public class GameXO {
 		for (int i = 0; i < field.length; i++) {
 			for (int j = 0; j < field.length; j++) {
 				if(field[i][j]==PLAYER){
+					indexOfRow = i;
+					indexOfColumn = j;
 					while(true){
 						int x=addOne((rand.nextBoolean()?'-':'+'), i);
 						int y=addOne((rand.nextBoolean()?'-':'+'), j);
@@ -106,13 +108,64 @@ public class GameXO {
 	
 	//Остальные ходы компьютера
 	private static void otherTurn(){
+	 if (isPlayerChunk()) {
+		 if (findPlaceToBlock()) setAIValue();
+		 else  rundTurn();
+	 }
+		
+
+		//Сдесь будет искусственный интелект
+	}
+	private static void rundTurn(){
 		int x,y;
 		do{
 			x = rand.nextInt(field.length);
 			y = rand.nextInt(field.length);
 		}while (!isTurn(x, y));
 		setValue(x, y, AI);
-		//Сдесь будет искусственный интелект
+	}
+	private static boolean isPlayerChunk(){
+		for (int n=2;n<WIN_NUM;n++) {
+			if(isGorizontal(n)){
+				chunk="row";
+				return true;
+			}else if (isVertical(n)){
+				chunk="column";
+				return true;
+			}else if(isDiagonal(n)){
+				chunk="diagonal";
+				return true;
+			}else if(isBackWardDiagonal(n)){
+				chunk="bacwardDiagonal";
+				return true;
+			}else return false;
+		}
+		return false;
+	}
+	
+	private static boolean findPlaceToBlock() {
+
+
+		if (chunk.equals("row")) {
+			if (indexOfColumn+1<field.length&&field[indexOfRow][indexOfColumn+1]==DEFAULT) {
+				indexOfColumn++;
+				return true;
+			}
+			else if (indexOfColumn-count>=0&&field[indexOfRow][indexOfColumn-count]==DEFAULT) {
+				indexOfColumn=indexOfColumn-count;
+				return true;
+			}
+//  		} else if (chunk.equals("column")) {
+//			if(indexOfRow+1<field.length&&field[indexOfRow+1][indexOfColumn]==DEFAULT) field[indexOfRow+1][indexOfColumn]=AI;
+//		} else if ((chunk.equals("diagonal")) {
+//			
+//		} else  ;//(chunk==bacwardDiagonal)
+		}
+		return false;
+	}
+	
+	private static void setAIValue(){
+		field[indexOfRow][indexOfColumn]=AI;
 	}
 	
 	private static int addOne(char ch,int i){
@@ -123,20 +176,19 @@ public class GameXO {
 	/**
 	 * Проверка выиграл ли кто-нибудь*/
 	private static boolean isAnybodyWin(){
-		
-		if(isGorizontal()){
+		if(isGorizontal(WIN_NUM)){
 			return true;
-		}else if (isVertical()){
+		}else if (isVertical(WIN_NUM)){
 			return true;
-		}else if(isDiagonal()){
+		}else if(isDiagonal(WIN_NUM)){
 			return true;
-		}else if(isBackWardDiagonal()){
+		}else if(isBackWardDiagonal(WIN_NUM)){
 			return true;
 		}else return false;
 	}
 	
 	//проверка выиграша по горизотали
-	private static boolean isGorizontal(){
+	private static boolean isGorizontal(int n){
 		for (int i = 0; i < field.length; i++) {
 			int countP=0;
 			int countI=0;
@@ -144,11 +196,16 @@ public class GameXO {
 				if(field[i][j]==PLAYER){
 					countP++;
 					countI=0;
-					if(countP==WIN_NUM)return true;
+					if(countP==n) {
+						count=countP;
+						indexOfRow = i;
+						indexOfColumn = j;
+						return true;
+					}
 				}else if(field[i][j]==AI){
 					countI++;
 					countP=0;
-					if(countI==WIN_NUM)return true;
+					if(countI==n)return true;
 				}else {
 					countI=countP=0;
 				}
@@ -158,7 +215,7 @@ public class GameXO {
 	}
 	
 	//проверка выиграша по вертикали
-	private static boolean isVertical(){
+	private static boolean isVertical(int n){
 		for (int i = 0; i < field.length; i++) {
 			int countP=0;
 			int countI=0;
@@ -166,11 +223,11 @@ public class GameXO {
 				if(field[j][i]==PLAYER){
 					countP++;
 					countI=0;
-					if(countP==WIN_NUM)return true;
+					if(countP==n) return true;
 				}else if(field[j][i]==AI){
 					countI++;
 					countP=0;
-					if(countI==WIN_NUM)return true;
+					if(countI==n)return true;
 				}else {
 					countI=countP=0;
 				}
@@ -180,11 +237,11 @@ public class GameXO {
 	}
 	
 	//Проверка выиграша по диагонали матрицы
-	private static boolean isDiagonal(){
+	private static boolean isDiagonal(int n){
 		int countP=0;
 		int countI=0;
-		for (int i = 0; i <= field.length-WIN_NUM; i++) {
-			for (int j = 0; j <= field.length-WIN_NUM; j++) {
+		for (int i = 0; i <= field.length-n; i++) {
+			for (int j = 0; j <= field.length-n; j++) {
 				char ch=0;
 				if(field[i][j]!=DEFAULT){
 					ch=field[i][j];
@@ -196,17 +253,21 @@ public class GameXO {
 						countP=0;
 						countI++;
 					}
-					for (int k = 1; k <= WIN_NUM; k++) {
+					for (int k = 1; k <= n; k++) {
 						if(ch==field[i+k][j+k]){
 							if(ch==PLAYER){
 								countP++;
 								countI=0;
-								if(countP==WIN_NUM)return true;
+								if(countP==n) {
+									indexOfRow = i+k;
+									indexOfColumn = j+k;
+									return true;
+								}
 							}
 							else{
 								countP=0;
 								countI++;
-								if(countI==WIN_NUM)return true;
+								if(countI==n)return true;
 							}
 						}
 						else{
@@ -223,11 +284,11 @@ public class GameXO {
 	}
 	
 	//Проверка по обратной диагонали матрицы
-	private static boolean isBackWardDiagonal(){
+	private static boolean isBackWardDiagonal(int n){
 		int countP=0;
 		int countI=0;
-		for (int i = field.length-1; i > WIN_NUM-2; i--) { 
-			for (int j = 0; j < field.length-WIN_NUM; j++) {
+		for (int i = field.length-1; i > n-2; i--) { 
+			for (int j = 0; j < field.length-n; j++) {
 				char ch=0;
 				if(field[i][j]!=DEFAULT){
 					ch=field[i][j];
@@ -239,17 +300,21 @@ public class GameXO {
 						countP=0;
 						countI++;
 					}
-					for (int k = 1; k <= WIN_NUM; k++) {
+					for (int k = 1; k <= n; k++) {
 						if(ch==field[i-k][j+k]){
 							if(ch==PLAYER){
 								countP++;
 								countI=0;
-								if(countP==WIN_NUM)return true;
+								if(countP==n) {
+									indexOfRow = i-k;
+									indexOfColumn = j+k;
+									return true;
+								}
 							}
 							else{
 								countP=0;
 								countI++;
-								if(countI==WIN_NUM)return true;
+								if(countI==n)return true;
 							}
 						}
 						else{
@@ -299,6 +364,10 @@ public class GameXO {
 
 	}
 	
+	private static int count=0;
+	private static String chunk="";
+	private static int indexOfRow=0;
+	private static int indexOfColumn=0;
 	private static int numAITurn=0;
 	private static Scanner sc = new Scanner(System.in);
 	private static Random rand = new Random();
