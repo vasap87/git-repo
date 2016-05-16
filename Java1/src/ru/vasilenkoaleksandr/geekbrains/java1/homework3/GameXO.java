@@ -6,13 +6,14 @@ import java.util.Scanner;
 
 /**
  * Класс представляет собой консольную версию игры крестики-нолики
+ * с реализацией искусственного интелекта для блокирования ходов пользователя
  */
 public class GameXO {
 
 	/* колличество строк и столбцов */
-	private static final int NUM_ROW_COLUM = 6;
+	private static final int NUM_ROW_COLUM = 4;
 	/* для победы достаточно столько символов подряд */
-	private static final int WIN_NUM = 4;
+	private static final int WIN_NUM = 3;
 	/* символ хода игрока */
 	private static final char PLAYER = 'X';
 	/* символ хода искуственного интелекта */
@@ -67,7 +68,8 @@ public class GameXO {
 		int x, y;
 		if (ch == PLAYER) { // Ход игрока
 			do {
-				System.out.println("Ваш ход, введите координаты в формате X Y (1-3).");
+				System.out.println("Ваш ход, введите координаты в формате X Y (от 1 до "+field.length+" каждое значение, например 2 3)");
+				System.out.println("Длинна выигрышной комбинации: "+WIN_NUM);
 				x = sc.nextInt();
 				y = sc.nextInt();
 			} while (!isTurn(x - 1, y - 1));
@@ -122,7 +124,6 @@ public class GameXO {
 		isFindBlock=true;
 		if (isPlayerChunk()) {
 			setValue(indexOfRow, indexOfColumn, AI);
-			
 		} else
 			rundTurn();
 		isFindBlock=false;
@@ -194,7 +195,7 @@ public class GameXO {
 				indexOfRow++;
 				indexOfColumn++;
 				return true;
-			} else if ((indexOfRow + count >= 0&&indexOfColumn - count >= 0) && field[indexOfRow + count][indexOfColumn - count] == DEFAULT) {// Можно ли поставить снизу
+			} else if ((indexOfRow + count <field.length&&indexOfColumn - count >= 0) && field[indexOfRow + count][indexOfColumn - count] == DEFAULT) {// Можно ли поставить снизу
 				indexOfRow = indexOfRow + count;
 				indexOfColumn = indexOfColumn - count;
 				return true;
