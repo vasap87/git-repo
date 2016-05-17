@@ -95,8 +95,6 @@ public class GameXO {
 		for (int i = 0; i < field.length; i++) {
 			for (int j = 0; j < field.length; j++) {
 				if (field[i][j] == PLAYER) {
-					indexOfRow = i;
-					indexOfColumn = j;
 					while (true) {
 						int x = addOne((rand.nextBoolean() ? '-' : '+'), i);
 						int y = addOne((rand.nextBoolean() ? '-' : '+'), j);
@@ -141,7 +139,7 @@ public class GameXO {
 
 	// Есть ли цепочка больше 1 символа у игрока
 	private static boolean isPlayerChunk() {
-		for (int n = 2; n < WIN_NUM; n++) {
+		for (int n = WIN_NUM; n > 0; n--) {
 			if (isGorizontal(n)&&findPlaceToBlock(chunk)) {
 				return true;
 			} else if (isVertical(n)&&findPlaceToBlock(chunk)) {
