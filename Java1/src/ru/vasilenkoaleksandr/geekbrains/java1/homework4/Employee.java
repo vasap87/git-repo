@@ -86,11 +86,5 @@ public class Employee {
 				sEmail, sPhone, sSalary, sAge);
 	}
 	
-	
-	
-	
-	
-	
-
 }
 
