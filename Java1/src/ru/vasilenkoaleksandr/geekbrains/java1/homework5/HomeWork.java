@@ -13,9 +13,7 @@ public class HomeWork {
 		for (double j = 0.5; j < 3; j+=0.5) {//высота препятсвия
 			//посмотрим, как животные выполняют ту или иную команду.
 			for (int i = 0; i < arrAnimals.length; i++) {
-				arrAnimals[i].run();
-				arrAnimals[i].swim();
-				arrAnimals[i].jump(j);
+				arrAnimals[i].getInfo(j);
 				System.out.println();
 			}
 		}

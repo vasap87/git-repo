@@ -7,5 +7,11 @@ public abstract class Animals {
 	abstract public void swim();//абстрактное плавание
 	
 	abstract public void jump(double i);//абстрактный прыжок на высоту i
+	
+	public void getInfo(double i){
+		run();
+		swim();
+		jump(i);
+	}
 
 }
