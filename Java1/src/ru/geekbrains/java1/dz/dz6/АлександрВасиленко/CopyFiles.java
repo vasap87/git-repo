@@ -1,4 +1,4 @@
-package ru.geekbrains.java1.dz.dz6.АлександрВасиленко;
+package ru.geekbrains.java1.dz.dz6.РђР»РµРєСЃР°РЅРґСЂР’Р°СЃРёР»РµРЅРєРѕ;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -8,65 +8,65 @@ import java.util.Random;
 public class CopyFiles {
 
 	public static void main(String args[]){
-		//заполняем 2 файла рандомными символами
+		//Р·Р°РїРѕР»РЅСЏРµРј 2 С„Р°Р№Р»Р° СЂР°РЅРґРѕРјРЅС‹РјРё СЃРёРјРІРѕР»Р°РјРё
 		try {
-			FileOutputStream fout1 = new FileOutputStream("АлександрВасиленко_files/1.txt");
-			FileOutputStream fout2 = new FileOutputStream("АлександрВасиленко_files/2.txt");
+			FileOutputStream fout1 = new FileOutputStream("РђР»РµРєСЃР°РЅРґСЂР’Р°СЃРёР»РµРЅРєРѕ_files/1.txt");
+			FileOutputStream fout2 = new FileOutputStream("РђР»РµРєСЃР°РЅРґСЂР’Р°СЃРёР»РµРЅРєРѕ_files/2.txt");
 			writeInFiles(fout1);
 			writeInFiles(fout2);
 			fout1.close();
 			fout2.close();
 		} catch (IOException e) {
-			System.out.println("Ошибка открытия файла.");
+			System.out.println("РћС€РёР±РєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р°.");
 		}
-		
-		//копируем из двух файлов в один
+
+		//РєРѕРїРёСЂСѓРµРј РёР· РґРІСѓС… С„Р°Р№Р»РѕРІ РІ РѕРґРёРЅ
 		try {
-			FileInputStream fin1 = new FileInputStream("АлександрВасиленко_files/1.txt");	//первый файл откуда копируем
-			FileInputStream fin2 = new FileInputStream("АлександрВасиленко_files/2.txt");	//второй файл откуда копируем
-			FileOutputStream fout = new FileOutputStream("АлександрВасиленко_files/3.txt"); //куда копируем
+			FileInputStream fin1 = new FileInputStream("РђР»РµРєСЃР°РЅРґСЂР’Р°СЃРёР»РµРЅРєРѕ_files/1.txt");	//РїРµСЂРІС‹Р№ С„Р°Р№Р» РѕС‚РєСѓРґР° РєРѕРїРёСЂСѓРµРј
+			FileInputStream fin2 = new FileInputStream("РђР»РµРєСЃР°РЅРґСЂР’Р°СЃРёР»РµРЅРєРѕ_files/2.txt");	//РІС‚РѕСЂРѕР№ С„Р°Р№Р» РѕС‚РєСѓРґР° РєРѕРїРёСЂСѓРµРј
+			FileOutputStream fout = new FileOutputStream("РђР»РµРєСЃР°РЅРґСЂР’Р°СЃРёР»РµРЅРєРѕ_files/3.txt"); //РєСѓРґР° РєРѕРїРёСЂСѓРµРј
 			copyFromTwoinOne(fout,fin1,fin2);
 			fin1.close();
 			fin2.close();
 			fout.close();
 		} catch (IOException e) {
-			System.out.println("Ошибка копирования файлов.");
+			System.out.println("РћС€РёР±РєР° РєРѕРїРёСЂРѕРІР°РЅРёСЏ С„Р°Р№Р»РѕРІ.");
 		}
 		
 	}
 	
-	//пишем рандомные символы в файл
+	//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ
 	private static void writeInFiles(FileOutputStream fout){
 		for (int i = 1; i < 150; i++) {
 			char ch = (char) (rand.nextInt(26)+'A');
 			try {
-				if(i%149==0){ //в конце добавляем перенос строки
+				if(i%149==0){ //пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 					fout.write('\n');
 				}else{
 					fout.write(ch);
 				}
 				
 			} catch (IOException e) {
-				System.out.println("Ошибка записи в файл.");
+				System.out.println("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ.");
 			}
 		}
 	}
 	
 	
-	//копирование из двух файлов в один
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ
 	private static void copyFromTwoinOne(FileOutputStream fout, FileInputStream fin1, FileInputStream fin2){
 		int i;
 		try {
-			do { //копирвоание первого файла
+			do { //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 				i = fin1.read();
 				if(i!=-1)fout.write(i);
 			} while (i!=-1);
-			do { //копирование второго файла
+			do { //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 				i = fin2.read();
 				if(i!=-1)fout.write(i);
 			} while (i!=-1);
 		} catch (IOException e) {
-			System.out.println("Ошибка копирвоания из файла в файл");
+			System.out.println("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ");
 		}
 	}
 
