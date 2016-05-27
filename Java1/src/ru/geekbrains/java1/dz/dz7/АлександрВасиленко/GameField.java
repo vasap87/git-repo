@@ -73,12 +73,12 @@ public class GameField {
         //размещаем корабль
         if (direction == 'H') {
             for (int i = x; i < x + len; i++) {
-                field[y][i] = SHIP;
+                field[i][y] = SHIP;
             }
         }
         if (direction == 'V') {
             for (int i = y; i < y + len; i++) {
-                field[i][x] = SHIP;
+                field[x][i] = SHIP;
             }
         }
 
