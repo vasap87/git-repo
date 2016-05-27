@@ -1,2 +1,0 @@
-print("fitcha")
-print("Eclipce")
