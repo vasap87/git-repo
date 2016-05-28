@@ -14,9 +14,11 @@ public class HumanPlayer extends Player {
 
     @Override
     public void turn(GameField gameField) {
-        System.out.println("Ход игрока");
-        int x = sc.nextInt()-1;
-        int y = sc.nextInt()-1;
-        gameField.strike(x,y);
+        System.out.println("Ходит игрок с именем "+getName());
+        int x,y;
+        do {
+            x = sc.nextInt()-1;
+            y = sc.nextInt()-1;
+        }while (!gameField.strike(x,y)||gameField.isHit());
     }
 }

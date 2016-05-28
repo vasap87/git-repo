@@ -5,7 +5,15 @@ package ru.geekbrains.java1.dz.dz7.АлександрВасиленко;
  */
 public abstract class Player {
     private GameField gameField;
+    private String name;
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public Player(){
         gameField = new GameField();
