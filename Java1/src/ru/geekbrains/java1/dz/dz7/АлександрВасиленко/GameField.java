@@ -106,13 +106,13 @@ public class GameField {
             return true;
         }
         if (field[x][y] == HIT) {
-            System.out.println("Ужё вёлся огонь в этом напавлении!\nПоробуйте снова!");
+           // System.out.println("Ужё вёлся огонь в этом напавлении!\nПоробуйте снова!");
             isHit=false;
             return false;
         }
 
         if (field[x][y] == MISS) {
-            System.out.println("Ужё вёлся огонь в этом напавлении и безрезультатно!\nПоробуйте снова!");
+            // System.out.println("Ужё вёлся огонь в этом напавлении и безрезультатно!\nПоробуйте снова!");
             isHit=false;
             return false;
         }
