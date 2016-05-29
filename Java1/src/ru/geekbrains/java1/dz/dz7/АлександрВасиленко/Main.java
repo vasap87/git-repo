@@ -8,13 +8,9 @@ import java.util.Scanner;
 public class Main {
     private static Scanner sc = new Scanner(System.in);
     private static int typeGame;
-    //меню пользователю
+
     public static void main(String[] args) {
-        //Меню п
-//        System.out.println("Игровое меню:\n Игра с компьютером: введите 1; " +
-//                                        "\n Игра с человеком: введите 2; " +
-//                                        "\n Игра компьютера с компьютером: введите 3;");
-//        typeGame = sc.nextInt();
+        //Меню
         Menu menu = new Menu();
         menu.setMenuItem();
         if(menu.getMenuItem()==1){
@@ -45,7 +41,7 @@ public class Main {
 
 
     }
-
+    //Метод для игры
     private static void game(Player p1, Player p2){
         p1.getGameField().printField(true);
         while(true){
