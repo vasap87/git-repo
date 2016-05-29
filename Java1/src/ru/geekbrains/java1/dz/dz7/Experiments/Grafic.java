@@ -1,4 +1,4 @@
-package ru.geekbrains.java1.dz.dz7.Graffic;
+package ru.geekbrains.java1.dz.dz7.Experiments;
 
 import javax.swing.*;
 import java.awt.*;
