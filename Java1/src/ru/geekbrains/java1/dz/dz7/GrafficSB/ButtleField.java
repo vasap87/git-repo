@@ -102,8 +102,8 @@ public class ButtleField extends JPanel {
             isHit=false;
             return false;
         }
-
         return true;
+
     }
 
     //проверка есть ли ещё корабли

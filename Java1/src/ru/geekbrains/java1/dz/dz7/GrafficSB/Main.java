@@ -8,5 +8,6 @@ public class Main {
        // Grafic grafic = new Grafic();
         SeaButtle sb = new SeaButtle();
         sb.setVisible(true);
+
     }
 }

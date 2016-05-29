@@ -9,8 +9,8 @@ import java.util.Random;
  */
 public class SeaButtle extends JFrame {
 
-    private JPanel pp1;
-    private JPanel pp2;
+    private ButtleField pp1;
+    private ButtleField pp2;
     private Random rand = new Random();
     public final char WATER = '~'; //вода
     private final char SHIP = 'O';   //корабль
@@ -23,7 +23,7 @@ public class SeaButtle extends JFrame {
 
         super("SeaButtle");
         setLayout(new FlowLayout());
-        setSize(900,350);
+        setSize(900,400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         GridBagLayout gblayout = new GridBagLayout();
@@ -42,6 +42,13 @@ public class SeaButtle extends JFrame {
         gbc.gridwidth=2;
         gblayout.setConstraints(menu,gbc);
         p1.add(menu);
+
+        //размещение строки управления
+        GameManagment gm = new GameManagment(pp1);
+        gbc.gridx=0;
+        gbc.gridy=1;
+        gblayout.setConstraints(gm,gbc);
+        p1.add(gm);
 
         gbc.gridwidth=1;
 
