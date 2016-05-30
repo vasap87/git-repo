@@ -35,23 +35,6 @@ public class GameManagment extends JPanel {
     }
 
 
-
-    public void strikeButton(ButtleField bf){
-        strikeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int xS = Integer.parseInt(x.getText()) - 1;
-                int yS = Integer.parseInt(y.getText()) - 1;
-                if (xS >= 0 && xS < 10 && yS >= 0 && yS < 10) {
-                    bf.strike(xS, yS);
-                    bf.printField();
-                    x.setText("");
-                    y.setText("");
-                }
-            }
-        });
-    }
-
     public void setEnable(){
         x.setEnabled(true);
         y.setEnabled(true);
@@ -64,4 +47,21 @@ public class GameManagment extends JPanel {
         strikeButton.setEnabled(false);
     }
 
+    public void setNull(){
+        x.setText("");
+        y.setText("");
+    }
+
+
+    public String getXString() {
+        return x.getText().toString();
+    }
+
+    public String getYString() {
+        return y.getText().toString();
+    }
+
+    public JButton getStrikeButton() {
+        return strikeButton;
+    }
 }

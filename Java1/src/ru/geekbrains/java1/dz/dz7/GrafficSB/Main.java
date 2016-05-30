@@ -9,6 +9,5 @@ public class Main {
         SeaButtle sb = new SeaButtle();
         sb.setVisible(true);
 
-
     }
 }

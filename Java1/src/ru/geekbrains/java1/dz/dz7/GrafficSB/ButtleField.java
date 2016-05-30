@@ -77,7 +77,11 @@ public class ButtleField extends JPanel {
         removeAll();
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                add(new JButton(field[i][j]+""));
+                JTextField tf = new JTextField(2);
+                tf.setText(field[i][j]+"");
+                tf.setHorizontalAlignment(JTextField.CENTER);
+                add(tf);
+                        //new JButton(field[i][j]+""));
             }
         }
     }

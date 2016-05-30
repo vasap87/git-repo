@@ -9,14 +9,13 @@ import java.awt.event.ActionListener;
  * Created by admin on 29.05.2016.
  */
 public class Menu extends JPanel {
-    private int result;
     private JCheckBox pvc,pvp,cvc;
     public Menu(){
         setLayout(new FlowLayout());
         pvc = new JCheckBox("Игрок против компьютера",false);
         pvp = new JCheckBox("Игрок против игрока",false);
         cvc = new JCheckBox("Компьютер против компьютера",false);
-        result=0;
+        setEnable();
         add(pvc);
         add(pvp);
         add(cvc);
@@ -24,44 +23,17 @@ public class Menu extends JPanel {
 
     }
 
-    public void setCheckBoxListeners(){
-        pvc.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(pvc.isSelected()){
-                    result=1;
-                    pvp.setSelected(false);
-                    cvc.setSelected(false);
-                    setDisable();
-                }
-            }
-        });
-        pvp.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(pvp.isSelected()){
-                    result=2;
-                    pvc.setSelected(false);
-                    cvc.setSelected(false);
-                    setDisable();
-                }
-            }
-        });
-        cvc.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(cvc.isSelected()){
-                    result=2;
-                    pvp.setSelected(false);
-                    pvc.setSelected(false);
-                    setDisable();
-                }
-            }
-        });
+
+    public JCheckBox getPvc() {
+        return pvc;
     }
 
-    public int getResult() {
-        return result;
+    public JCheckBox getPvp() {
+        return pvp;
+    }
+
+    public JCheckBox getCvc() {
+        return cvc;
     }
 
     public void setDisable(){

@@ -1,33 +1,36 @@
 package ru.geekbrains.java1.dz.dz7.GrafficSB;
 
+import ru.geekbrains.java1.dz.dz7.АлександрВасиленко.*;
+
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by admin on 29.05.2016.
  */
 public class SeaButtle extends JFrame {
 
-    private ButtleField pp1;
-    private ButtleField pp2;
+    private ButtleField bf1;
+    private ButtleField bf2;
 
     private GameManagment gm1, gm2;
-
     private GridBagLayout gblayout;
 
     private Menu menu;
+    private int menuItem;
 
-    private  JPanel p1;
+    private JPanel p1;
 
     private JLabel name1;
     private JLabel name2;
 
-    public SeaButtle(){
+    public SeaButtle() {
 
         super("SeaButtle");
         setLayout(new FlowLayout());
-        setSize(900,400);
+        setSize(900, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         gblayout = new GridBagLayout();
@@ -35,98 +38,157 @@ public class SeaButtle extends JFrame {
         p1 = new JPanel(gblayout);
 
 
-        pp1 = new ButtleField();
-        pp2 = new ButtleField();
+        bf1 = new ButtleField();
+        bf2 = new ButtleField();
 
         //размещение меню
         menu = new Menu();
-        menu.setEnable();
-        gbc.gridx=0;
-        gbc.gridy=0;
-        gbc.gridwidth=2;
-        gblayout.setConstraints(menu,gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gblayout.setConstraints(menu, gbc);
         p1.add(menu);
 
-        gbc.gridwidth=1;
+        gbc.gridwidth = 1;
         //размещение строки управления
         gm1 = new GameManagment();
-        gm1.setEnable();
-        gm1.strikeButton(getPp2());
-        gbc.gridx=0;
-        gbc.gridy=1;
-        gblayout.setConstraints(gm1,gbc);
+        gm1.setDisable();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gblayout.setConstraints(gm1, gbc);
         p1.add(gm1);
 
         gm2 = new GameManagment();
-        gm2.setEnable();
-        gm2.strikeButton(getPp1());
+        gm2.setDisable();
 
-        gbc.gridx=1;
-        gbc.gridy=1;
-        gblayout.setConstraints(gm2,gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gblayout.setConstraints(gm2, gbc);
         p1.add(gm2);
 
 
-
         //размещение имён игроков
-        name1=new JLabel("  ");
-        name2=new JLabel("  ");
+        name1 = new JLabel("  ");
+        name2 = new JLabel("  ");
 
-        gbc.gridx=0;
-        gbc.gridy=3;
-        gblayout.setConstraints(name1,gbc);
-        gbc.gridx=1;
-        gbc.gridy=3;
-        gblayout.setConstraints(name2,gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gblayout.setConstraints(name1, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gblayout.setConstraints(name2, gbc);
         p1.add(name1);
         p1.add(name2);
 
         //размещение полей с кораблями
-        gbc.gridy=4;
-        gbc.gridx=0;
-        gbc.ipadx=9;
-        gblayout.setConstraints(pp1,gbc);
-        p1.add(pp1);
-        pp1.setVisible(true);
-        gbc.gridy=4;
-        gbc.gridx=1;
-        gblayout.setConstraints(pp2,gbc);
-        p1.add(pp2);
-        pp2.setVisible(true);
+        gbc.gridy = 4;
+        gbc.gridx = 0;
+        gbc.ipadx = 9;
+        gblayout.setConstraints(bf1, gbc);
+        p1.add(bf1);
+        bf1.setEnabled(false);
+        bf1.setVisible(true);
+        gbc.gridy = 4;
+        gbc.gridx = 1;
+        gblayout.setConstraints(bf2, gbc);
+        p1.add(bf2);
+        bf2.setEnabled(false);
+        bf2.setVisible(true);
 
         //размещение основной панели
         add(p1);
 
+        //Игра
+        menu.getPvc().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (menu.getPvc().isSelected()) {
+                    menuItem = 1;
+                    menu.getPvp().setSelected(false);
+                    menu.getCvc().setSelected(false);
+                    menu.setDisable();
+                    setGameSetting(menuItem);
+                }
+            }
+        });
+        menu.getPvp().addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (menu.getPvp().isSelected()) {
+                    menuItem = 2;
+                    menu.getPvc().setSelected(false);
+                    menu.getCvc().setSelected(false);
+                    menu.setDisable();
+                    setGameSetting(menuItem);
+                }
+            }
+        });
+        menu.getCvc().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (menu.getCvc().isSelected()) {
+                    menuItem = 3;
+                    menu.getPvp().setSelected(false);
+                    menu.getPvc().setSelected(false);
+                    menu.setDisable();
+                    setGameSetting(menuItem);
+                }
+            }
+        });
 
 
 
     }
 
 
-    public void setLabelName(String name1, String name2){
+
+    private void setGameSetting(int menuItem) {
+        if (menuItem == 1) {
+            gm1.setDisable();
+            gm2.setEnable();
+            setLabelName("Поле компьютера", "Поле игрока");
+            //Game
+            AIPlayer p1 = new AIPlayer();
+            gm2.getStrikeButton().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //Player
+                    int xS = Integer.parseInt(gm2.getXString()) - 1;
+                    int yS = Integer.parseInt(gm2.getYString()) - 1;
+                    if (xS >= 0 && xS < 10 && yS >= 0 && yS < 10) {
+                        bf1.strike(xS, yS);
+                        bf1.printField();
+                        gm2.setNull();
+                        //AI
+                        p1.turn(bf2);
+                        bf2.printField();
+                    }
+                }
+            });
+        } else if (menuItem == 2) {
+            gm1.setEnable();
+            gm2.setEnable();
+            setLabelName("Поле игрока 1", "Поле игрока 2");
+        } else if (menuItem == 3) {
+            gm1.setDisable();
+            gm2.setDisable();
+            setLabelName("Поле компьютера 1", "Поле компьютера 2");
+        }
+    }
+
+
+    public void setLabelName(String name1, String name2) {
         this.name1.setText(name1);
         this.name2.setText(name2);
         this.name1.setVisible(true);
         this.name2.setVisible(true);
     }
 
-    public ButtleField getPp1() {
-        return pp1;
-    }
-
-    public ButtleField getPp2() {
-        return pp2;
-    }
-
-    public Menu getMenu() {
-        return menu;
-    }
-
-    public GameManagment getGm1() {
-        return gm1;
-    }
-
     public GameManagment getGm2() {
         return gm2;
+    }
+
+    public ButtleField getBf1() {
+        return bf1;
     }
 }
