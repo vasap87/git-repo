@@ -13,13 +13,18 @@ public class Menu extends JPanel {
     private JCheckBox pvc,pvp,cvc;
     public Menu(){
         setLayout(new FlowLayout());
-        pvc = new JCheckBox("Игрок против компьютера",true);
+        pvc = new JCheckBox("Игрок против компьютера",false);
         pvp = new JCheckBox("Игрок против игрока",false);
         cvc = new JCheckBox("Компьютер против компьютера",false);
+        result=0;
         add(pvc);
         add(pvp);
         add(cvc);
 
+
+    }
+
+    public void setCheckBoxListeners(){
         pvc.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -27,6 +32,7 @@ public class Menu extends JPanel {
                     result=1;
                     pvp.setSelected(false);
                     cvc.setSelected(false);
+                    setDisable();
                 }
             }
         });
@@ -37,6 +43,7 @@ public class Menu extends JPanel {
                     result=2;
                     pvc.setSelected(false);
                     cvc.setSelected(false);
+                    setDisable();
                 }
             }
         });
@@ -47,6 +54,7 @@ public class Menu extends JPanel {
                     result=2;
                     pvp.setSelected(false);
                     pvc.setSelected(false);
+                    setDisable();
                 }
             }
         });
@@ -54,5 +62,17 @@ public class Menu extends JPanel {
 
     public int getResult() {
         return result;
+    }
+
+    public void setDisable(){
+        pvc.setEnabled(false);
+        pvp.setEnabled(false);
+        cvc.setEnabled(false);
+    }
+
+    public void setEnable(){
+        pvc.setEnabled(true);
+        pvp.setEnabled(true);
+        cvc.setEnabled(true);
     }
 }

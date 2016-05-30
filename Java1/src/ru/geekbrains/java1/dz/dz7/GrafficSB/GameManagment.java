@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ContainerListener;
 
 /**
  * Created by admin on 29.05.2016.
@@ -13,7 +14,7 @@ public class GameManagment extends JPanel {
     private JTextField y;
     private JButton strikeButton;
 
-    public GameManagment(ButtleField bf) {
+    public GameManagment() {
         setLayout(new FlowLayout(FlowLayout.LEFT));
 
         JLabel xLabel = new JLabel("Ряд:  ", JLabel.RIGHT);
@@ -23,12 +24,19 @@ public class GameManagment extends JPanel {
         y = new JTextField(2);
         x.setName("Y");
         strikeButton = new JButton("Огонь!");
+        setDisable();
         add(xLabel);
         add(x);
         add(yLabel);
         add(y);
         add(strikeButton);
 
+
+    }
+
+
+
+    public void strikeButton(ButtleField bf){
         strikeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -42,6 +50,18 @@ public class GameManagment extends JPanel {
                 }
             }
         });
+    }
+
+    public void setEnable(){
+        x.setEnabled(true);
+        y.setEnabled(true);
+        strikeButton.setEnabled(true);
+    }
+
+    public void setDisable(){
+        x.setEnabled(false);
+        y.setEnabled(false);
+        strikeButton.setEnabled(false);
     }
 
 }

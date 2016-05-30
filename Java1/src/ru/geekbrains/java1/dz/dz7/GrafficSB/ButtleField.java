@@ -28,7 +28,7 @@ public class ButtleField extends JPanel {
 
         //расстановка кораблей
         setAllShips();
-
+        //создаёт и выводит корабли
         printField();
     }
 
