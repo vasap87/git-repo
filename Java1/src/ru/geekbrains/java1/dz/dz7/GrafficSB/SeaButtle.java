@@ -30,7 +30,7 @@ public class SeaButtle extends JFrame {
 
         super("SeaButtle");
         setLayout(new FlowLayout());
-        setSize(900, 400);
+        setSize(700, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         gblayout = new GridBagLayout();
@@ -159,20 +159,66 @@ public class SeaButtle extends JFrame {
                         bf1.strike(xS, yS);
                         bf1.printField();
                         gm2.setNull();
-                        //AI
-                        p1.turn(bf2);
-                        bf2.printField();
+                        bf1.updateUI();
+
                     }
+                    //AI
+                    p1.turn(bf2);
+                    bf2.printField();
+                    bf2.updateUI();
                 }
             });
         } else if (menuItem == 2) {
             gm1.setEnable();
             gm2.setEnable();
             setLabelName("Поле игрока 1", "Поле игрока 2");
+            //Game
+            gm2.getStrikeButton().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //Player1
+                    int xS1 = Integer.parseInt(gm2.getXString()) - 1;
+                    int yS1 = Integer.parseInt(gm2.getYString()) - 1;
+                    if (xS1 >= 0 && xS1 < 10 && yS1 >= 0 && yS1 < 10) {
+                        bf1.strike(xS1, yS1);
+                        bf1.printField();
+                        gm2.setNull();
+                        bf1.updateUI();
+                    }
+                }
+            });
+            gm1.getStrikeButton().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //Player2
+                    int xS2 = Integer.parseInt(gm1.getXString()) - 1;
+                    int yS2 = Integer.parseInt(gm1.getYString()) - 1;
+                    if (xS2 >= 0 && xS2 < 10 && yS2 >= 0 && yS2 < 10) {
+                        bf2.strike(xS2, yS2);
+                        bf2.printField();
+                        gm1.setNull();
+                        bf2.updateUI();
+                    }
+                }
+            });
         } else if (menuItem == 3) {
             gm1.setDisable();
             gm2.setDisable();
             setLabelName("Поле компьютера 1", "Поле компьютера 2");
+            AIPlayer p1 = new AIPlayer();
+            AIPlayer p2 = new AIPlayer();
+            while(true){
+                //AI 1
+                p1.turn(bf2);
+                bf2.printField();
+                bf2.updateUI();
+                if(bf2.isDefeated())break;
+                //AI 2
+                p2.turn(bf1);
+                bf1.printField();
+                bf1.updateUI();
+                if(bf1.isDefeated())break;
+            }
         }
     }
 
