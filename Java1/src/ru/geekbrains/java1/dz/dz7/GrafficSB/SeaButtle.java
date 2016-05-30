@@ -30,7 +30,7 @@ public class SeaButtle extends JFrame {
 
         super("SeaButtle");
         setLayout(new FlowLayout());
-        setSize(700, 400);
+        setSize(600, 350);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         gblayout = new GridBagLayout();
