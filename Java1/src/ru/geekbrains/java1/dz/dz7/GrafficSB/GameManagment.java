@@ -34,6 +34,10 @@ public class GameManagment extends JPanel {
 
     }
 
+    public void setTFBackground(Color color){
+        x.setBackground(color);
+        y.setBackground(color);
+    }
 
     public void setEnable(){
         x.setEnabled(true);
