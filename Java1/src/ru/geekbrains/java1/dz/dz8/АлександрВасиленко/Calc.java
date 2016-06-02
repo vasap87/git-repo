@@ -22,12 +22,16 @@ public class Calc extends JFrame {
         upPanel.setLayout(new BoxLayout(upPanel,BoxLayout.LINE_AXIS));
 
         //добавление поля для ввода-вывода
+        Font font = new Font("Veranda", Font.PLAIN, 26);
         JTextField label = new JTextField();
         label.setEditable(false);
+        label.setFont(font);
+        label.setHorizontalAlignment(SwingConstants.RIGHT);
         upPanel.add(label);
 
         //кнопка стереть всё
-        JButton clearButton = new JButton("Clear");
+        JButton clearButton = new JButton("C");
+        clearButton.setFont(font);
         upPanel.add(clearButton);
         clearButton.addActionListener(new ActionListener() {
             @Override
