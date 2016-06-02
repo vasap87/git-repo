@@ -5,6 +5,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 /**
  * Created by admin on 31.05.2016.
@@ -12,6 +13,7 @@ import java.awt.event.ActionListener;
 public class UserFieldOne extends JButton {
     private int xArea;
     private int yArea;
+    private Random rand = new Random();
 
     public UserFieldOne(int x, int y, String label, char[][] empty, char[][] ship, char mis, char hit, boolean gameType) {
         super(label);
@@ -33,9 +35,14 @@ public class UserFieldOne extends JButton {
                     setText(hit + "");
                     setEnabled(false);
                 }
-
+                //если игра с компом, то ход компа
                 if(gameType){
-                    System.out.println(122);
+                    int x,y;
+                    do {
+                        x = rand.nextInt(empty.length);
+                        y = rand.nextInt(empty.length);
+                    }while(!CompBF.compStrike(x,y));
+
                 }
             }
         });

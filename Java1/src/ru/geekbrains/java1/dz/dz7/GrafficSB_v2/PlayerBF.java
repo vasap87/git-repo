@@ -9,14 +9,13 @@ import java.awt.*;
 public class PlayerBF extends SimpleButtleField {
     private static final char HIT = 'X';
     private static final char MIS = '*';
-    private boolean gameTypeOne;
 
-    public  PlayerBF(boolean gameTypeOne){
-        super();
-        this.gameTypeOne =gameTypeOne;
+    public PlayerBF(boolean gameTypeOne) {
+        super(gameTypeOne);
     }
 
-    public void printField(char[][] emptyField) {
+
+    public void printField(char[][] emptyField, boolean gameTypeOne) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridy = 0;
         for (int i = 0; i < getSIZE() + 1; i++) {

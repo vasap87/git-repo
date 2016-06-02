@@ -16,7 +16,7 @@ public abstract class SimpleButtleField extends JPanel {
 
     private Random rand = new Random();
 
-    public SimpleButtleField() {
+    public SimpleButtleField(boolean gameTypeOne) {
 
         //Настройки JPanel
         setLayout(new GridBagLayout());
@@ -38,7 +38,7 @@ public abstract class SimpleButtleField extends JPanel {
         setAllShips();
 
         //Вывод пустого игрового поля
-        printField(emptyField);
+        printField(emptyField, gameTypeOne);
         setVisible(true);
     }
 
@@ -86,7 +86,7 @@ public abstract class SimpleButtleField extends JPanel {
         return emptyField;
     }
 
-    public char[][] getShipsField() {
+    public  char[][] getShipsField() {
         return shipsField;
     }
 
@@ -95,7 +95,7 @@ public abstract class SimpleButtleField extends JPanel {
     }
 
     //вывод игрового поля
-    public abstract void printField(char[][] emptyField);
+    public abstract void printField(char[][] emptyField, boolean gameType);
 
 
 }

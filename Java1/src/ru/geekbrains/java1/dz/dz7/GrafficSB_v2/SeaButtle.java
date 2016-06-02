@@ -19,7 +19,7 @@ public class SeaButtle extends JFrame {
         frame.setTitle("Морской бой v.2 (vasap87)");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(650, 400);
-        frame.setResizable(false);
+       //frame.setResizable(false);
 
         addJMenu();
 
@@ -56,10 +56,10 @@ public class SeaButtle extends JFrame {
                 bf1= new PlayerBF(true);
                 frame.add(bf1,gbc);
                 gbc.gridx=1;
-                bf2= new CompBF();
+                bf2= new CompBF(false);
                 frame.add(bf2,gbc);
                 bf1.updateUI();
-                bf1.updateUI();
+                bf2.updateUI();
                 gameType=1;
                 break;
             }
@@ -83,7 +83,7 @@ public class SeaButtle extends JFrame {
                 bf2= new PlayerBF(false);
                 frame.add(bf2,gbc);
                 bf1.updateUI();
-                bf1.updateUI();
+                bf2.updateUI();
                 gameType=2;
                 break;
             }

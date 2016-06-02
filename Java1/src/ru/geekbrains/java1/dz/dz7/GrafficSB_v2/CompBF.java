@@ -9,8 +9,16 @@ import java.awt.*;
 public class CompBF extends SimpleButtleField {
     private static final char HIT = 'X';
     private static final char MIS = '*';
+    private static final char WATER = '~';
+    private static final char SHIP = 'O';
+    private static char[][] shipsField;
+
+    public CompBF(boolean gameTypeOne) {
+        super(gameTypeOne);
+    }
+
     @Override
-    public void printField(char[][] emptyField) {
+    public void printField(char[][] emptyField, boolean gameType) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridy = 0;
         for (int i = 0; i < getSIZE() + 1; i++) {
@@ -41,10 +49,34 @@ public class CompBF extends SimpleButtleField {
 
             }
         }
+        this.shipsField=getShipsField();
     }
 
-    public static boolean compStrike(){
+    public static boolean compStrike(int x, int y){
+        if (shipsField[x][y] == WATER) {
+            shipsField[x][y] = MIS;
+            //isHit = false;
+            return true;
+        }
+        if (shipsField[x][y] == SHIP) {
+            shipsField[x][y] = HIT;
+            //isHit = true;
+            return true;
+        }
+        if (shipsField[x][y] == HIT) {
+            //isHit = false;
+            return false;
+        }
+        if (shipsField[x][y] == MIS) {
+            //isHit = false;
+            return false;
+        }
 
         return true;
     }
+
+    private void updateGF(){
+        this.updateUI();
+    }
 }
+
