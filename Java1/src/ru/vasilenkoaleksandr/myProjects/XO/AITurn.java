@@ -102,7 +102,7 @@ public class AITurn {
 
     // Есть ли цепочка больше 1 символа у игрока
     private boolean isPlayerChunk() {
-        for (int n = GameField.WIN; n > 0; n--) {
+        for (int n = 2; n < GameField.WIN; n++) {
             if (isGorizontal(n) && findPlaceToBlock(chunk)) {
                 return true;
             } else if (isVertical(n) && findPlaceToBlock(chunk)) {
