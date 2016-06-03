@@ -11,7 +11,7 @@ public class JField extends JPanel {
     private static JField instance;
 
     private JField() {
-        setLayout(new GridLayout(5, 5));
+        setLayout(new GridLayout(GameField.SIZE, GameField.SIZE));
         rePrintField();
         setVisible(true);
 

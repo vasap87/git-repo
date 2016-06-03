@@ -24,17 +24,22 @@ public class OneField extends JTextField {
             @Override
             public void mouseClicked(MouseEvent e) {
                 //ход игрока
-                GameField.getInstance().turn(x,y,'X');
-                //обновление JField
-                JField.getInstance().rePrintField();
-                //ход компа
-                int xAi, yAI;
-                do{
-                    xAi=random.nextInt(5);
-                    yAI=random.nextInt(5);
-                }while(!GameField.getInstance().turn(xAi,yAI,'O'));
-                //обновление JField
-                JField.getInstance().rePrintField();
+               if (!GameField.getInstance().isAnybodyWin()) {
+                   if (GameField.getInstance().turn(x, y, GameField.PLAYER)) {
+                       //обновление JField
+                       JField.getInstance().rePrintField();
+                       if (!GameField.getInstance().isAnybodyWin()){
+                           //ход компа
+                           AITurn.getInstance().aiTurn();
+                           //обновление JField
+                           JField.getInstance().rePrintField();
+                       }
+
+                   }
+               }
+
+
+
             }
 
             @Override
