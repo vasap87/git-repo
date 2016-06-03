@@ -5,26 +5,26 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * Класс представляет собой консольную версию игры крестики-нолики
- * с реализацией искусственного интелекта для блокирования ходов пользователя
+ * РљР»Р°СЃСЃ РїСЂРµРґСЃС‚Р°РІР»СЏРµС‚ СЃРѕР±РѕР№ РєРѕРЅСЃРѕР»СЊРЅСѓСЋ РІРµСЂСЃРёСЋ РёРіСЂС‹ РєСЂРµСЃС‚РёРєРё-РЅРѕР»РёРєРё
+ * СЃ СЂРµР°Р»РёР·Р°С†РёРµР№ РёСЃРєСѓСЃСЃС‚РІРµРЅРЅРѕРіРѕ РёРЅС‚РµР»РµРєС‚Р° РґР»СЏ Р±Р»РѕРєРёСЂРѕРІР°РЅРёСЏ С…РѕРґРѕРІ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
  */
 public class GameXO {
 
-	/* колличество строк и столбцов */
+	/* РєРѕР»Р»РёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє Рё СЃС‚РѕР»Р±С†РѕРІ */
 	private static final int NUM_ROW_COLUM = 4;
-	/* для победы достаточно столько символов подряд */
+	/* РґР»СЏ РїРѕР±РµРґС‹ РґРѕСЃС‚Р°С‚РѕС‡РЅРѕ СЃС‚РѕР»СЊРєРѕ СЃРёРјРІРѕР»РѕРІ РїРѕРґСЂСЏРґ */
 	private static final int WIN_NUM = 3;
-	/* символ хода игрока */
+	/* СЃРёРјРІРѕР» С…РѕРґР° РёРіСЂРѕРєР° */
 	private static final char PLAYER = 'X';
-	/* символ хода искуственного интелекта */
+	/* СЃРёРјРІРѕР» С…РѕРґР° РёСЃРєСѓСЃС‚РІРµРЅРЅРѕРіРѕ РёРЅС‚РµР»РµРєС‚Р° */
 	private static final char AI = '0';
-	/* символ в яцейке по-умолчанию */
+	/* СЃРёРјРІРѕР» РІ СЏС†РµР№РєРµ РїРѕ-СѓРјРѕР»С‡Р°РЅРёСЋ */
 	private static final char DEFAULT = '*';
-	/* поле для игры */
+	/* РїРѕР»Рµ РґР»СЏ РёРіСЂС‹ */
 	private static char[][] field = new char[NUM_ROW_COLUM][NUM_ROW_COLUM];
 
 	/**
-	 * Метод выполняет первоначальную настройку игрового поля
+	 * РњРµС‚РѕРґ РІС‹РїРѕР»РЅСЏРµС‚ РїРµСЂРІРѕРЅР°С‡Р°Р»СЊРЅСѓСЋ РЅР°СЃС‚СЂРѕР№РєСѓ РёРіСЂРѕРІРѕРіРѕ РїРѕР»СЏ
 	 */
 	private static void setup() {
 		for (int i = 0; i < field.length; i++) {
@@ -34,7 +34,7 @@ public class GameXO {
 	}
 
 	/**
-	 * Метот выводит в консоль результат хода
+	 * РњРµС‚РѕС‚ РІС‹РІРѕРґРёС‚ РІ РєРѕРЅСЃРѕР»СЊ СЂРµР·СѓР»СЊС‚Р°С‚ С…РѕРґР°
 	 */
 	private static void printTurn() {
 		for (int i = 0; i < field.length; i++) {
@@ -48,38 +48,38 @@ public class GameXO {
 	}
 
 	/**
-	 * Установка хода
+	 * РЈСЃС‚Р°РЅРѕРІРєР° С…РѕРґР°
 	 */
 	private static void setValue(int x, int y, char ch) {
 		field[x][y] = ch;
 	}
 
 	/**
-	 * Можно ли ходить в это поле
+	 * РњРѕР¶РЅРѕ Р»Рё С…РѕРґРёС‚СЊ РІ СЌС‚Рѕ РїРѕР»Рµ
 	 */
 	private static boolean isTurn(int x, int y) {
 		return (field[x][y] != PLAYER && field[x][y] != AI);
 	}
 
 	/**
-	 * Ход игры
+	 * РҐРѕРґ РёРіСЂС‹
 	 */
 	private static void turn(char ch) {
 		int x, y;
-		if (ch == PLAYER) { // Ход игрока
+		if (ch == PLAYER) { // РҐРѕРґ РёРіСЂРѕРєР°
 			do {
-				System.out.println("Ваш ход, введите координаты в формате X Y (от 1 до "+field.length+" каждое значение, например 2 3)");
-				System.out.println("Длинна выигрышной комбинации: "+WIN_NUM);
+				System.out.println("Р’Р°С€ С…РѕРґ, РІРІРµРґРёС‚Рµ РєРѕРѕСЂРґРёРЅР°С‚С‹ РІ С„РѕСЂРјР°С‚Рµ X Y (РѕС‚ 1 РґРѕ "+field.length+" РєР°Р¶РґРѕРµ Р·РЅР°С‡РµРЅРёРµ, РЅР°РїСЂРёРјРµСЂ 2 3)");
+				System.out.println("Р”Р»РёРЅРЅР° РІС‹РёРіСЂС‹С€РЅРѕР№ РєРѕРјР±РёРЅР°С†РёРё: "+WIN_NUM);
 				x = sc.nextInt();
 				y = sc.nextInt();
 			} while (!isTurn(x - 1, y - 1));
 			setValue(x - 1, y - 1, ch);
-		} else { // Ход компьютера
+		} else { // РҐРѕРґ РєРѕРјРїСЊСЋС‚РµСЂР°
 			aiTurn();
 		}
 	}
 
-	// Ход компьютера
+	// РҐРѕРґ РєРѕРјРїСЊСЋС‚РµСЂР°
 	private static void aiTurn() {
 		numAITurn++;
 		if (numAITurn == 1) {
@@ -90,7 +90,7 @@ public class GameXO {
 
 	}
 
-	// Первых ход рядом с первым ходом игрока
+	// РџРµСЂРІС‹С… С…РѕРґ СЂСЏРґРѕРј СЃ РїРµСЂРІС‹Рј С…РѕРґРѕРј РёРіСЂРѕРєР°
 	private static void firstTurn() {
 		for (int i = 0; i < field.length; i++) {
 			for (int j = 0; j < field.length; j++) {
@@ -109,7 +109,7 @@ public class GameXO {
 		}
 	}
 
-	// Добавляет или убавляет единицу к целому числу
+	// Р”РѕР±Р°РІР»СЏРµС‚ РёР»Рё СѓР±Р°РІР»СЏРµС‚ РµРґРёРЅРёС†Сѓ Рє С†РµР»РѕРјСѓ С‡РёСЃР»Сѓ
 	private static int addOne(char ch, int i) {
 		if (ch == '-') {
 			return --i;
@@ -117,7 +117,7 @@ public class GameXO {
 			return ++i;
 	}
 
-	// Остальные ходы компьютера
+	// РћСЃС‚Р°Р»СЊРЅС‹Рµ С…РѕРґС‹ РєРѕРјРїСЊСЋС‚РµСЂР°
 	private static void otherTurn() {
 		isFindBlock=true;
 		if (isPlayerChunk()) {
@@ -127,7 +127,7 @@ public class GameXO {
 		isFindBlock=false;
 	}
 
-	// Рандомный ход компьютера
+	// Р Р°РЅРґРѕРјРЅС‹Р№ С…РѕРґ РєРѕРјРїСЊСЋС‚РµСЂР°
 	private static void rundTurn() {
 		int x, y;
 		do {
@@ -137,7 +137,7 @@ public class GameXO {
 		setValue(x, y, AI);
 	}
 
-	// Есть ли цепочка больше 1 символа у игрока
+	// Р•СЃС‚СЊ Р»Рё С†РµРїРѕС‡РєР° Р±РѕР»СЊС€Рµ 1 СЃРёРјРІРѕР»Р° Сѓ РёРіСЂРѕРєР°
 	private static boolean isPlayerChunk() {
 		for (int n = WIN_NUM; n > 0; n--) {
 			if (isGorizontal(n)&&findPlaceToBlock(chunk)) {
@@ -156,44 +156,44 @@ public class GameXO {
 
 	private static boolean findPlaceToBlock(String s) {
 
-		if (s.equals("row")) { // Если есть ряд у игрока
-			if (indexOfColumn + 1 < field.length && field[indexOfRow][indexOfColumn + 1] == DEFAULT) { // Можно ли поставить справа
+		if (s.equals("row")) { // Р•СЃР»Рё РµСЃС‚СЊ СЂСЏРґ Сѓ РёРіСЂРѕРєР°
+			if (indexOfColumn + 1 < field.length && field[indexOfRow][indexOfColumn + 1] == DEFAULT) { // РњРѕР¶РЅРѕ Р»Рё РїРѕСЃС‚Р°РІРёС‚СЊ СЃРїСЂР°РІР°
 				indexOfColumn++;
 				return true;
-			} else if (indexOfColumn - count >= 0 && field[indexOfRow][indexOfColumn - count] == DEFAULT) {// Можно ли поставить слева
+			} else if (indexOfColumn - count >= 0 && field[indexOfRow][indexOfColumn - count] == DEFAULT) {// РњРѕР¶РЅРѕ Р»Рё РїРѕСЃС‚Р°РІРёС‚СЊ СЃР»РµРІР°
 				indexOfColumn = indexOfColumn - count;
 				return true;
 			} else
 				return false;
 
-		} else if (s.equals("column")) { // Если есть столбец у игрока
-			if (indexOfRow + 1 < field.length && field[indexOfRow + 1][indexOfColumn] == DEFAULT) { // Можно ли поставить снизу
+		} else if (s.equals("column")) { // Р•СЃР»Рё РµСЃС‚СЊ СЃС‚РѕР»Р±РµС† Сѓ РёРіСЂРѕРєР°
+			if (indexOfRow + 1 < field.length && field[indexOfRow + 1][indexOfColumn] == DEFAULT) { // РњРѕР¶РЅРѕ Р»Рё РїРѕСЃС‚Р°РІРёС‚СЊ СЃРЅРёР·Сѓ
 				indexOfRow++;
 				return true;
-			} else if (indexOfRow - count >= 0 && field[indexOfRow - count][indexOfColumn] == DEFAULT) {// Можно ли поставить сверху
+			} else if (indexOfRow - count >= 0 && field[indexOfRow - count][indexOfColumn] == DEFAULT) {// РњРѕР¶РЅРѕ Р»Рё РїРѕСЃС‚Р°РІРёС‚СЊ СЃРІРµСЂС…Сѓ
 				indexOfRow = indexOfRow - count;
 				return true;
 			} else
 				return false;
-			
-		} else if (s.equals("diagonal")) { // Если есть прямая диагональ у игрока
-			if ((indexOfRow + 1 < field.length&&indexOfColumn + 1 < field.length) && field[indexOfRow + 1][indexOfColumn+1] == DEFAULT) { // Можно ли поставить снизу
+
+		} else if (s.equals("diagonal")) { // Р•СЃР»Рё РµСЃС‚СЊ РїСЂСЏРјР°СЏ РґРёР°РіРѕРЅР°Р»СЊ Сѓ РёРіСЂРѕРєР°
+			if ((indexOfRow + 1 < field.length&&indexOfColumn + 1 < field.length) && field[indexOfRow + 1][indexOfColumn+1] == DEFAULT) { // РњРѕР¶РЅРѕ Р»Рё РїРѕСЃС‚Р°РІРёС‚СЊ СЃРЅРёР·Сѓ
 				indexOfRow++;
 				indexOfColumn++;
 				return true;
-			} else if ((indexOfRow - count >= 0&&indexOfColumn - count >= 0) && field[indexOfRow - count][indexOfColumn - count] == DEFAULT) {// Можно ли поставить сверху
+			} else if ((indexOfRow - count >= 0&&indexOfColumn - count >= 0) && field[indexOfRow - count][indexOfColumn - count] == DEFAULT) {// РњРѕР¶РЅРѕ Р»Рё РїРѕСЃС‚Р°РІРёС‚СЊ СЃРІРµСЂС…Сѓ
 				indexOfRow = indexOfRow - count;
 				indexOfColumn = indexOfColumn - count;
 				return true;
 			} else
 				return false;
-			
-		}else if (s.equals("bacwardDiagonal")) { // Если есть обратная диагональ у игрока
-			if ((indexOfRow - 1 >= 0&&indexOfColumn + 1 < field.length) && field[indexOfRow - 1][indexOfColumn+1] == DEFAULT) { // Можно ли поставить сверху
+
+		}else if (s.equals("bacwardDiagonal")) { // Р•СЃР»Рё РµСЃС‚СЊ РѕР±СЂР°С‚РЅР°СЏ РґРёР°РіРѕРЅР°Р»СЊ Сѓ РёРіСЂРѕРєР°
+			if ((indexOfRow - 1 >= 0&&indexOfColumn + 1 < field.length) && field[indexOfRow - 1][indexOfColumn+1] == DEFAULT) { // РњРѕР¶РЅРѕ Р»Рё РїРѕСЃС‚Р°РІРёС‚СЊ СЃРІРµСЂС…Сѓ
 				indexOfRow++;
 				indexOfColumn++;
 				return true;
-			} else if ((indexOfRow + count <field.length&&indexOfColumn - count >= 0) && field[indexOfRow + count][indexOfColumn - count] == DEFAULT) {// Можно ли поставить снизу
+			} else if ((indexOfRow + count <field.length&&indexOfColumn - count >= 0) && field[indexOfRow + count][indexOfColumn - count] == DEFAULT) {// РњРѕР¶РЅРѕ Р»Рё РїРѕСЃС‚Р°РІРёС‚СЊ СЃРЅРёР·Сѓ
 				indexOfRow = indexOfRow + count;
 				indexOfColumn = indexOfColumn - count;
 				return true;
@@ -204,7 +204,7 @@ public class GameXO {
 	}
 
 	/**
-	 * Проверка, выиграл ди кто-нибудь
+	 * РџСЂРѕРІРµСЂРєР°, РІС‹РёРіСЂР°Р» РґРё РєС‚Рѕ-РЅРёР±СѓРґСЊ
 	 */
 	private static boolean isAnybodyWin() {
 		if (isGorizontal(WIN_NUM)) {
@@ -219,7 +219,7 @@ public class GameXO {
 			return false;
 	}
 
-	// если есть цепочка по горизонтали из n-символов вернёт true
+	// РµСЃР»Рё РµСЃС‚СЊ С†РµРїРѕС‡РєР° РїРѕ РіРѕСЂРёР·РѕРЅС‚Р°Р»Рё РёР· n-СЃРёРјРІРѕР»РѕРІ РІРµСЂРЅС‘С‚ true
 	private static boolean isGorizontal(int n) {
 		for (int i = 0; i < field.length; i++) {
 			int countP = 0;
@@ -248,7 +248,7 @@ public class GameXO {
 		return false;
 	}
 
-	// если есть цепочка по вертикали из n-символов вернёт true
+	// РµСЃР»Рё РµСЃС‚СЊ С†РµРїРѕС‡РєР° РїРѕ РІРµСЂС‚РёРєР°Р»Рё РёР· n-СЃРёРјРІРѕР»РѕРІ РІРµСЂРЅС‘С‚ true
 	private static boolean isVertical(int n) {
 		for (int i = 0; i < field.length; i++) {
 			int countP = 0;
@@ -278,7 +278,7 @@ public class GameXO {
 		return false;
 	}
 
-	// если есть цепочка по диагонали матрицы из n-символов вернёт true
+	// РµСЃР»Рё РµСЃС‚СЊ С†РµРїРѕС‡РєР° РїРѕ РґРёР°РіРѕРЅР°Р»Рё РјР°С‚СЂРёС†С‹ РёР· n-СЃРёРјРІРѕР»РѕРІ РІРµСЂРЅС‘С‚ true
 	private static boolean isDiagonal(int n) {
 		int countP = 0;
 		int countI = 0;
@@ -325,7 +325,7 @@ public class GameXO {
 		return false;
 	}
 
-	// если есть цепочка по обратной диагонали матрицы из n-символов вернёт true
+	// РµСЃР»Рё РµСЃС‚СЊ С†РµРїРѕС‡РєР° РїРѕ РѕР±СЂР°С‚РЅРѕР№ РґРёР°РіРѕРЅР°Р»Рё РјР°С‚СЂРёС†С‹ РёР· n-СЃРёРјРІРѕР»РѕРІ РІРµСЂРЅС‘С‚ true
 	private static boolean isBackWardDiagonal(int n) {
 		int countP = 0;
 		int countI = 0;
@@ -373,7 +373,7 @@ public class GameXO {
 	}
 
 	/**
-	 * Проверка на ничью
+	 * РџСЂРѕРІРµСЂРєР° РЅР° РЅРёС‡СЊСЋ
 	 */
 	private static boolean isNobodyWin() {
 		for (int i = 0; i < field.length; i++) {
@@ -392,11 +392,11 @@ public class GameXO {
 			turn((turn % 2 == 1) ? PLAYER : AI);
 			printTurn();
 			if (isAnybodyWin()) {
-				System.out.println("Победил " + ((turn % 2 == 1) ? "игрок" : "компьютер"));
+				System.out.println("РџРѕР±РµРґРёР» " + ((turn % 2 == 1) ? "РёРіСЂРѕРє" : "РєРѕРјРїСЊСЋС‚РµСЂ"));
 				break;
 			}
 			if (isNobodyWin()) {
-				System.out.println("Никто не победил!");
+				System.out.println("РќРёРєС‚Рѕ РЅРµ РїРѕР±РµРґРёР»!");
 				break;
 			}
 			turn++;
