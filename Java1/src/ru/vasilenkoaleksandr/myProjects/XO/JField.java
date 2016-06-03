@@ -12,12 +12,7 @@ public class JField extends JPanel {
 
     private JField() {
         setLayout(new GridLayout(5, 5));
-        for (int i = 0; i < GameField.getInstance().getField().length; i++) {
-            for (int j = 0; j < GameField.getInstance().getField().length; j++) {
-                add(new OneField(i, j, GameField.getInstance().getField()[i][j]));
-            }
-        }
-
+        rePrintField();
         setVisible(true);
 
     }
@@ -27,5 +22,15 @@ public class JField extends JPanel {
             instance = new JField();
         }
         return instance;
+    }
+
+    public void rePrintField(){
+        removeAll();
+        for (int i = 0; i < GameField.getInstance().getField().length; i++) {
+            for (int j = 0; j < GameField.getInstance().getField().length; j++) {
+                add(new OneField(i, j, GameField.getInstance().getField()[i][j], instance));
+            }
+        }
+        updateUI();
     }
 }
