@@ -34,12 +34,8 @@ public class OneField extends JTextField {
                            //обновление JField
                            JField.getInstance().rePrintField();
                        }
-
                    }
                }
-
-
-
             }
 
             @Override

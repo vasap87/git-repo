@@ -2,6 +2,10 @@ package ru.vasilenkoaleksandr.myProjects.XO;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
+
+import static java.awt.Color.*;
+import static java.awt.Color.RED;
 
 /**
  * Created by vasilenko.aleksandr on 02.06.2016.
@@ -24,11 +28,12 @@ public class JField extends JPanel {
         return instance;
     }
 
-    public void rePrintField(){
+    public void rePrintField() {
         removeAll();
         for (int i = 0; i < GameField.getInstance().getField().length; i++) {
             for (int j = 0; j < GameField.getInstance().getField().length; j++) {
-                add(new OneField(i, j, GameField.getInstance().getField()[i][j], instance));
+                OneField of = new OneField(i, j, GameField.getInstance().getField()[i][j], instance);
+                add(of);
             }
         }
         updateUI();

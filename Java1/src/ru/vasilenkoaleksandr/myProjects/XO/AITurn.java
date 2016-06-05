@@ -12,6 +12,7 @@ public class AITurn {
     private static AITurn instance;
 
     private char[][] field = GameField.getInstance().getField();
+    private WinCoordinates[] winField = null;
 
 
     //метод доступа к единственному объекту AITurn
@@ -185,8 +186,10 @@ public class AITurn {
                 } else if (field[i][j] == GameField.AI) {
                     countI++;
                     countP = 0;
-                    if (countI == n && !isFindBlock)
+                    if (countI == n && !isFindBlock) {
+
                         return true;
+                    }
                 } else {
                     countI = countP = 0;
                 }
@@ -209,14 +212,16 @@ public class AITurn {
                         indexOfRow = j;
                         indexOfColumn = i;
                         chunk = "column";
+
                         return true;
                     }
 
                 } else if (field[j][i] == GameField.AI) {
                     countI++;
                     countP = 0;
-                    if (countI == n && !isFindBlock)
+                    if (countI == n && !isFindBlock) {
                         return true;
+                    }
                 } else {
                     countI = countP = 0;
                 }
@@ -231,7 +236,7 @@ public class AITurn {
         int countI = 0;
         for (int i = 0; i <= field.length - n; i++) {
             for (int j = 0; j <= field.length - n; j++) {
-                char ch = 0;
+                char ch = ' ';
                 if (field[i][j] != GameField.DEFAULT) {
                     ch = field[i][j];
                     if (ch == GameField.PLAYER) {
@@ -241,7 +246,7 @@ public class AITurn {
                         countP = 0;
                         countI++;
                     }
-                    for (int k = 1; k <= n; k++) {
+                    for (int k = 1; k <= n-1; k++) {
                         if (ch == field[i + k][j + k]) {
                             if (ch == GameField.PLAYER) {
                                 countP++;
@@ -288,7 +293,7 @@ public class AITurn {
                         countP = 0;
                         countI++;
                     }
-                    for (int k = 1; k <= n; k++) {
+                    for (int k = 1; k <= n-1; k++) {
                         if (ch == field[i - k][j + k]) {
                             if (ch == GameField.PLAYER) {
                                 countP++;
@@ -319,6 +324,9 @@ public class AITurn {
         return false;
     }
 
+    public WinCoordinates[] getWinField() {
+        return winField;
+    }
 
     private static int count = 0;
     private static String chunk = "";
