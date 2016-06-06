@@ -35,11 +35,11 @@ public class FindWin {
         //смотрим по горизонтали
         for (int i = 0; i < field.length; i++) {
             if (Arrays.equals(field[i], playerWin) || Arrays.equals(field[i], aiWin)) {
+                winArray = new WinCoordinates[GameField.SIZE];
                 for (int j = 0; j < field.length; j++) {
-                    winArray = new WinCoordinates[GameField.SIZE];
                     winArray[j] = new WinCoordinates(i, j);
-                    return true;
                 }
+                return true;
             }
         }
 
@@ -51,11 +51,12 @@ public class FindWin {
                 columnArr[j] = field[j][i];
             }
             if (Arrays.equals(columnArr, playerWin) || Arrays.equals(columnArr, aiWin)) {
+                winArray = new WinCoordinates[GameField.SIZE];
                 for (int j = 0; j < columnArr.length; j++) {
-                    winArray = new WinCoordinates[GameField.SIZE];
                     winArray[j] = new WinCoordinates(j, i);
-                    return true;
+
                 }
+                return true;
             }
         }
 
@@ -66,11 +67,12 @@ public class FindWin {
             arrDiag[i] = field[i][j];
         }
         if (Arrays.equals(arrDiag, playerWin) || Arrays.equals(arrDiag, aiWin)) {
+            winArray = new WinCoordinates[GameField.SIZE];
             for (int i = 0, j = 0; i < field.length; i++, j++) {
-                winArray = new WinCoordinates[GameField.SIZE];
                 winArray[j] = new WinCoordinates(i, j);
-                return true;
+
             }
+            return true;
         }
 
         //обратная
@@ -79,20 +81,21 @@ public class FindWin {
             arrBackDiag[i] = field[i][j];
         }
         if (Arrays.equals(arrBackDiag, playerWin) || Arrays.equals(arrBackDiag, aiWin)) {
+            winArray = new WinCoordinates[GameField.SIZE];
             for (int i = field.length - 1, j = 0; j < field.length; i--, j++) {
-                winArray = new WinCoordinates[GameField.SIZE];
                 winArray[j] = new WinCoordinates(i, j);
-                return true;
+
             }
+            return true;
         }
 
         return false;
     }
 
-    public boolean isNobodyWin(){
+    public boolean isNobodyWin() {
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field.length; j++) {
-                if(field[i][j]==GameField.DEFAULT) return false;
+                if (field[i][j] == GameField.DEFAULT&&!isAnyBodyWin()) return false;
             }
         }
         return true;
