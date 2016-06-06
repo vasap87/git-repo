@@ -33,6 +33,14 @@ public class JField extends JPanel {
         for (int i = 0; i < GameField.getInstance().getField().length; i++) {
             for (int j = 0; j < GameField.getInstance().getField().length; j++) {
                 OneField of = new OneField(i, j, GameField.getInstance().getField()[i][j], instance);
+                //если координаты содержатся в массиве выигрышных - выделяем их другим цветом
+                if (FindWin.getInstance().getWinArray() != null) {
+                    for (int k = 0; k < FindWin.getInstance().getWinArray().length; k++) {
+                        if (FindWin.getInstance().getWinArray()[k].getX() == i && FindWin.getInstance().getWinArray()[k].getY() == j) {
+                            of.setBackground(red);
+                        }
+                    }
+                }
                 add(of);
             }
         }

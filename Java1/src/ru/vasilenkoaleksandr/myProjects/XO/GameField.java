@@ -41,6 +41,7 @@ public class GameField {
      */
     private static GameField instance;
 
+    //метод доступа к единственному экземпляру класса
     public static GameField getInstance() {
         if (instance == null) {
             instance = new GameField();
@@ -48,6 +49,7 @@ public class GameField {
         return instance;
     }
 
+    //приватный конструктор, создаёт пустое поле
     private GameField() {
         field = new char[SIZE][SIZE];
         for (int i = 0; i < field.length; i++) {
@@ -57,6 +59,7 @@ public class GameField {
         }
     }
 
+    //выставление хода
     public boolean turn(int x, int y, char ch) {
         if (field[x][y] == DEFAULT) {
             field[x][y] = ch;
@@ -65,36 +68,6 @@ public class GameField {
         return false;
     }
 
-
-
-    /**
-     * Проверка на выигрыш
-     */
-    public boolean isAnybodyWin() {
-        if (AITurn.getInstance().isGorizontal(WIN)) {
-            return true;
-        } else if (AITurn.getInstance().isVertical(WIN)) {
-            return true;
-        } else if (AITurn.getInstance().isDiagonal(WIN)) {
-            return true;
-        } else if (AITurn.getInstance().isBackWardDiagonal(WIN)) {
-            return true;
-        } else
-            return false;
-    }
-
-    /**
-     * Проверка на ничью
-     */
-    public boolean isNobodyWin() {
-        for (int i = 0; i < field.length; i++) {
-            for (int j = 0; j < field.length; j++) {
-                if (field[i][j] == ' ')
-                    return false;
-            }
-        }
-        return true;
-    }
 
 
     public char[][] getField() {
