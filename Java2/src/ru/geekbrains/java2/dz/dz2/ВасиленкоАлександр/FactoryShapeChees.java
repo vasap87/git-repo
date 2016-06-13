@@ -1,4 +1,4 @@
-package ru.geekbrains.java2.dz.dz1.ВасиленкоАлександр;
+package ru.geekbrains.java2.dz.dz2.ВасиленкоАлександр;
 
 
 /**
@@ -16,7 +16,7 @@ public class FactoryShapeChees {
     private FactoryShapeChees() {
     }
 
-    public ShapeChess factoryMethod (char ch) throws ChessNotFoundExeption{
+    public ShapeChess factoryMethod (char ch) throws ChessNotFoundExeption {
         ShapeChess shapeChess = null;
         switch (ch){
             case 'p': shapeChess = new Pawn(); break;   //пешка

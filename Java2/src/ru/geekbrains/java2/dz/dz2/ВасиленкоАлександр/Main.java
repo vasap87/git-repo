@@ -1,4 +1,4 @@
-package ru.geekbrains.java2.dz.dz1.ВасиленкоАлександр;
+package ru.geekbrains.java2.dz.dz2.ВасиленкоАлександр;
 
 
 import java.util.Scanner;
