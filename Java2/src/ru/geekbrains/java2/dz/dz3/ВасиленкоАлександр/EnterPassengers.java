@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class EnterPassengers {
 
-    private List<Passenger> passengerList = new ArrayList<>();
+    private ArrayList<Passenger> passengerList = new ArrayList<>();
 
     private static EnterPassengers ourInstance = new EnterPassengers();
 
@@ -74,7 +74,7 @@ public class EnterPassengers {
 
     }
 
-    public List<Passenger> getPassengerList() {
+    public ArrayList<Passenger> getPassengerList() {
         return passengerList;
     }
 }

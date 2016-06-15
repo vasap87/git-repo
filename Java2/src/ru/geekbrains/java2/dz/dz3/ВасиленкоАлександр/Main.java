@@ -1,8 +1,7 @@
 package ru.geekbrains.java2.dz.dz3.ВасиленкоАлександр;
 
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by vasilenko.aleksandr on 15.06.2016.
@@ -11,14 +10,9 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         //ввод пассажиров
-        EnterPassengers.getInstance().addPassengers();
-        //вывод данных по рейсам
-        List<Passenger> passengers = EnterPassengers.getInstance().getPassengerList();
-        Iterator iterator = passengers.iterator();
-        while (iterator.hasNext()){
-            Passenger p = (Passenger) iterator.next();
-            System.out.println(p.getName()+" "+p.getDocumentNumber()+" "+p.getFlightNumber());
-        }
+        ArrayList<Passenger> passengers = EnterPassengers.getInstance().getPassengerList();
+        //Сортировка по номеру рейса
+        TreeMap treeMapPassengers = OrderPassengers.getInstance().orderPassengers(passengers);
 
     }
 }
