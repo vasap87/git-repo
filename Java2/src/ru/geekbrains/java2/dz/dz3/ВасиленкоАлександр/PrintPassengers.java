@@ -16,6 +16,10 @@ public class PrintPassengers {
     }
 
     public void printAllFlightNumbers(TreeMap flight) {
-        System.out.println(flight.size());
+
+        Set<Integer> flightSet = flight.keySet();
+        for (Integer i: flightSet){
+            System.out.println();
+        }
     }
 }

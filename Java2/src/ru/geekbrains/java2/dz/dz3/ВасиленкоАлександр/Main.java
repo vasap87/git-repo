@@ -10,9 +10,12 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         //ввод пассажиров
+        EnterPassengers.getInstance().addPassengers();
         ArrayList<Passenger> passengers = EnterPassengers.getInstance().getPassengerList();
         //Сортировка по номеру рейса
         TreeMap treeMapPassengers = OrderPassengers.getInstance().orderPassengers(passengers);
+        //вывод на печать
+        PrintPassengers.getInstance().printAllFlightNumbers(treeMapPassengers);
 
     }
 }
