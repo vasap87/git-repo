@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by vasilenko.aleksandr on 15.06.2016.
@@ -62,6 +61,7 @@ public class EnterPassengers {
                 System.out.println("Будут ещё пассажиры? 0 - нет, остальное - будут.");
                 String result = reader.readLine();
                 if (result.equals("0")) {
+                    System.out.println("Распознан конец ввода пассажиров.");
                     break;
                 } else {
                     System.out.println();

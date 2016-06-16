@@ -43,4 +43,9 @@ public class Passenger {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return  name + " " + documentNumber;
+    }
 }

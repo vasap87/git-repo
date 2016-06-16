@@ -17,8 +17,24 @@ public class PrintPassengers {
 
     public void printAllFlightNumbers(TreeMap flight) {
 
+        //Получаем коллекцию ключей
         Set<Integer> flightSet = flight.keySet();
-        for (Integer i: flightSet){
+        //Для каждого ключа
+        for (Integer i : flightSet) {
+            System.out.print("На рейс " + i);
+            //для каждого ключа молучаем коллекцию пассажиров
+            ArrayList<Passenger> passengers = (ArrayList<Passenger>) flight.get(i);
+            System.out.println(" зарегистрированно " + passengers.size() + " пассажиров. Их имена и документы:");
+            //сортируем по возрастянию коллекцию пассажиров
+            Collections.sort(passengers, new Comparator<Passenger>() {
+                @Override
+                public int compare(Passenger o1, Passenger o2) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+            });
+            for (Passenger p : passengers) {
+                System.out.println(p.toString());
+            }
             System.out.println();
         }
     }
