@@ -38,14 +38,18 @@ public class OrderPassengers {
                 sorterTreeMap.put(flightTemp, flightPassengers);
                 break;
             } else {
+
                 for (int i = 0; i < passengers.size(); i++) {
                     Passenger pTemp = passengers.get(i);
                     //если есть пассажир с таким же номером рейса
                     if (flightTemp == pTemp.getFlightNumber()) {
                         flightPassengers.add(pTemp);
                         passengers.remove(pTemp);
+                        i--;
                     }
                 }
+
+
                 sorterTreeMap.put(flightTemp, flightPassengers);
             }
 
