@@ -4,6 +4,7 @@ import java.util.*;
 
 /**
  * Created by vasilenko.aleksandr on 15.06.2016.
+ * Класс используется для вывода в консоль информации о рейсах и о пассажирах рейсов
  */
 public class PrintPassengers {
     private static PrintPassengers ourInstance = new PrintPassengers();
