@@ -186,7 +186,7 @@ public class Chat extends JFrame {
         about.setFont(menuFont);
         JMenuItem aboutItem = new JMenuItem("О программе");
         aboutItem.setFont(menuFont);
-        aboutItem.addActionListener(e -> JOptionPane.showInternalMessageDialog(getContentPane(),"Задание по уроку 4 курса Java2\n\nВыполнил Василенко Александр","О программе",JOptionPane.INFORMATION_MESSAGE));
+        aboutItem.addActionListener(e -> JOptionPane.showMessageDialog(getContentPane(),"Задание по уроку 4 курса Java2\n\nВыполнил Василенко Александр","О программе",JOptionPane.INFORMATION_MESSAGE));
         about.add(aboutItem);
 
         menuBar.add(about);
