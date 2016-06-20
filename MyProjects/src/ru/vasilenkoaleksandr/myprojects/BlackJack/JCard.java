@@ -1,6 +1,7 @@
 package ru.vasilenkoaleksandr.myprojects.BlackJack;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 
 /**
@@ -9,8 +10,10 @@ import java.awt.*;
 public abstract class JCard extends JLabel {
     private Font font = new Font("Arial", Font.PLAIN, 26);
 
-    public JCard() {
+    public JCard(String name) {
         setFont(font);
+        setText(name);
+        setBorder(new LineBorder(Color.BLACK));
         setHorizontalAlignment(CENTER);
         setVerticalAlignment(CENTER);
         setVisible(true);
