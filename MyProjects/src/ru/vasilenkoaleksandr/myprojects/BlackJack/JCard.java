@@ -8,7 +8,7 @@ import java.awt.*;
  * Created by vasilenko.aleksandr on 09.06.2016.
  */
 public abstract class JCard extends JLabel {
-    private Font font = new Font("Arial", Font.PLAIN, 26);
+    private Font font = new Font("Arial", Font.PLAIN, 50);
 
     public JCard(String name) {
         setFont(font);

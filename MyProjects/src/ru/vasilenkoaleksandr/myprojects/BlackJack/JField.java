@@ -2,7 +2,6 @@ package ru.vasilenkoaleksandr.myprojects.BlackJack;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.List;
 import java.util.*;
 
 /**
@@ -10,8 +9,8 @@ import java.util.*;
  */
 public class JField extends JFrame {
 
-    private List player;
-    private List dealer;
+    private ArrayList<Card> player;
+    private ArrayList<Card> dealer;
     private JPanel dealerCards;
     private JPanel playerCards;
     private static final Dimension BUTTONS = new Dimension(150,30);
@@ -32,8 +31,16 @@ public class JField extends JFrame {
         add(dealerLabel,c);
 
         //карты диллера
-        dealerCards = new JPanel(new FlowLayout(2,2,2));
+        dealerCards = new JPanel();
+        dealerCards.setLayout(new FlowLayout(FlowLayout.CENTER,5,5));
         dealerCards.setPreferredSize(PANELS);
+        dealer = new ArrayList<Card>();
+        dealer.add(FabricaCard.getInstance().getRandomCard());
+        dealer.add(FabricaCard.getInstance().getRandomCard());
+        for (Card card: dealer ) {
+            dealerCards.add((Component) card);
+        }
+
         addDealerCards();
         c.gridx=0;
         c.gridy=1;
@@ -43,7 +50,10 @@ public class JField extends JFrame {
         //кнопки игрока
         JButton moreButton = new JButton("Ещё!");
         moreButton.setPreferredSize(BUTTONS);
-        moreButton.setHorizontalAlignment(SwingConstants.CENTER);
+        moreButton.addActionListener(e -> {
+            player.add(FabricaCard.getInstance().getRandomCard());
+            printCards(player);
+        });
         c.gridy=2;
         c.gridx=0;
         c.gridwidth=1;
@@ -59,8 +69,14 @@ public class JField extends JFrame {
         add(pasButton,c);
 
         //Карты игрока
-        playerCards = new JPanel(new FlowLayout(2,2,2));
+        playerCards = new JPanel();
+        playerCards.setLayout(new FlowLayout(FlowLayout.CENTER,5,5));
         playerCards.setPreferredSize(PANELS);
+        player = new ArrayList<Card>();
+        player.add(FabricaCard.getInstance().getRandomCard());
+        player.add(FabricaCard.getInstance().getRandomCard());
+        printCards(player);
+
         c.gridy=3;
         c.gridx=0;
         c.gridwidth=2;
@@ -82,11 +98,18 @@ public class JField extends JFrame {
 
     }
 
+    private void printCards(ArrayList<Card> player) {
+        playerCards.removeAll();
+        for (Card card: player ) {
+            playerCards.add((Component) card);
+        }
+        playerCards.updateUI();
+    }
+
 
     private void addDealerCards() {
         //добавление карт диллеру
-        dealerCards.add((Component) FabricaCard.getInstance().getRandomCard());
-        dealerCards.add((Component) FabricaCard.getInstance().getRandomCard());
+
 
     }
 }
