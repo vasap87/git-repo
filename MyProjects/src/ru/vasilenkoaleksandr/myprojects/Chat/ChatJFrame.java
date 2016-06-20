@@ -12,7 +12,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
 
 /**
  * Created by vasilenko.aleksandr on 17.06.2016.
@@ -23,7 +22,7 @@ import java.util.List;
 public class ChatJFrame extends JFrame {
 
 
-    private JTextArea jTextArea;
+    private JTextPane jTextPane;
     private JTextField inputTextField;
     private JButton sendButton;
     private static DefaultListModel loginList = new DefaultListModel<String>();
@@ -51,16 +50,14 @@ public class ChatJFrame extends JFrame {
 
         //поле чата со скролом
         //переделать на JTextPane
-        jTextArea = new JTextArea();
-        jTextArea.setEditable(false);
-        jTextArea.setEnabled(true);
-        jTextArea.setLineWrap(true);
-        jTextArea.setWrapStyleWord(true);
-        Font textAreaFont = new Font("Veranda", Font.PLAIN, 16);
-        jTextArea.setFont(textAreaFont);
-        jTextArea.setMargin(new Insets(5, 2, 5, 2));
+        jTextPane = new JTextPane();
+        jTextPane.setMargin(new Insets(5, 2, 5, 2));
+        jTextPane.setEditable(false);
+        jTextPane.setContentType("text/html");
+        jTextPane.setText("<html><head></head><body></body></html");
 
-        JScrollPane jScrollPane = new JScrollPane(jTextArea);
+
+        JScrollPane jScrollPane = new JScrollPane(jTextPane);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
@@ -77,7 +74,7 @@ public class ChatJFrame extends JFrame {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!login.equals(loginJList.getSelectedValue())) {
-                    toLogin = "to [" + (String) loginJList.getSelectedValue() + "]";
+                    toLogin = "to <b>[" + (String) loginJList.getSelectedValue() + "]</b>";
                 }
             }
         });
@@ -136,15 +133,22 @@ public class ChatJFrame extends JFrame {
                         //секунды
                         .append((calendar.get(Calendar.SECOND) < 10 ? 0 + "" + calendar.get(Calendar.SECOND) : calendar.get(Calendar.SECOND)));
 
-                StringBuilder sbInput = new StringBuilder("[" + currentDate.toString() + "] " + login + " "
-                        + (!toLogin.equals("") ? toLogin + " " : "") + ": " + inputTextField.getText() + '\n');
-                jTextArea.append(sbInput.toString());
-                writeInFile(sbInput.toString());
+                StringBuilder sbInput = new StringBuilder("[" + currentDate.toString() + "] <b>" + login + "</b> "
+                        + (!toLogin.equals("") ? toLogin + " " : "") + ": " + inputTextField.getText() + "<br>");
+                addMessageToJTextPane(sbInput.toString());
+                writeInFile(sbInput.toString()+'\n');
                 inputTextField.setText("");
                 toLogin = "";
 
             }
         };
+    }
+
+    private void addMessageToJTextPane(String s) {
+        String temp = jTextPane.getText();
+        int index = temp.lastIndexOf("</body>");
+        temp = temp.substring(0,index)+" "+s+" "+ temp.substring(index);
+        jTextPane.setText(temp);
     }
 
     //Дописываем в файл то, что отправили в чат
@@ -192,7 +196,7 @@ public class ChatJFrame extends JFrame {
         //очистить чат
         JMenuItem clearChat = new JMenuItem("Очистить окно чата");
         clearChat.setFont(menuFont);
-        clearChat.addActionListener(e -> jTextArea.setText(""));
+        clearChat.addActionListener(e -> jTextPane.setText("<html><head></head><body></body></html"));
         menu.add(clearChat);
 
         menu.addSeparator();
