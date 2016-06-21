@@ -28,6 +28,8 @@ public class Main {
 
     private static void secondMethod(float[] arr) {
         //режем массив на 2 равные части
+        //засекаем время
+        long a = System.currentTimeMillis();
         float[] arr1 = new float[SIZE / 2];
         float[] arr2 = new float[SIZE / 2];
         System.arraycopy(arr, 0, arr1, 0, SIZE / 2);
@@ -42,8 +44,6 @@ public class Main {
         Thread secondThread = new Thread(sTh2);
         firstThread.setPriority(Thread.NORM_PRIORITY);
         secondThread.setPriority(Thread.NORM_PRIORITY);
-        //засекаем время
-        long a = System.currentTimeMillis();
         firstThread.start();
         secondThread.start();
         //ждём когда выполнятся оба потока
