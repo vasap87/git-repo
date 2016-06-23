@@ -36,11 +36,7 @@ public class JField extends JFrame {
         dealerCards = new JPanel();
         dealerCards.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         dealerCards.setPreferredSize(PANELS);
-        dealer = new ArrayList<Card>();
-        dealer.add(FabricaCard.getInstance().getRandomCard());
-        printCards(dealer, dealerCards);
 
-        addDealerCards();
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 2;
@@ -49,10 +45,7 @@ public class JField extends JFrame {
         //кнопки игрока
         JButton moreButton = new JButton("Ещё!");
         moreButton.setPreferredSize(BUTTONS);
-        moreButton.addActionListener(e -> {
-            player.add(FabricaCard.getInstance().getRandomCard());
-            printCards(player, playerCards);
-        });
+        moreButton.addActionListener(e -> addPlayerCards());
         c.gridy = 2;
         c.gridx = 0;
         c.gridwidth = 1;
@@ -61,6 +54,7 @@ public class JField extends JFrame {
 
         JButton pasButton = new JButton("Хватит!");
         pasButton.setPreferredSize(BUTTONS);
+        pasButton.addActionListener(e -> addDealerCards());
         c.gridy = 2;
         c.gridx = 1;
         c.gridwidth = 1;
@@ -71,11 +65,14 @@ public class JField extends JFrame {
         playerCards = new JPanel();
         playerCards.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         playerCards.setPreferredSize(PANELS);
-        player = new ArrayList<Card>();
-        player.add(FabricaCard.getInstance().getRandomCard());
-        player.add(FabricaCard.getInstance().getRandomCard());
-        printCards(player, dealerCards);
-        getSum(player);
+
+        setup();
+
+        if (getSum(player) == 21) {
+            JOptionPane.showInternalConfirmDialog(getContentPane(), "Black Jack", "Победа Игрока!", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            scorePlayer++;
+            setup();
+        }
 
         c.gridy = 3;
         c.gridx = 0;
@@ -84,7 +81,7 @@ public class JField extends JFrame {
         add(playerCards, c);
 
 
-        JLabel playerLabel = new JLabel("Игрок");
+        JLabel playerLabel = new JLabel("Сумма игрока");
         c.gridx = 0;
         c.gridy = 4;
         c.gridwidth = 2;
@@ -96,16 +93,42 @@ public class JField extends JFrame {
 
     }
 
-    private void getSum(ArrayList<Card> arrayList) {
+    private void addPlayerCards() {
+        player.add(FabricaCard.getInstance().getRandomCard());
+        printCards(player, playerCards);
+        if (getSum(player) == 21) {
+            JOptionPane.showInternalConfirmDialog(getContentPane(), "Black Jack", "Победа Игрока!", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            scorePlayer++;
+            setup();
+        } else if (getSum(player) > 21) {
+            JOptionPane.showInternalConfirmDialog(getContentPane(), "Не повезло", "Проигрыш!", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            scoreDealer++;
+            setup();
+        }
+    }
+
+    private void setup() {
+        dealer = new ArrayList<Card>();
+        dealer.add(FabricaCard.getInstance().getRandomCard());
+        printCards(dealer, dealerCards);
+
+        player = new ArrayList<Card>();
+        player.add(FabricaCard.getInstance().getRandomCard());
+        player.add(FabricaCard.getInstance().getRandomCard());
+        printCards(player, dealerCards);
+    }
+
+    private int getSum(ArrayList<Card> arrayList) {
         int sum = 0;
         for (Card card : arrayList) {
-            sum += card.getRank();
+            if (sum > 10 && card.getRank() == 11) {
+                sum += card.getRank() - 10;
+            } else {
+                sum += card.getRank();
+            }
         }
-        if(sum == 21){
-            JOptionPane.showInternalMessageDialog(getContentPane(),"Невероятное везение!\nBlackJack при раздаче!!","Победа",JOptionPane.INFORMATION_MESSAGE);
-        }else if(sum>21){
-            JOptionPane.showInternalMessageDialog(getContentPane(),"Проигрыш!\nпопробуй ещё раз","Проигрыш",JOptionPane.INFORMATION_MESSAGE);
-        }
+        return sum;
+
     }
 
     private void printCards(ArrayList<Card> player, JPanel panelCards) {
@@ -119,6 +142,18 @@ public class JField extends JFrame {
 
     private void addDealerCards() {
         //добавление карт диллеру
-
+        while (true) {
+            dealer.add(FabricaCard.getInstance().getRandomCard());
+            printCards(dealer, dealerCards);
+            if (getSum(dealer) == 21) {
+                JOptionPane.showInternalConfirmDialog(getContentPane(), "Black Jack", "Победа диллера!", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                scoreDealer++;
+                setup();
+            } else if (getSum(dealer) > 21) {
+                JOptionPane.showInternalConfirmDialog(getContentPane(), "Не повезло", "Проигрыш!", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                scorePlayer++;
+                setup();
+            }
+        }
     }
 }
