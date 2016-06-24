@@ -22,7 +22,7 @@ public class WaitMassageThread implements Runnable {
     public void run() {
         try {
             while (true) {
-                if (in.hasNextLine()) {
+                if (in!=null&&in.hasNextLine()) {
                     String s = in.nextLine();
                     Date date = new Date();
                     SimpleDateFormat currentDate = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
@@ -33,6 +33,7 @@ public class WaitMassageThread implements Runnable {
                 }
             }
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             System.out.println("Проблема чтения строки из входного потока на клиенте.");
         }
     }
