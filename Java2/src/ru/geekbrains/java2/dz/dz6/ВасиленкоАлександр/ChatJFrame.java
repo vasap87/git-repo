@@ -11,8 +11,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.Socket;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -58,7 +58,7 @@ public class ChatJFrame extends JFrame {
             socket = new Socket(HOST, PORT);
             out = new PrintWriter(socket.getOutputStream(),true);
             in = new Scanner(socket.getInputStream());
-            Thread tr = new Thread(new GetMassageFromServer(this, login, in));
+            Thread tr = new Thread(new WaitMassageThread(this, login, in));
             tr.start();
         } catch (IOException e) {
             System.out.println("Проблема соединения с созданием сокета к серверу");
@@ -156,26 +156,12 @@ public class ChatJFrame extends JFrame {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GregorianCalendar calendar = new GregorianCalendar();
-                StringBuilder currentDate = new StringBuilder();
-                currentDate
-                        //день месяца
-                        .append((calendar.get(Calendar.DAY_OF_MONTH) < 10 ? 0 + "" + calendar.get(Calendar.DAY_OF_MONTH) : calendar.get(Calendar.DAY_OF_MONTH)) + ".")
-                        //месяц
-                        .append((calendar.get(Calendar.MONTH) < 9 ? 0 + "" + (calendar.get(Calendar.MONTH) + 1) : (calendar.get(Calendar.MONTH) + 1)) + ".")
-                        //год
-                        .append(calendar.get(Calendar.YEAR) + " ")
-                        //час
-                        .append((calendar.get(Calendar.HOUR_OF_DAY) < 10 ? 0 + "" + calendar.get(Calendar.HOUR_OF_DAY) : calendar.get(Calendar.HOUR_OF_DAY)) + ":")
-                        //минуты
-                        .append((calendar.get(Calendar.MINUTE) < 10 ? 0 + "" + calendar.get(Calendar.MINUTE) : calendar.get(Calendar.MINUTE)) + ":")
-                        //секунды
-                        .append((calendar.get(Calendar.SECOND) < 10 ? 0 + "" + calendar.get(Calendar.SECOND) : calendar.get(Calendar.SECOND)));
-
-                StringBuilder sbInput = new StringBuilder("[" + currentDate.toString() + "] <b>" + login + "</b> "
+                Date date = new Date();
+                SimpleDateFormat currentDate = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+                StringBuilder sbInput = new StringBuilder("[" + currentDate.format(date) + "] <b>" + login + "</b> "
                         + (!toLogin.equals("") ? toLogin + " " : "") + ": " + inputTextField.getText() + "<br>");
                 addMessageToJTextPane(sbInput.toString());
-                writeInFile(sbInput.toString() + '\n');
+                writeInFile(sbInput.toString());
                 out.println(inputTextField.getText());
                 inputTextField.setText("");
                 toLogin = "";
@@ -192,7 +178,7 @@ public class ChatJFrame extends JFrame {
     }
 
     //Дописываем в файл то, что отправили в чат
-    private void writeInFile(String addText) {
+    protected void writeInFile(String addText) {
         File historyFile;
         FileWriter fileWriter = null;
         try {
@@ -201,7 +187,7 @@ public class ChatJFrame extends JFrame {
             historyFile.createNewFile();
             //пишем в конец файла
             fileWriter = new FileWriter(historyFile, true);
-            fileWriter.write(addText);
+            fileWriter.write(addText+'\n');
         } catch (FileNotFoundException e) {
             System.out.println("Файл не найден " + e.getMessage());
         } catch (IOException e) {
