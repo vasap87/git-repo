@@ -1,8 +1,7 @@
-package ru.geekbrains.java2.dz.dz6.ВасиленкоАлександр;
+package ru.geekbrains.java2.dz.dz6.ВасиленкоАлександр.Server;
 
 import java.io.*;
 import java.net.ServerSocket;
-import java.net.Socket;
 
 /**
  * Created by vasilenko.aleksandr on 24.06.2016.

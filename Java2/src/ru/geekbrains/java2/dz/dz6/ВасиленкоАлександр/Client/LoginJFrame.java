@@ -1,4 +1,4 @@
-package ru.geekbrains.java2.dz.dz6.ВасиленкоАлександр;
+package ru.geekbrains.java2.dz.dz6.ВасиленкоАлександр.Client;
 
 import javax.swing.*;
 import java.awt.*;

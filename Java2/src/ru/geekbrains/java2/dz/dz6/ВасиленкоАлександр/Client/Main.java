@@ -1,4 +1,4 @@
-package ru.geekbrains.java2.dz.dz6.ВасиленкоАлександр;
+package ru.geekbrains.java2.dz.dz6.ВасиленкоАлександр.Client;
 
 /**
  * Created by vasilenko.aleksandr on 20.06.2016.
