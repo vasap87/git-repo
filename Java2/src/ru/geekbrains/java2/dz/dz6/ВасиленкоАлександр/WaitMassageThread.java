@@ -22,7 +22,7 @@ public class WaitMassageThread implements Runnable {
     public void run() {
         try {
             while (true) {
-                if (in!=null&&in.hasNextLine()) {
+                if (in.hasNextLine()) {
                     String s = in.nextLine();
                     Date date = new Date();
                     SimpleDateFormat currentDate = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
