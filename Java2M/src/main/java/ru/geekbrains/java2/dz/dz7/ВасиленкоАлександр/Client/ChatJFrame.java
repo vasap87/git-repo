@@ -40,8 +40,7 @@ public class ChatJFrame extends JFrame {
     private PrintWriter out;
 
 
-    public ChatJFrame(String login) {
-        this.login = login;
+    public ChatJFrame(Socket socket) {
         loginList.addElement(login);
         setTitle("Сетевой чат, начало");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -214,7 +213,7 @@ public class ChatJFrame extends JFrame {
         JMenuItem reTry = new JMenuItem("Выбор логина");
         reTry.setFont(menuFont);
         reTry.addActionListener(e -> {
-            new LoginJFrame();
+           // new LoginJFrame();
             this.dispose();
         });
         menu.add(reTry);
