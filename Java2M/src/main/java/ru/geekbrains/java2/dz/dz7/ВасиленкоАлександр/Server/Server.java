@@ -28,7 +28,9 @@ public class Server {
                 /*после подключения создаём объет для получения сообщения
                 от пользователя и трансляции его всем пользователям чата*/
                 ServerThread serverThread = new ServerThread(socket,this);
+                System.out.println("подключисля клиент");
                 clients.add(serverThread);
+                System.out.println("запускаем поток");
                 Thread thread = new Thread(serverThread);
                 //запускаем поток
                 thread.start();

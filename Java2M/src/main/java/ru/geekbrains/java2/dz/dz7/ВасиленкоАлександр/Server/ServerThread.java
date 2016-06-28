@@ -46,20 +46,25 @@ public class ServerThread implements Runnable {
      */
     @Override
     public void run() {
+        System.out.println("запустился поток");
         try {
             while (true) {
                 String fromUser = in.readUTF();
+                System.out.println(fromUser);
                 //если имя пустое, то мы авторизуемся
                 if (name.isEmpty()) {
+                    System.out.println("имя пустое, авторизация");
                     String[] strings = fromUser.split("\t");
                     String getsName = SQLTools.getInstance().getNickNameByLoginAndPassword(strings[0], strings[1]);
                     //если результат запроса есть
                     if (getsName != null) {
+                        System.out.println("успех авторизации");
                         this.name = getsName;
                         sendMsg("authorisation");
                     }
                     //если нет такой комбинации
                     else {
+                        System.out.println("ошибка авторизации");
                         sendMsg("Ошибка авторизации");
                         server.removeTread(this);
                         break;
