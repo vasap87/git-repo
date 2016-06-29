@@ -7,7 +7,5 @@ public class Main {
     public static void main(String[] args) {
         SQLTools.getInstance().setConnection();
         Server server = new Server();
-//        SQLTools.getInstance().registerNewUser("sdasd","asd","asd");
-//        System.out.println(SQLTools.getInstance().getNickNameByLoginAndPassword("asd","asd"));
     }
 }

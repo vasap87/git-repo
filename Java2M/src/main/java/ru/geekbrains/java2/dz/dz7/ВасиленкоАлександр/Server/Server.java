@@ -27,10 +27,8 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 /*после подключения создаём объет для получения сообщения
                 от пользователя и трансляции его всем пользователям чата*/
-                ServerThread serverThread = new ServerThread(socket,this);
-                System.out.println("подключисля клиент");
+                ServerThread serverThread = new ServerThread(socket, this);
                 clients.add(serverThread);
-                System.out.println("запускаем поток");
                 Thread thread = new Thread(serverThread);
                 //запускаем поток
                 thread.start();
@@ -42,16 +40,31 @@ public class Server {
     }
 
     /**
-     * метод удаления из коллекции пользоватей*/
-    public void removeTread(ServerThread serverThread){
+     * метод удаления из коллекции пользоватей
+     */
+    public void removeTread(ServerThread serverThread) {
         clients.remove(serverThread);
     }
 
     /**
-     * метод трансляции сообщения всем пользователям*/
-    public void sendMSGToAllClients(String msg){
-        for(ServerThread serverThread: clients){
+     * метод трансляции сообщения всем пользователям
+     */
+    public void sendMSGToAllClients(String msg) {
+        for (ServerThread serverThread : clients) {
             serverThread.sendMsg(msg);
+        }
+    }
+
+    /**
+     * Метод трансляции списка пользователй всем пользователям
+     */
+    public void sendUsersToALLClients() {
+        StringBuilder users = new StringBuilder();
+        for (ServerThread serverThread : clients) {
+            users.append("\t" + serverThread.getName());
+        }
+        for (ServerThread serverThread : clients) {
+            serverThread.sendUserList(users.toString());
         }
     }
 }

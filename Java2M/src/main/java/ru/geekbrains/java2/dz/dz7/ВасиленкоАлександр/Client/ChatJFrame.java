@@ -29,35 +29,29 @@ public class ChatJFrame extends JFrame {
     private JTextPane jTextPane;
     private JTextField inputTextField;
     private JButton sendButton;
+    private JList loginJList;
     private static DefaultListModel loginList = new DefaultListModel<String>();
-    private String toLogin = "";
-    private String login;
     //для работы по сети
-    private static final String HOST = "localhost";
-    private static final int PORT = 8188;
     private Socket socket;
-    private Scanner in;
-    private PrintWriter out;
+    private DataOutputStream out;
 
 
     public ChatJFrame(Socket socket) {
-        loginList.addElement(login);
         setTitle("Сетевой чат, начало");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBounds(100, 100, 600, 500);
         setResizable(false);
         addMenu();
         addChatWindow();
-        startConnection();
+        startConnection(socket);
         setVisible(true);
     }
 
-    private void startConnection() {
+    private void startConnection(Socket socket) {
         try {
-            socket = new Socket(HOST, PORT);
-            out = new PrintWriter(socket.getOutputStream(),true);
-            in = new Scanner(socket.getInputStream());
-            Thread tr = new Thread(new WaitMassageThread(this, login, in));
+            this.socket = socket;
+            out = new DataOutputStream(this.socket.getOutputStream());
+            Thread tr = new Thread(new WaitMassageThread(this, socket));
             tr.start();
         } catch (IOException e) {
             System.out.println("Проблема соединения с созданием сокета к серверу");
@@ -90,15 +84,7 @@ public class ChatJFrame extends JFrame {
         panel.add(jScrollPane, gbc);
 
         //логины пользователей
-        JList loginJList = new JList(loginList);
-        loginJList.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!login.equals(loginJList.getSelectedValue())) {
-                    toLogin = "to <b>[" + (String) loginJList.getSelectedValue() + "]</b>";
-                }
-            }
-        });
+        loginJList = new JList();
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
@@ -134,12 +120,12 @@ public class ChatJFrame extends JFrame {
 
         addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent e) {
-                super.windowClosing(e);
+            public void windowClosed(WindowEvent e) {
+                super.windowClosed(e);
                 try {
-                    out.println("exit");
+                    out.writeUTF("quit\texit");
+                    out.flush();
                     out.close();
-                    in.close();
                     socket.close();
                 } catch (IOException e1) {
                     System.out.println("Проблема закрытия сокета");
@@ -155,15 +141,15 @@ public class ChatJFrame extends JFrame {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Date date = new Date();
-                SimpleDateFormat currentDate = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-                StringBuilder sbInput = new StringBuilder("[" + currentDate.format(date) + "] <b>" + login + "</b> "
-                        + (!toLogin.equals("") ? toLogin + " " : "") + ": " + inputTextField.getText() + "<br>");
-                addMessageToJTextPane(sbInput.toString());
-                writeInFile(sbInput.toString());
-                out.println(inputTextField.getText());
-                inputTextField.setText("");
-                toLogin = "";
+                try {
+                    out.writeUTF("send\t"+inputTextField.getText());
+                    out.flush();
+                    inputTextField.setText("");
+                    inputTextField.grabFocus();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
 
             }
         };
@@ -202,6 +188,11 @@ public class ChatJFrame extends JFrame {
         }
     }
 
+    protected void addUserToList(String users){
+        String[] activUser = users.split("\t");
+        loginJList.setListData(activUser);
+    }
+
     private void addMenu() {
         JMenuBar menuBar = new JMenuBar();
         Font menuFont = new Font("Veranda", Font.PLAIN, 12);
@@ -210,13 +201,13 @@ public class ChatJFrame extends JFrame {
         menu.setFont(menuFont);
 
         //заного
-        JMenuItem reTry = new JMenuItem("Выбор логина");
-        reTry.setFont(menuFont);
-        reTry.addActionListener(e -> {
-           // new LoginJFrame();
-            this.dispose();
-        });
-        menu.add(reTry);
+//        JMenuItem reTry = new JMenuItem("Выбор логина");
+//        reTry.setFont(menuFont);
+//        reTry.addActionListener(e -> {
+//           // new LoginJFrame();
+//            this.dispose();
+//        });
+//        menu.add(reTry);
 
         //очистить чат
         JMenuItem clearChat = new JMenuItem("Очистить окно чата");
@@ -237,7 +228,7 @@ public class ChatJFrame extends JFrame {
         about.setFont(menuFont);
         JMenuItem aboutItem = new JMenuItem("О программе");
         aboutItem.setFont(menuFont);
-        aboutItem.addActionListener(e -> JOptionPane.showMessageDialog(getContentPane(), "Задание по уроку 4 курса Java2\n\nВыполнил Василенко Александр", "О программе", JOptionPane.INFORMATION_MESSAGE));
+        aboutItem.addActionListener(e -> JOptionPane.showMessageDialog(getContentPane(), "Задание по уроку 7 курса Java2\n\nВыполнил Василенко Александр", "О программе", JOptionPane.INFORMATION_MESSAGE));
         about.add(aboutItem);
 
         menuBar.add(about);

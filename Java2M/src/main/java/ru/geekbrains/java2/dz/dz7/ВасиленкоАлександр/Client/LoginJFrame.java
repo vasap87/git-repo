@@ -34,7 +34,7 @@ public class LoginJFrame extends JFrame {
         setTitle("Вход в чат");
 
         setLayout(layout);
-        setBounds(200, 200, 200, 120);
+        setBounds(200, 200, 200, 150);
         setResizable(false);
 
         JLabel loginLabel = new JLabel("Логин:");
@@ -73,6 +73,15 @@ public class LoginJFrame extends JFrame {
         canselButton.addActionListener(e -> System.exit(3));
         add(canselButton, gbc);
 
+        JButton registrationButton = new JButton("Регистрация");
+        gbc.gridy = 3;
+        gbc.gridx = 0;
+        gbc.gridwidth = 2;
+        registrationButton.addActionListener(e -> {
+            new RegistrationForm(socket);
+            this.dispose();
+        });
+        add(registrationButton, gbc);
 
         setVisible(true);
 
@@ -80,10 +89,11 @@ public class LoginJFrame extends JFrame {
 
     private void authorisation(String login, String password) {
         try {
-            out.writeUTF(login + "\t" + password);
+            out.writeUTF("authorisation\t" + login + "\t" + password);
+            out.flush();
             String s = in.readUTF();
             if (s != null) {
-                if (s.equals("authorisation")) {
+                if (s.equals("good")) {
                     new ChatJFrame(socket);
                     this.dispose();
                 } else {

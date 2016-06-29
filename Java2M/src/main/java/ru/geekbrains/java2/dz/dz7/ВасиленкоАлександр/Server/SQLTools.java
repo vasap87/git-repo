@@ -69,7 +69,7 @@ public class SQLTools {
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Ошибка регистрации пользователя. подробенее: "+ e.getMessage());
+            System.out.println("Ошибка регистрации пользователя. Подробенее: "+ e.getMessage());
         }
     }
 
