@@ -110,8 +110,6 @@ public class ServerThread implements Runnable {
                         }
                     }
                     if (fromUser.trim().contains(EXIT)) break;
-                    server.sendUsersToALLClients();
-                    fromUser = "";
                     Thread.sleep(100);
                 } else {
                     in.close();
