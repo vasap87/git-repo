@@ -51,7 +51,7 @@ public class Server {
      */
     public void sendMSGToAllClients(String msg) {
         for (ServerThread serverThread : clients) {
-            serverThread.sendMsg(msg);
+            serverThread.sendMsg(msg, true, "msg");
         }
     }
 

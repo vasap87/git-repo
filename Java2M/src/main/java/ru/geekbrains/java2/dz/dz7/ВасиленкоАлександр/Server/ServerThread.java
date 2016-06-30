@@ -59,17 +59,15 @@ public class ServerThread implements Runnable {
                         //если запрос на регистрацию
                         case "registration": {
                             //проверяем есть ли в базе с таким логином и паролем
-                            String getNickname = SQLTools.getInstance().getNickNameByLoginAndPassword(messages[2],messages[3]);
+                            String getNickname = SQLTools.getInstance().getNickNameByLoginAndPassword(messages[2], messages[3]);
                             //если нет, то регистрируем
-                            if(getNickname == null){
-                                SQLTools.getInstance().registerNewUser(messages[1],messages[2],messages[3]);
-                                out.writeUTF("good_reg");
-                                out.flush();
+                            if (getNickname == null) {
+                                SQLTools.getInstance().registerNewUser(messages[1], messages[2], messages[3]);
+                                sendMsg("good_reg", false, null);
                             }
                             //если есть
                             else {
-                                out.writeUTF("bad_reg");
-                                out.flush();
+                                sendMsg("bad_reg", false, null);
                             }
                             break;
                         }
@@ -79,14 +77,12 @@ public class ServerThread implements Runnable {
                             //если результат запроса есть
                             if (getNickname != null) {
                                 this.name = getNickname;
-                                out.writeUTF("good");
-                                out.flush();
+                                sendMsg("good", false, null);
                                 server.sendUsersToALLClients();
                             }
                             //если нет такой комбинации
                             else {
-                                out.writeUTF("no good");
-                                out.flush();
+                                sendMsg("no good", false, null);
                             }
                             break;
                         }
@@ -118,10 +114,9 @@ public class ServerThread implements Runnable {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Проблема с входным потоком на стороне потока сервера, причина: "+e.getMessage());
-        }
-        catch (InterruptedException e) {
-            System.out.println("Проблема с остановкой потока, причина: "+e.getMessage());
+            System.out.println("Проблема с входным потоком на стороне потока сервера, причина: " + e.getMessage());
+        } catch (InterruptedException e) {
+            System.out.println("Проблема с остановкой потока, причина: " + e.getMessage());
         }
         //если дошли до сюда, значит клиент отключился
         try {
@@ -142,9 +137,13 @@ public class ServerThread implements Runnable {
     /**
      * метод отправки сообщения в исходящий поток к пользователю
      */
-    public void sendMsg(String msg) {
+    public void sendMsg(String msg, boolean hasKey, String key) {
         try {
-            out.writeUTF("msg\t"+msg);
+            if (hasKey) {
+                out.writeUTF(key + "\t" + msg);
+            } else {
+                out.writeUTF(msg);
+            }
             out.flush();
         } catch (IOException e) {
             System.out.println("Ошибка при отправке сообщения, подробнее: " + e.getMessage());
