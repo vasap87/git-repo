@@ -3,6 +3,7 @@ package ru.geekbrains.java2.dz.dz8.ВасиленкоАлександр.Server;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
@@ -19,6 +20,8 @@ public class SQLTools {
     //переменные для создания подключения к БД
     private static Connection connection;
     private static PreparedStatement preparedStatement;
+    private static final String PATH = "D:\\Study\\GB\\git-repo\\Java2M\\src\\main\\java\\ru\\geekbrains\\java2\\dz\\dz8\\ВасиленкоАлександр\\Server\\sqlprop.properties";
+    //private static final String PATH = "C:\\Documents\\Study\\Git-Hub\\Java2M\\src\\main\\java\\ru\\geekbrains\\java2\\dz\\dz8\\ВасиленкоАлександр\\Server\\sqlprop.properties";
 
     public static SQLTools getInstance(){
         return instance;
@@ -31,7 +34,7 @@ public class SQLTools {
     public void setConnection(){
         Properties dbProp = new Properties();
         try {
-            InputStream is = Files.newInputStream(Paths.get("C:\\Documents\\Study\\Git-Hub\\Java2M\\src\\main\\java\\ru\\geekbrains\\java2\\dz\\dz8\\ВасиленкоАлександр\\Server\\sqlprop.properties"));
+            InputStream is = Files.newInputStream(Paths.get(PATH));
             dbProp.load(is);
             String driver = dbProp.getProperty("jdbc.driver");
             String url = dbProp.getProperty("jdbc.url");
@@ -42,8 +45,10 @@ public class SQLTools {
         }catch (SQLException e){
             System.out.println("Не удалось установить соединение с БД");
         }catch (ClassNotFoundException e){
-            System.out.println("Не удалось найти ");
-        } catch (IOException e) {
+            System.out.println("Не удалось найти библиотеку с драйвером");
+        }catch (InvalidPathException e){
+            System.out.println("Не удалось найти файл настроек");
+        }catch (IOException e) {
             e.printStackTrace();
         }
     }
