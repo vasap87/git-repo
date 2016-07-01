@@ -52,7 +52,7 @@ public class ServerThread implements Runnable {
             while (true) {
                 //читаем что пришло от пользователя
                 //пока сокет активен
-                if (!socket.isClosed()) {
+//                if (!socket.isClosed()) {
                     String fromUser = in.readUTF();
                     String[] messages = fromUser.split("\t");
                     switch (messages[0]) {
@@ -105,36 +105,17 @@ public class ServerThread implements Runnable {
                     }
                     if (fromUser.trim().contains(EXIT)) break;
                     Thread.sleep(100);
-                } else {
-                    server.sendMSGToAllClients(buildMessage("<u>Отключился от чата</u>"));
-                    server.removeTread(this);
-                    server.sendUsersToALLClients();
-                    in.close();
-                    out.close();
-                    socket.close();
-                    break;
-                }
+//                } else {
+//                    in.close();
+//                    out.close();
+//                    socket.close();
+//                    break;
+//                }
             }
         } catch (IOException e) {
             System.out.println("Проблема с входным потоком на стороне потока сервера, причина: " + e.getMessage());
         } catch (InterruptedException e) {
             System.out.println("Проблема с остановкой потока, причина: " + e.getMessage());
-        }
-        //если дошли до сюда, значит клиент отключился
-        try {
-            if (!socket.isClosed()) {
-//                server.sendMSGToAllClients(buildMessage("<u>Отключился от чата</u>"));
-//                server.removeTread(this);
-//                server.sendUsersToALLClients();
-                socket.close();
-            } else {
-//                server.sendMSGToAllClients(buildMessage("<u>Отключился от чата</u>"));
-//                server.removeTread(this);
-//                server.sendUsersToALLClients();
-                socket.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
