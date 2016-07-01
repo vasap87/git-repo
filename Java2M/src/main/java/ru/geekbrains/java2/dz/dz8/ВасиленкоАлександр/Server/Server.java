@@ -18,16 +18,20 @@ public class Server {
     private static final int PORT = 8188;
     //коллекция пользователей
     private List<ServerThread> clients = new ArrayList<ServerThread>();
+    private GraficServer grafficServer;
 
     //единственный констркутор класса
-    public Server() {
+    public Server(GraficServer grafficServer) {
+        this.grafficServer=grafficServer;
+        SQLTools.getInstance().setConnection();
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+            this.grafficServer.addTextToTextArea("Сервер запущен, ждём подключения пользователей");
             while (true) {
                 //ждём подключения пользователя
                 Socket socket = serverSocket.accept();
                 /*после подключения создаём объет для получения сообщения
                 от пользователя и трансляции его всем пользователям чата*/
-                ServerThread serverThread = new ServerThread(socket, this);
+                ServerThread serverThread = new ServerThread(socket, this , grafficServer);
                 clients.add(serverThread);
                 Thread thread = new Thread(serverThread);
                 //запускаем поток
@@ -67,4 +71,7 @@ public class Server {
             serverThread.sendUserList(users.toString());
         }
     }
+
+    /**
+     * Метод логирования операция сервера*/
 }

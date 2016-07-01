@@ -5,7 +5,7 @@ package ru.geekbrains.java2.dz.dz8.ВасиленкоАлександр.Server;
  */
 public class Main {
     public static void main(String[] args) {
-        SQLTools.getInstance().setConnection();
-        Server server = new Server();
+        GraficServer gs = new GraficServer();
+        Server server = new Server(gs);
     }
 }

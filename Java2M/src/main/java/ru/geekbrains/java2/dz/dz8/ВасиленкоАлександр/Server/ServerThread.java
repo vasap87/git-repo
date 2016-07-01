@@ -22,6 +22,7 @@ public class ServerThread implements Runnable {
     //переменные класса
     private Socket socket;
     private Server server;
+    private GraficServer grafficServer;
     private String name = "";
     private DataInputStream in;
     private DataOutputStream out;
@@ -29,10 +30,13 @@ public class ServerThread implements Runnable {
     /**
      * Конструктор класса
      *
-     * @param socket сокет клиента
-     * @param server экземляр сервера, чтобы можно было пользоваться методати класса
+     * @param socket        сокет клиента
+     * @param server        экземляр сервера, чтобы можно было пользоваться методати класса
+     * @param grafficServer для логирования операция на сервере
      */
-    public ServerThread(Socket socket, Server server) {
+    public ServerThread(Socket socket, Server server, GraficServer grafficServer) {
+
+        this.grafficServer = grafficServer;
         try {
             this.socket = socket;
             this.server = server;
@@ -49,68 +53,75 @@ public class ServerThread implements Runnable {
     @Override
     public void run() {
         try {
+            loggingOper("попытка соединения");
             while (true) {
                 //читаем что пришло от пользователя
-                //пока сокет активен
-//                if (!socket.isClosed()) {
-                    String fromUser = in.readUTF();
-                    String[] messages = fromUser.split("\t");
-                    switch (messages[0]) {
-                        //если запрос на регистрацию
-                        case "registration": {
-                            //проверяем есть ли в базе с таким логином и паролем
-                            String getNickname = SQLTools.getInstance().getNickNameByLoginAndPassword(messages[2], messages[3]);
-                            //если нет, то регистрируем
-                            if (getNickname == null) {
-                                SQLTools.getInstance().registerNewUser(messages[1], messages[2], messages[3]);
-                                sendMsg("good_reg", false, null);
-                            }
-                            //если есть
-                            else {
-                                sendMsg("bad_reg", false, null);
-                            }
-                            break;
+                String fromUser = in.readUTF();
+                String[] messages = fromUser.split("\t");
+                switch (messages[0]) {
+                    //если запрос на регистрацию
+                    case "registration": {
+                        //Логируем операцию
+                        loggingOper("Пришёл запрос на регистацию");
+                        //проверяем есть ли в базе с таким логином и паролем
+                        String getNickname = SQLTools.getInstance().getNickNameByLoginAndPassword(messages[2], messages[3]);
+                        //если нет, то регистрируем
+                        if (getNickname == null) {
+                            SQLTools.getInstance().registerNewUser(messages[1], messages[2], messages[3]);
+                            //Логируем операцию
+                            loggingOper("Успешная регистрация никнейма " + messages[1]);
+                            sendMsg("good_reg", false, null);
                         }
-                        //если запрос на авторизацию
-                        case "authorisation": {
-                            String getNickname = SQLTools.getInstance().getNickNameByLoginAndPassword(messages[1], messages[2]);
-                            //если результат запроса есть
-                            if (getNickname != null) {
-                                this.name = getNickname;
-                                sendMsg("good", false, null);
-                                server.sendUsersToALLClients();
-                                server.sendMSGToAllClients(buildMessage("<u>Присоеденился к чату</u>"));
-                            }
-                            //если нет такой комбинации
-                            else {
-                                sendMsg("no good", false, null);
-                            }
-                            break;
+                        //если есть
+                        else {
+                            //Логируем операцию
+                            loggingOper("не удалось зарегистрировать никнейм " + messages[1]);
+                            sendMsg("bad_reg", false, null);
                         }
-                        //если пришло сообщение
-                        case "send": {
-                            //если кользователь прислал запрос на выход
-                            if (messages[1].trim().equalsIgnoreCase(EXIT)) break;
-                            server.sendMSGToAllClients(buildMessage(messages[1]));
-                            break;
-                        }
-                        //если пользоваетль отключисля
-                        case "quit": {
-                            server.sendMSGToAllClients(buildMessage("<u>Отключился от чата</u>"));
-                            server.removeTread(this);
-                            server.sendUsersToALLClients();
-                            socket.close();
-                            break;
-                        }
+                        break;
                     }
-                    if (fromUser.trim().contains(EXIT)) break;
-                    Thread.sleep(100);
-//                } else {
-//                    in.close();
-//                    out.close();
-//                    socket.close();
-//                    break;
-//                }
+                    //если запрос на авторизацию
+                    case "authorisation": {
+                        //Логируем операцию
+                        loggingOper("Пришёл запрос на авторизацию");
+                        String getNickname = SQLTools.getInstance().getNickNameByLoginAndPassword(messages[1], messages[2]);
+                        //если результат запроса есть
+                        if (getNickname != null) {
+                            this.name = getNickname;
+                            //Логируем операцию
+                            loggingOper("Успешная авторизация никнейма " + name);
+                            sendMsg("good", false, null);
+                            server.sendUsersToALLClients();
+                            server.sendMSGToAllClients(buildMessage("<u>Присоеденился к чату</u>"));
+                        }
+                        //если нет такой комбинации
+                        else {
+                            //Логируем операцию
+                            loggingOper("Не успешная авторизация никнейма " + name);
+                            sendMsg("no good", false, null);
+                        }
+                        break;
+                    }
+                    //если пришло сообщение
+                    case "send": {
+                        //если кользователь прислал запрос на выход
+                        if (messages[1].trim().equalsIgnoreCase(EXIT)) break;
+                        server.sendMSGToAllClients(buildMessage(messages[1]));
+                        break;
+                    }
+                    //если пользоваетль отключисля
+                    case "quit": {
+                        //Логируем операцию
+                        loggingOper("Пользователь " + name + " отключился от чата");
+                        server.sendMSGToAllClients(buildMessage("<u>Отключился от чата</u>"));
+                        server.removeTread(this);
+                        server.sendUsersToALLClients();
+                        socket.close();
+                        break;
+                    }
+                }
+                if (fromUser.trim().contains(EXIT)) break;
+                Thread.sleep(100);
             }
         } catch (IOException e) {
             System.out.println("Проблема с входным потоком на стороне потока сервера, причина: " + e.getMessage());
@@ -120,11 +131,12 @@ public class ServerThread implements Runnable {
     }
 
     /**
-     * Метод сборки сообщения*/
-    public String buildMessage(String message){
+     * Метод сборки сообщения
+     */
+    public String buildMessage(String message) {
         Date date = new Date();
         SimpleDateFormat currentDate = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-        StringBuilder sbInput = new StringBuilder("[" + currentDate.format(date) + "] <b>" + name + "</b> : "
+        StringBuilder sbInput = new StringBuilder("[" + currentDate.format(date) + "] <b>" + name + ":</b> "
                 + message + "<br>");
         return sbInput.toString();
     }
@@ -159,5 +171,9 @@ public class ServerThread implements Runnable {
 
     public String getName() {
         return name;
+    }
+
+    private void loggingOper(String s) {
+        grafficServer.addTextToTextArea(s + " от: " + socket.toString());
     }
 }
