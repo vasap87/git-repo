@@ -95,9 +95,9 @@ public class ServerThread implements Runnable {
                             break;
                         }
                         //если пользоваетль отключисля
-                        case "exit": {
-                            server.removeTread(this);
+                        case "quit": {
                             server.sendMSGToAllClients(buildMessage("<u>Отключился от чата</u>"));
+                            server.removeTread(this);
                             server.sendUsersToALLClients();
                             socket.close();
                             break;
@@ -106,12 +106,12 @@ public class ServerThread implements Runnable {
                     if (fromUser.trim().contains(EXIT)) break;
                     Thread.sleep(100);
                 } else {
-//                    server.sendMSGToAllClients(buildMessage("<u>Отключился от чата</u>"));
-//                    server.removeTread(this);
-//                    server.sendUsersToALLClients();
-//                    in.close();
-//                    out.close();
-//                    socket.close();
+                    server.sendMSGToAllClients(buildMessage("<u>Отключился от чата</u>"));
+                    server.removeTread(this);
+                    server.sendUsersToALLClients();
+                    in.close();
+                    out.close();
+                    socket.close();
                     break;
                 }
             }
@@ -161,7 +161,6 @@ public class ServerThread implements Runnable {
             out.flush();
         } catch (IOException e) {
             System.out.println("Ошибка при отправке сообщения, подробнее: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 

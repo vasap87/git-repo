@@ -115,8 +115,8 @@ public class ChatJFrame extends JFrame {
 
         addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosed(WindowEvent e) {
-                super.windowClosed(e);
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
                 try {
                     out.writeUTF("quit\texit");
                     out.flush();
@@ -126,7 +126,6 @@ public class ChatJFrame extends JFrame {
                     System.out.println("Проблема закрытия сокета");
                     System.exit(-1);
                 }
-
             }
         });
 
