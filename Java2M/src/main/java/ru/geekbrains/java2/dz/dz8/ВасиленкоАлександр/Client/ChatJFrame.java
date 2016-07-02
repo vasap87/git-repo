@@ -25,7 +25,7 @@ public class ChatJFrame extends JFrame {
     private JTextField inputTextField;
     private JButton sendButton;
     private JList loginJList;
-    private static DefaultListModel loginList = new DefaultListModel<String>();
+    private String toNickname = " ";
     //для работы по сети
     private Socket socket;
     private DataOutputStream out;
@@ -87,6 +87,9 @@ public class ChatJFrame extends JFrame {
         gbc.ipady = 0;
         gbc.ipadx = 0;
         loginJList.setBorder(new TitledBorder("Собеседники"));
+        loginJList.addListSelectionListener(e -> {
+            toNickname = (String) loginJList.getSelectedValue();
+        });
         panel.add(loginJList, gbc);
 
 
@@ -136,9 +139,10 @@ public class ChatJFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    out.writeUTF("send\t"+inputTextField.getText());
+                    out.writeUTF("send\t"+inputTextField.getText() + "\t" + toNickname);
                     out.flush();
                     inputTextField.setText("");
+                    toNickname = " ";
                     inputTextField.grabFocus();
                 } catch (IOException e1) {
                     e1.printStackTrace();

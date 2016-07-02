@@ -53,9 +53,15 @@ public class Server {
     /**
      * метод трансляции сообщения всем пользователям
      */
-    public void sendMSGToAllClients(String msg) {
-        for (ServerThread serverThread : clients) {
-            serverThread.sendMsg(msg, true, "msg");
+    public void sendMSGToAllClients(String msg, boolean isPrivate, String toNickname) {
+        if(!isPrivate) {
+            for (ServerThread serverThread : clients) {
+                serverThread.sendMsg(msg, true, "msg");
+            }
+        }else{
+            for (ServerThread serverThread : clients) {
+                if(serverThread.getName().equals(toNickname)) serverThread.sendMsg(msg, true, "msg");
+            }
         }
     }
 
