@@ -14,7 +14,7 @@ import java.net.Socket;
  * Created by vasilenko.aleksandr on 17.06.2016.
  * Графическое предтавление чата.
  * Вызывается из окна ввода логина и пароля
- *
+ * <p>
  * Modify to using sockets at 24.06.2016 by vasilenko.aleksandr
  */
 
@@ -25,7 +25,7 @@ public class ChatJFrame extends JFrame {
     private JTextField inputTextField;
     private JButton sendButton;
     private JList loginJList;
-    private String toNickname = " ";
+    private String toNickname = "null";
     //для работы по сети
     private Socket socket;
     private DataOutputStream out;
@@ -139,10 +139,11 @@ public class ChatJFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    out.writeUTF("send\t"+inputTextField.getText() + "\t" + toNickname);
+                    out.writeUTF("send\t" + inputTextField.getText() + "\t" + toNickname);
                     out.flush();
                     inputTextField.setText("");
-                    toNickname = " ";
+                    toNickname = "null";
+                    loginJList.clearSelection();
                     inputTextField.grabFocus();
                 } catch (IOException e1) {
                     e1.printStackTrace();
@@ -170,7 +171,7 @@ public class ChatJFrame extends JFrame {
             historyFile.createNewFile();
             //пишем в конец файла
             fileWriter = new FileWriter(historyFile, true);
-            fileWriter.write(addText+'\n');
+            fileWriter.write(addText + '\n');
         } catch (FileNotFoundException e) {
             System.out.println("Файл не найден " + e.getMessage());
         } catch (IOException e) {
@@ -186,7 +187,7 @@ public class ChatJFrame extends JFrame {
         }
     }
 
-    protected void addUserToList(String users){
+    protected void addUserToList(String users) {
         String[] activUser = users.split("\t");
         loginJList.setListData(activUser);
     }

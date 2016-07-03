@@ -22,7 +22,7 @@ public class Server {
 
     //единственный констркутор класса
     public Server(GraficServer grafficServer) {
-        this.grafficServer=grafficServer;
+        this.grafficServer = grafficServer;
         SQLTools.getInstance().setConnection();
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             this.grafficServer.addTextToTextArea("Сервер запущен, ждём подключения пользователей");
@@ -31,7 +31,7 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 /*после подключения создаём объет для получения сообщения
                 от пользователя и трансляции его всем пользователям чата*/
-                ServerThread serverThread = new ServerThread(socket, this , grafficServer);
+                ServerThread serverThread = new ServerThread(socket, this, grafficServer);
                 clients.add(serverThread);
                 Thread thread = new Thread(serverThread);
                 //запускаем поток
@@ -53,14 +53,15 @@ public class Server {
     /**
      * метод трансляции сообщения всем пользователям
      */
-    public void sendMSGToAllClients(String msg, boolean isPrivate, String toNickname) {
-        if(!isPrivate) {
+    public void sendMSGToAllClients(String msg, boolean isPrivate, String toNickname, String fromNickname) {
+        if (!isPrivate) {
             for (ServerThread serverThread : clients) {
                 serverThread.sendMsg(msg, true, "msg");
             }
-        }else{
+        } else {
             for (ServerThread serverThread : clients) {
-                if(serverThread.getName().equals(toNickname)) serverThread.sendMsg(msg, true, "msg");
+                if (serverThread.getName().equals(toNickname) || serverThread.getName().equals(fromNickname))
+                    serverThread.sendMsg(msg, true, "msg");
             }
         }
     }

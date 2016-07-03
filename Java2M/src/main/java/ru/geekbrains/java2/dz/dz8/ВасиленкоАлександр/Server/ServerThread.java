@@ -92,7 +92,7 @@ public class ServerThread implements Runnable {
                             loggingOper("Успешная авторизация никнейма " + name);
                             sendMsg("good", false, null);
                             server.sendUsersToALLClients();
-                            server.sendMSGToAllClients(buildMessage("<u>Присоеденился к чату</u>", false,null), false, null);
+                            server.sendMSGToAllClients(buildMessage("<u>Присоеденился к чату</u>", false, null), false, null, null);
                         }
                         //если нет такой комбинации
                         else {
@@ -106,10 +106,10 @@ public class ServerThread implements Runnable {
                     case "send": {
                         //если кользователь прислал запрос на выход
                         if (messages[1].trim().equalsIgnoreCase(EXIT)) break;
-                        if(messages[2].equals(" ")){
-                            server.sendMSGToAllClients(buildMessage(messages[1], false, null), false, null);
-                        }else {
-                            server.sendMSGToAllClients(buildMessage(messages[1], true, messages[2]), true, messages[2]);
+                        if (messages[2].equals("null")) {
+                            server.sendMSGToAllClients(buildMessage(messages[1], false, null), false, null, null);
+                        } else {
+                            server.sendMSGToAllClients(buildMessage(messages[1], true, messages[2]), true, messages[2], name);
                         }
                         break;
                     }
@@ -117,7 +117,7 @@ public class ServerThread implements Runnable {
                     case "quit": {
                         //Логируем операцию
                         loggingOper("Пользователь " + name + " отключился от чата");
-                        server.sendMSGToAllClients(buildMessage("<u>Отключился от чата</u>", false, null), false, null);
+                        server.sendMSGToAllClients(buildMessage("<u>Отключился от чата</u>", false, null), false, null, null);
                         server.removeTread(this);
                         server.sendUsersToALLClients();
                         socket.close();
@@ -141,7 +141,7 @@ public class ServerThread implements Runnable {
         Date date = new Date();
         SimpleDateFormat currentDate = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         StringBuilder sbInput = new StringBuilder("[" + currentDate.format(date) + "] <b>" + name + ":</b> " +
-                (privateMSG?"to "+ "<b>" + toLogin + ":</b> " : "") + message + "<br>");
+                (privateMSG ? "to " + "<b>" + toLogin + ":</b> " : "") + message + "<br>");
         return sbInput.toString();
     }
 
