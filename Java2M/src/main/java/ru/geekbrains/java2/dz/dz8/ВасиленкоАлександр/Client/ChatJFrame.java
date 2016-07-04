@@ -24,7 +24,9 @@ public class ChatJFrame extends JFrame {
     private JTextPane jTextPane;
     private JTextField inputTextField;
     private JButton sendButton;
+    private JToggleButton privateButton;
     private JList loginJList;
+    private boolean isPrivate;
     private String toNickname = "null";
     //для работы по сети
     private Socket socket;
@@ -72,7 +74,7 @@ public class ChatJFrame extends JFrame {
         gbc.gridy = 0;
         gbc.gridwidth = 1;
         gbc.gridheight = 8;
-        gbc.ipadx = 475;
+        gbc.ipadx = 435;
         gbc.ipady = 400;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.BOTH;
@@ -82,7 +84,7 @@ public class ChatJFrame extends JFrame {
         loginJList = new JList();
         gbc.gridx = 1;
         gbc.gridy = 0;
-        gbc.gridwidth = 1;
+        gbc.gridwidth = 2;
         gbc.gridheight = 8;
         gbc.ipady = 0;
         gbc.ipadx = 0;
@@ -105,10 +107,33 @@ public class ChatJFrame extends JFrame {
 
         panel.add(inputTextField, gbc);
 
+        privateButton = new JToggleButton("P");
+        privateButton.addActionListener(e -> {
+            try {
+                if (privateButton.isSelected()) {
+                    isPrivate = true;
+                    out.writeUTF("private\t" + isPrivate);
+                    out.flush();
+                } else {
+                    isPrivate = false;
+                    out.writeUTF("private\t" + isPrivate);
+
+                    out.flush();
+                }
+            } catch (IOException e1) {
+                System.out.println("Ошибка при отправке признака приватности чата.");;
+            }
+        });
+        gbc.gridx = 1;
+        gbc.gridy = 8;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        panel.add(privateButton, gbc);
+
         sendButton = new JButton("Отправить");
         sendButton.setEnabled(true);
         sendButton.addActionListener(sendMessageListener());
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.gridy = 8;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
@@ -139,7 +164,7 @@ public class ChatJFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    out.writeUTF("send\t" + inputTextField.getText() + "\t" + toNickname);
+                    out.writeUTF("send\t" + toNickname + "\t" + inputTextField.getText());
                     out.flush();
                     inputTextField.setText("");
                     toNickname = "null";

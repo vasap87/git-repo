@@ -27,7 +27,6 @@ public class GraficServer extends JFrame {
         jTextArea.setEditable(false);
         jTextArea.setLineWrap(true);
         jTextArea.setWrapStyleWord(true);
-        jTextArea.setText("Server" + "\n");
         JScrollPane jScrollPane = new JScrollPane(jTextArea);
         add(jScrollPane);
 

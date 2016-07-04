@@ -56,7 +56,11 @@ public class Server {
     public void sendMSGToAllClients(String msg, boolean isPrivate, String toNickname, String fromNickname) {
         if (!isPrivate) {
             for (ServerThread serverThread : clients) {
-                serverThread.sendMsg(msg, true, "msg");
+                if(!serverThread.isPrivate()) {
+                    serverThread.sendMsg(msg, true, "msg");
+                }else if (serverThread.isPrivate() && serverThread.getName().equals(fromNickname)){
+                    serverThread.sendMsg(msg, true, "msg");
+                }
             }
         } else {
             for (ServerThread serverThread : clients) {

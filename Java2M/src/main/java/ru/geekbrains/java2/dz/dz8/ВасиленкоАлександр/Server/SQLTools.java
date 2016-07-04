@@ -19,8 +19,8 @@ public class SQLTools {
     //переменные для создания подключения к БД
     private static Connection connection;
     private static PreparedStatement preparedStatement;
-    private static final String PATH = "D:\\Study\\GB\\git-repo\\Java2M\\src\\main\\java\\ru\\geekbrains\\java2\\dz\\dz8\\ВасиленкоАлександр\\Server\\sqlprop.properties";
-    //private static final String PATH = "C:\\Documents\\Study\\Git-Hub\\Java2M\\src\\main\\java\\ru\\geekbrains\\java2\\dz\\dz8\\ВасиленкоАлександр\\Server\\sqlprop.properties";
+//    private static final String PATH = "D:\\Study\\GB\\git-repo\\Java2M\\src\\main\\java\\ru\\geekbrains\\java2\\dz\\dz8\\ВасиленкоАлександр\\Server\\sqlprop.properties";
+    private static final String PATH = "C:\\Documents\\Study\\Git-Hub\\Java2M\\src\\main\\java\\ru\\geekbrains\\java2\\dz\\dz8\\ВасиленкоАлександр\\Server\\sqlprop.properties";
 
     public static SQLTools getInstance(){
         return instance;

@@ -24,6 +24,7 @@ public class ServerThread implements Runnable {
     private Server server;
     private GraficServer grafficServer;
     private String name = "";
+    private boolean isPrivate;
     private DataInputStream in;
     private DataOutputStream out;
 
@@ -105,11 +106,11 @@ public class ServerThread implements Runnable {
                     //если пришло сообщение
                     case "send": {
                         //если кользователь прислал запрос на выход
-                        if (messages[1].trim().equalsIgnoreCase(EXIT)) break;
-                        if (messages[2].equals("null")) {
-                            server.sendMSGToAllClients(buildMessage(messages[1], false, null), false, null, null);
+                        if (messages[2].trim().equalsIgnoreCase(EXIT)) break;
+                        if (messages[1].equals("null")) {
+                            server.sendMSGToAllClients(buildMessage(messages[2], false, null), false, null, name);
                         } else {
-                            server.sendMSGToAllClients(buildMessage(messages[1], true, messages[2]), true, messages[2], name);
+                            server.sendMSGToAllClients(buildMessage(messages[2], true, messages[1]), true, messages[1], name);
                         }
                         break;
                     }
@@ -121,6 +122,12 @@ public class ServerThread implements Runnable {
                         server.removeTread(this);
                         server.sendUsersToALLClients();
                         socket.close();
+                        break;
+                    }
+                    //если пользователь отправил настройку, чтобы получать только личные сообщения
+                    case "private": {
+                        isPrivate = Boolean.parseBoolean(messages[1]);
+                        loggingOper("Пользователь " + name + (isPrivate?"включил":"отключил")+" приём только личных сообщений");
                         break;
                     }
                 }
@@ -175,6 +182,10 @@ public class ServerThread implements Runnable {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isPrivate() {
+        return isPrivate;
     }
 
     private void loggingOper(String s) {
