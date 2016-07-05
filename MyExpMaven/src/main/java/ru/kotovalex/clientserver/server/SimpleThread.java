@@ -28,8 +28,6 @@ public class SimpleThread implements Runnable {
     @Override
     public void run() {
         try {
-            out.writeUTF("Connected\t");
-            out.flush();
             //получение XML
             URL url = new URL("http://partners.api.skyscanner.net/apiservices/hotels/autosuggest/v2/UK/EUR/en-GB/pari?apikey=" + apiKey);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -42,16 +40,6 @@ public class SimpleThread implements Runnable {
 
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                out.writeUTF("DisConnected\t");
-                out.flush();
-//           in.close();
-//                out.close();
-//                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 }
