@@ -1,4 +1,4 @@
-package ru.kotovalex.clientserver.server;
+package ru.kotovalex.skyscannerExample.server;
 
 /**
  * Created by vasilenko.aleksandr on 04.07.2016.

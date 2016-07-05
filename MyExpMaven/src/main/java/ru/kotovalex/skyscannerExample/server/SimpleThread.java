@@ -1,4 +1,4 @@
-package ru.kotovalex.clientserver.server;
+package ru.kotovalex.skyscannerExample.server;
 
 import java.io.*;
 import java.net.HttpURLConnection;

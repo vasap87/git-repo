@@ -1,4 +1,4 @@
-package ru.kotovalex.clientserver.client;
+package ru.kotovalex.skyscannerExample.client;
 
 
 import com.google.gson.*;
@@ -48,7 +48,8 @@ public class Main {
                         }
                         //Вывод результата
                         for (Result result : results) {
-                            //if(result.is_bookable())
+                           // if(result.is_bookable())
+                            if(result.getIndividual_id().equals("27544008"))
                             System.out.println(result);
                         }
 
