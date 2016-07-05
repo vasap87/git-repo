@@ -57,6 +57,7 @@ public class LoginJFrame extends JFrame {
 
         JPasswordField password = new JPasswordField();
         password.setHorizontalAlignment(SwingConstants.CENTER);
+        password.addActionListener(e -> authorisation(login.getText(), password.getText()));
         gbc.gridx = 1;
         add(password, gbc);
 
@@ -96,7 +97,9 @@ public class LoginJFrame extends JFrame {
                 if (s.equals("good")) {
                     new ChatJFrame(socket);
                     this.dispose();
-                } else {
+                } else if(s.equals("busy")){
+                    JOptionPane.showMessageDialog(getContentPane(), "В чате уже есть пользователь с таким никнеймом", "Ошибка авторизации", JOptionPane.ERROR_MESSAGE);
+                } else{
                     JOptionPane.showMessageDialog(getContentPane(), "На сервере не найдена указанная комбинация логина и пароля.", "Ошибка авторизации", JOptionPane.ERROR_MESSAGE);
                 }
             }

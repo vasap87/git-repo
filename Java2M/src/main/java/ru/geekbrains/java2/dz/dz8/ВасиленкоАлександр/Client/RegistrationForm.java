@@ -120,6 +120,7 @@ public class RegistrationForm extends JFrame {
             else {
                 loginTextField.setText("");
                 passTextField.setText("");
+                nickTextField.setText("");
                 JOptionPane.showMessageDialog(getContentPane(), "На сервере уже используется такая комбинация логина и пароля.", "Ошибка регистрации", JOptionPane.ERROR_MESSAGE);
             }
         } catch (IOException e) {

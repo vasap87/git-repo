@@ -88,12 +88,17 @@ public class ServerThread implements Runnable {
                         String getNickname = SQLTools.getInstance().getNickNameByLoginAndPassword(messages[1], messages[2]);
                         //если результат запроса есть
                         if (getNickname != null) {
-                            this.name = getNickname;
-                            //Логируем операцию
-                            loggingOper("Успешная авторизация никнейма " + name);
-                            sendMsg("good", false, null);
-                            server.sendUsersToALLClients();
-                            server.sendMSGToAllClients(buildMessage("<u>Присоеденился к чату</u>", false, null), false, null, null);
+                            if(!server.isNicknameBusy(getNickname)) {
+                                this.name = getNickname;
+                                //Логируем операцию
+                                loggingOper("Успешная авторизация никнейма " + name);
+                                sendMsg("good", false, null);
+                                server.sendUsersToALLClients();
+                                server.sendMSGToAllClients(buildMessage("<u>Присоеденился к чату</u>", false, null), false, null, null);
+                            }else {
+                                loggingOper("С никнеймом " + name+ " уже есть пользователь в чате");
+                                sendMsg("busy", false, null);
+                            }
                         }
                         //если нет такой комбинации
                         else {

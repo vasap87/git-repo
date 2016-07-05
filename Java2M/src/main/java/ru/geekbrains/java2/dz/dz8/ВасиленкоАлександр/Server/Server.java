@@ -83,6 +83,13 @@ public class Server {
         }
     }
 
+    public boolean isNicknameBusy(String getNickname) {
+        for (ServerThread serverThread : clients) {
+            if(serverThread.getName().equals(getNickname)) return true;
+        }
+        return false;
+    }
+
     /**
      * Метод логирования операция сервера*/
 }
