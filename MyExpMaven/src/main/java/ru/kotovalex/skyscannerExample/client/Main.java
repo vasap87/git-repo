@@ -48,8 +48,7 @@ public class Main {
                         }
                         //Вывод результата
                         for (Result result : results) {
-                           // if(result.is_bookable())
-                            if(result.getIndividual_id().equals("27544008"))
+                            if(result.is_bookable())
                             System.out.println(result);
                         }
 
