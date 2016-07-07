@@ -4,14 +4,23 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import ru.kotovalex.CareHire.DatePicker.DatePickerPanel;
+import ru.kotovalex.CareHire.tools.CodeNameObject;
+import ru.kotovalex.CareHire.tools.Currency;
+import ru.kotovalex.skyscannerExample.client.Place;
+import ru.kotovalex.skyscannerExample.client.Result;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.*;
-import java.util.Scanner;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by vasilenko.aleksandr on 06.07.2016.
@@ -21,15 +30,24 @@ public class SearchCarGrafic extends JFrame {
     private Dimension defaultSise = new Dimension(160, 50);
     private Dimension halfSize = new Dimension(80, 50);
 
+
     //элементы управления
     private JComboBox ageComboBox;
     private JComboBox currencyComboBox;
     private JComboBox localeComboBox;
     private JComboBox marketComboBox;
-    private String apiKey = "co806067104850515641548345723445";
-//    private String apiKey = "prtl6749387986743898559646983194";
+    private JComboBox pickUpPlace;
+    private JComboBox dropOffPlace;
 
-    ;
+
+    //ссылки загрузки данных
+    private final static String apiKey = "co806067104850515641548345723445";
+    private final static String CURRENCIES_URL = "http://partners.api.skyscanner.net/apiservices/reference/v1.0/currencies?apiKey=" + apiKey;
+    private final static String LOCALES_URL = "http://partners.api.skyscanner.net/apiservices/reference/v1.0/locales?apiKey=" + apiKey;
+    private final static String MARKETS_URL = "http://partners.api.skyscanner.net/apiservices/reference/v1.0/countries/ru-RU?apiKey=" + apiKey;
+    private final static String CREATE_SESSION_URL = "http://partners.api.skyscanner.net/apiservices/carhire/liveprices/v2/";
+    private final static String PLACESAUTO_URL = "http://partners.api.skyscanner.net/apiservices/hotels/autosuggest/v2/";
+
 
     public SearchCarGrafic() {
         setTitle("CarSearch");
@@ -46,7 +64,7 @@ public class SearchCarGrafic extends JFrame {
         searchPanel.setLayout(new GridBagLayout());
 
         //добавление pickupPlase combobox
-        JComboBox pickUpPlace = new JComboBox();
+        pickUpPlace = new JComboBox();
         pickUpPlace.setPreferredSize(defaultSise);
         pickUpPlace.setBorder(new TitledBorder("PickUp Place"));
         c.gridx = 0;
@@ -55,7 +73,7 @@ public class SearchCarGrafic extends JFrame {
         searchPanel.add(pickUpPlace, c);
 
         //добавление dropOffPlace combobox
-        JComboBox dropOffPlace = new JComboBox();
+        dropOffPlace = new JComboBox();
         dropOffPlace.setPreferredSize(defaultSise);
         dropOffPlace.setBorder(new TitledBorder("DropOff Place"));
         c.gridx = 2;
@@ -83,6 +101,7 @@ public class SearchCarGrafic extends JFrame {
 
         //добавление market
         marketComboBox = new JComboBox();
+        setValueMarketComboBox();
         marketComboBox.setBorder(new TitledBorder("Market"));
         marketComboBox.setPreferredSize(halfSize);
         c.gridx = 0;
@@ -92,7 +111,8 @@ public class SearchCarGrafic extends JFrame {
 
         //добавление locale
         localeComboBox = new JComboBox();
-        localeComboBox.setBorder(new TitledBorder("Locale"));
+        localeComboBox.setBorder(new TitledBorder("CodeNameObject"));
+        setValueLocaleComboBox();
         localeComboBox.setPreferredSize(halfSize);
         c.gridx = 1;
         c.gridwidth = 1;
@@ -120,18 +140,21 @@ public class SearchCarGrafic extends JFrame {
         c.gridy = 2;
         searchPanel.add(ageComboBox, c);
 
-
         //вычисляем текущий IP
-        String ipAddress;
-        try {
-            InetAddress address = InetAddress.getLocalHost();
-            ipAddress = address.getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
 
+        //кнопка поиска
+        JButton searchButton = new JButton("Search");
+        searchButton.addActionListener(e -> searchCars());
+        c.gridx = 0;
+        c.gridwidth = 4;
+        c.gridy = 3;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        searchPanel.add(searchButton, c);
 
         add(searchPanel);
+
+        setPickUpAndDropOffPlaces();
+
 
         //добавление панели вывода результатов
         JPanel resultPanel = new JPanel();
@@ -145,25 +168,159 @@ public class SearchCarGrafic extends JFrame {
         setVisible(true);
     }
 
+    private void setPickUpAndDropOffPlaces() {
+        try {
+            String urlString = PLACESAUTO_URL+marketComboBox.getSelectedItem()+"/"+currencyComboBox.getSelectedItem()+"/"+localeComboBox.getSelectedItem()+"/pari"+"?apikey="+apiKey;
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestProperty("accept", "application/json");
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String jsonSting = bufferedReader.readLine();
+            //парсинг
+            Gson gson = new Gson();
+            JsonParser parser = new JsonParser();
+            JsonElement jsonElement = parser.parse(jsonSting);
+            JsonObject rootObject = jsonElement.getAsJsonObject();
+            //получить массив plases
+            String placesString = rootObject.get("places").toString();
+            java.lang.reflect.Type type1 = new TypeToken<List<Place>>() {
+            }.getType();
+            List<Place> plases = gson.fromJson(placesString, type1);
+            //Получить массив результатов
+            String resultString = rootObject.get("results").toString();
+            java.lang.reflect.Type type2 = new TypeToken<List<Result>>() {
+            }.getType();
+            List<Result> results = gson.fromJson(resultString, type2);
+            for (Result result : results) {
+                for (Place place : plases) {
+                    if(result.getParent_place_id() == place.getPlace_id()) result.setPlace(place);
+                }
+            }
+            String placesStr[] = new String[results.size()];
+            for (int i = 0; i < results.size(); i++) {
+                placesStr[i] = results.get(i).getIndividual_id();
+            }
+
+            pickUpPlace.setModel(new DefaultComboBoxModel(placesStr));
+            pickUpPlace.updateUI();
+            dropOffPlace.setModel(new DefaultComboBoxModel(placesStr));
+            dropOffPlace.updateUI();
+
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            e.getMessage();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void searchCars() {
+        String ipAddress = null;
+        try {
+            InetAddress address = InetAddress.getLocalHost();
+            ipAddress = address.getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        String urlStr = CREATE_SESSION_URL + marketComboBox.getSelectedItem() + "/" + currencyComboBox.getSelectedItem() + "/" + localeComboBox.getSelectedItem() + "/" +
+                "{pickupplace}" + "/" + "dropoffplace" + "/" + "pickupdatetime" + "/" + "dropoffdatetime" + "/" + ageComboBox.getSelectedItem() + "?apiKey=" + apiKey + "&userip=" + ipAddress;
+        System.out.println("urlStr = " + urlStr);
+
+    }
+
+    private void setValueMarketComboBox() {
+        try {
+            URL url = new URL(MARKETS_URL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestProperty("accept", "application/json");
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String jsonSting = bufferedReader.readLine();
+            //парсинг
+            Gson gson = new Gson();
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(jsonSting);
+            JsonObject object = element.getAsJsonObject();
+            String markets = object.get("Countries").toString();
+            java.lang.reflect.Type type1 = new TypeToken<List<CodeNameObject>>() {
+            }.getType();
+            List<CodeNameObject> localesList = gson.fromJson(markets, type1);
+            String marketsStr[] = new String[localesList.size()];
+            for (int i = 0; i < localesList.size(); i++) {
+                marketsStr[i] = localesList.get(i).getCode();
+            }
+            Arrays.sort(marketsStr);
+            marketComboBox.setModel(new DefaultComboBoxModel(marketsStr));
+            marketComboBox.setSelectedItem("RU");
+
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            e.getMessage();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setValueLocaleComboBox() {
+        try {
+            URL url = new URL(LOCALES_URL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestProperty("accept", "application/json");
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String jsonSting = bufferedReader.readLine();
+            //парсинг
+            Gson gson = new Gson();
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(jsonSting);
+            JsonObject object = element.getAsJsonObject();
+            String locales = object.get("Locales").toString();
+            java.lang.reflect.Type type1 = new TypeToken<List<CodeNameObject>>() {
+            }.getType();
+            List<CodeNameObject> localesList = gson.fromJson(locales, type1);
+            String localesStr[] = new String[localesList.size()];
+            for (int i = 0; i < localesList.size(); i++) {
+                localesStr[i] = localesList.get(i).getCode();
+            }
+            Arrays.sort(localesStr);
+            localeComboBox.setModel(new DefaultComboBoxModel(localesStr));
+            localeComboBox.setSelectedItem("ru-RU");
+
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            e.getMessage();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setValueCurrencyComboBox() {
         try {
-            URL url = new URL("http://partners.api.skyscanner.net/apiservices/reference/v1.0/countries/en-GB?apiKey=prtl6749387986743898559646983194");
-//            URL url = new URL("http://partners.api.skyscanner.net/apiservices/reference/v1.0/currencies?apiKey="+apiKey);
+            URL url = new URL(CURRENCIES_URL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            //connection.setRequestProperty("application/json", "HTTP/1.1");
-            connection.getResponseMessage();
+            connection.setRequestProperty("accept", "application/json");
 
-            //Scanner sc = new Scanner(connection.getInputStream());
-            String jsonSting = connection.getResponseMessage();
-
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String jsonSting = bufferedReader.readLine();
             //парсинг
-//            Gson gson = new Gson();
-//            JsonParser parser = new JsonParser();
-//            JsonElement element = parser.parse(jsonSting);
-//            JsonObject object = element.getAsJsonObject();
-//            String currencies = object.get("Currencies").toString();
-            System.out.println(jsonSting);
+            Gson gson = new Gson();
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(jsonSting);
+            JsonObject object = element.getAsJsonObject();
+            String currencies = object.get("Currencies").toString();
+            java.lang.reflect.Type type1 = new TypeToken<List<Currency>>() {
+            }.getType();
+            List<Currency> currencyList = gson.fromJson(currencies, type1);
+            String currenciesStr[] = new String[currencyList.size()];
+            for (int i = 0; i < currencyList.size(); i++) {
+                currenciesStr[i] = currencyList.get(i).toString();
+            }
+            currencyComboBox.setModel(new DefaultComboBoxModel(currenciesStr));
+            currencyComboBox.setSelectedItem("RUB");
 
 
         } catch (MalformedURLException e) {
