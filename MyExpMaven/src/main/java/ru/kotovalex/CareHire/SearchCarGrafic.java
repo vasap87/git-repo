@@ -17,7 +17,6 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.*;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -226,12 +225,14 @@ public class SearchCarGrafic extends JFrame {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        Date date = new Date();
-        Date dropoffDate = new Date(System.currentTimeMillis()+864000000);
+        Date pickUpdate = new Date();
+        Date dropOffDate = new Date(System.currentTimeMillis()+864000000);
         SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-        String urlStr = CREATE_SESSION_URL + marketComboBox.getSelectedItem() + "/" + currencyComboBox.getSelectedItem() + "/" + localeComboBox.getSelectedItem() + "/" +
-                pickUpPlace.getSelectedItem() + "/" + dropOffPlace.getSelectedItem() + "/" + currentDate.format(date) + "/" + currentDate.format(dropoffDate) + "/" + ageComboBox.getSelectedItem() + "?apiKey=" + apiKey + "&userip=" + ipAddress;
-        System.out.println("urlStr = " + urlStr);
+        String urlStr = CREATE_SESSION_URL + marketComboBox.getSelectedItem() + "/" + currencyComboBox.getSelectedItem() + "/" +
+                localeComboBox.getSelectedItem() + "/" + pickUpPlace.getSelectedItem() + "/" + dropOffPlace.getSelectedItem() + "/" +
+                currentDate.format(pickUpdate) + "/" + currentDate.format(dropOffDate) + "/" + ageComboBox.getSelectedItem() +
+                "?apiKey=" + apiKey + "&userip=" + ipAddress;
+        System.out.println(urlStr);
 
     }
 
