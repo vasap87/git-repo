@@ -2,6 +2,7 @@ package ru.gb.AlexVasilenko.java3.lesson1.ex1;
 
 import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.Deque;
 
 /**
  * Created by vasilenko.aleksandr on 08.07.2016.
@@ -35,6 +36,7 @@ public class GenericStack<E> implements Stack<E> {
      * @param element добаляемый элемент
      * @throws StackException исключение при полном стеке
      * */
+    @Override
     public void push(E element) throws StackException {
         if (isFull()) {
             throw new StackException("Коллекция заполнена");
@@ -52,14 +54,14 @@ public class GenericStack<E> implements Stack<E> {
         if (isEmpty()) {
             throw new StackException("Коллекция пуста");
         }
-        return stack.pop();
+        return stack.removeLast();
     }
 
     /**
      * вызвращает верхний элемент стека
      * @return  верхний эллемент стека*/
     public E peek() {
-        return stack.peek();
+        return stack.peekLast();
     }
 
     /**
