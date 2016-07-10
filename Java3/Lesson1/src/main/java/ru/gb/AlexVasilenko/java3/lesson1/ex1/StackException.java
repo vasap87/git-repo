@@ -1,10 +1,15 @@
 package ru.gb.AlexVasilenko.java3.lesson1.ex1;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ru.gb.AlexVasilenko.java3.lesson1.ex2.LengthComparator;
+
 /**
  * Created by vasilenko.aleksandr on 08.07.2016.
  * Исключение для класса {@link GenericStack}
  */
 public class StackException extends Exception {
+    private static Logger logger = LoggerFactory.getLogger(LengthComparator.class);
     private String message;
 
     /**
@@ -12,6 +17,7 @@ public class StackException extends Exception {
      * @param s сообщение об исключении
      * */
     public StackException(String s) {
+        logger.info("Создался Exception с сообщением "+message);
         message=s;
     }
 

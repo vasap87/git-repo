@@ -7,7 +7,7 @@ import ru.gb.AlexVasilenko.java3.lesson1.ex1.StackException;
 import static org.testng.Assert.assertEquals;
 
 /**
- * Created by admin on 10.07.2016.
+ * Created by vasilenko.aleksandr on 10.07.2016.
  *
  * Тест на создание стека из трёх эллементов и
  * их последующее изавлечение
@@ -17,6 +17,7 @@ public class GenericStackTest {
     private int sum = 0;
 
     /**
+     * @throws StackException
      * */
     @Test(expectedExceptions = StackException.class)
     public void checkGenericStackPartOne() throws StackException {

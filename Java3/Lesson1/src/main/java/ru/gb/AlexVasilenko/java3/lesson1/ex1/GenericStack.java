@@ -1,14 +1,19 @@
 package ru.gb.AlexVasilenko.java3.lesson1.ex1;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ru.gb.AlexVasilenko.java3.lesson1.ex2.LengthComparator;
+
 import java.util.ArrayDeque;
 import java.util.Collection;
-import java.util.Deque;
 
 /**
  * Created by vasilenko.aleksandr on 08.07.2016.
  * @see ArrayDeque, {@link Stack}
  */
 public class GenericStack<E> implements Stack<E> {
+
+    static Logger logger = LoggerFactory.getLogger(LengthComparator.class);
     private ArrayDeque<E> stack;
     private int size;
 
@@ -19,6 +24,7 @@ public class GenericStack<E> implements Stack<E> {
     public GenericStack(int size) {
         this.size = size;
         stack = new ArrayDeque(size);
+        logger.info("Создался стек с размером "+ size);
     }
 
     /**
@@ -28,6 +34,7 @@ public class GenericStack<E> implements Stack<E> {
     public GenericStack() {
         this.size = 16;
         stack = new ArrayDeque();
+        logger.info("Создался стек с размером "+ size);
     }
 
     /**
@@ -42,6 +49,7 @@ public class GenericStack<E> implements Stack<E> {
             throw new StackException("Коллекция заполнена");
         }
         stack.add(element);
+        logger.info("Добавляем к стеку "+ element.toString());
     }
 
     /**
@@ -54,6 +62,7 @@ public class GenericStack<E> implements Stack<E> {
         if (isEmpty()) {
             throw new StackException("Коллекция пуста");
         }
+        logger.info("Извлечение из стека "+ peek().toString());
         return stack.removeLast();
     }
 
@@ -61,6 +70,7 @@ public class GenericStack<E> implements Stack<E> {
      * вызвращает верхний элемент стека
      * @return  верхний эллемент стека*/
     public E peek() {
+        logger.info("Извлечение из стека "+ stack.peekLast().toString());
         return stack.peekLast();
     }
 
@@ -69,6 +79,7 @@ public class GenericStack<E> implements Stack<E> {
      * @return int количество элементов в стеке
      * */
     public int getSize() {
+        logger.info("Возврат максимально возможных элементов стека  "+ stack.size());
         return stack.size();
     }
 
@@ -77,6 +88,7 @@ public class GenericStack<E> implements Stack<E> {
      * false если в стеке есть хотя бы один элемент
      * */
     public boolean isEmpty() {
+        logger.info("Стек пустой? "+ (getSize() == 0));
         return getSize() == 0;
     }
 
@@ -84,6 +96,7 @@ public class GenericStack<E> implements Stack<E> {
      * @return true, если стек заполнен, false если нет
      * */
     public boolean isFull() {
+        logger.info("Стек полный? "+ (getSize() == this.size));
         return getSize() == this.size;
     }
 
@@ -94,11 +107,13 @@ public class GenericStack<E> implements Stack<E> {
                 push(e);
             } else throw new StackException("Коллекция заполнена");
         }
+        logger.info("Добавление эллементов из другой коллекции завершено");
     }
 
     public void popAll(Collection<? super E> dst) throws StackException {
         while (!isEmpty()){
             dst.add(pop());
         }
+        logger.info("Извлечение из коллекции в другую");
     }
 }
