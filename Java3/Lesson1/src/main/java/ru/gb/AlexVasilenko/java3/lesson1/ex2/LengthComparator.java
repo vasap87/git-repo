@@ -10,22 +10,23 @@ import org.slf4j.LoggerFactory;
  * Класс сортирвки коллекции строк по длинне строки
  *
  * @see java.util.Comparator
+ * @see Logger,LoggerFactory
  */
 public class LengthComparator implements Comparator<String> {
-    static Logger logger = LoggerFactory.getLogger(LengthComparator.class);
+    private static Logger logger = LoggerFactory.getLogger(LengthComparator.class);
 
     @Override
     public int compare(String o1, String o2) {
         if (o1.length() == o2.length()) {
-            logger.warn(o1 + " и " + o2 + " равны по длинне");
+            logger.info(o1 + " и " + o2 + " равны по длинне");
             return 0;
         }
         if (o1.length() < o2.length()) {
-            logger.warn(o1 + " меньше " + o2 + " по длинне");
+            logger.info(o1 + " меньше " + o2 + " по длинне");
             return -1;
         }
         if (o1.length() > o2.length()) {
-            logger.warn(o1 + " больше " + o2 + " по длинне");
+            logger.info(o1 + " больше " + o2 + " по длинне");
             return 1;
         }
         logger.warn("сравниваем " + o1 + " и " + o2 + " условние не выполнилось");
