@@ -8,13 +8,18 @@ import static org.testng.Assert.assertEquals;
 
 /**
  * Created by admin on 10.07.2016.
+ *
+ * Тест на создание стека из трёх эллементов и
+ * их последующее изавлечение
  */
 public class GenericStackTest {
 
     private int sum = 0;
 
-    @Test
-    public void checkGenericStackPartOne() {
+    /**
+     * */
+    @Test(expectedExceptions = StackException.class)
+    public void checkGenericStackPartOne() throws StackException {
         GenericStack<Integer> intStack = new GenericStack<>(3);
         try {
             intStack.push(1);
@@ -23,6 +28,8 @@ public class GenericStackTest {
         } catch (StackException e) {
             e.printStackTrace();
         }
+        assertEquals(intStack.getSize(),3);
+        assertEquals(intStack.isFull(), true);
         try {
             while (!intStack.isEmpty()) {
                 switch (intStack.peek()) {
@@ -43,9 +50,12 @@ public class GenericStackTest {
                     }
                 }
             }
+            intStack.pop();
         } catch (StackException e) {
-            e.printStackTrace();
+            throw new StackException("Тестовый сбой");
         }
+
+
     }
 
     @Test
