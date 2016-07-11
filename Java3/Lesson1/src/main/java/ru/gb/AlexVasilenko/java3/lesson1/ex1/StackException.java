@@ -9,7 +9,7 @@ import ru.gb.AlexVasilenko.java3.lesson1.ex2.LengthComparator;
  * Исключение для класса {@link GenericStack}
  */
 public class StackException extends Exception {
-    private static Logger logger = LoggerFactory.getLogger(LengthComparator.class);
+    private static Logger logger = LoggerFactory.getLogger(StackException.class);
     private String message;
 
     /**
@@ -17,8 +17,9 @@ public class StackException extends Exception {
      * @param s сообщение об исключении
      * */
     public StackException(String s) {
-        logger.info("Создался Exception с сообщением "+message);
         message=s;
+        logger.info("Создался Exception с сообщением "+message);
+
     }
 
     /**

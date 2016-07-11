@@ -28,11 +28,11 @@ public class GenericStack<E> implements Stack<E> {
 
     /**
      * Конструктор дл стека без параметров,
-     * создаёт стек размером 16 элементов
+     * создаёт стек размером 10 элементов
      * */
     public GenericStack() {
-        this.size = 16;
-        stack = new ArrayDeque();
+        this.size = 10;
+        stack = new ArrayDeque(10);
         logger.info("Создался стек с размером "+ size);
     }
 
@@ -78,7 +78,7 @@ public class GenericStack<E> implements Stack<E> {
      * @return int количество элементов в стеке
      * */
     public int getSize() {
-        logger.info("Возврат максимально возможных элементов стека  "+ stack.size());
+        logger.info("Возврат количества элементов стека  "+ stack.size());
         return stack.size();
     }
 
@@ -113,6 +113,15 @@ public class GenericStack<E> implements Stack<E> {
         while (!isEmpty()){
             dst.add(pop());
         }
-        logger.info("Извлечение из коллекции в другую");
+        logger.info("Извлечение из коллекции в другую завершено");
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (E element: stack) {
+            sb.append(element.toString()+" ");
+        }
+        return sb.toString();
     }
 }
