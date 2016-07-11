@@ -2,7 +2,6 @@ package ru.gb.AlexVasilenko.java3.lesson1.ex1;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.gb.AlexVasilenko.java3.lesson1.ex2.LengthComparator;
 
 import java.util.ArrayDeque;
 import java.util.Collection;
@@ -13,7 +12,7 @@ import java.util.Collection;
  */
 public class GenericStack<E> implements Stack<E> {
 
-    static Logger logger = LoggerFactory.getLogger(LengthComparator.class);
+    static Logger logger = LoggerFactory.getLogger(GenericStack.class);
     private ArrayDeque<E> stack;
     private int size;
 

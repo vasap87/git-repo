@@ -1,16 +1,16 @@
-package ru.gb.AlexVasilenko.java3.lesson1.ex2.test;
+package ex2.test;
 
-import org.testng.annotations.Test;
-import ru.gb.AlexVasilenko.java3.lesson1.ex1.GenericStack;
-import ru.gb.AlexVasilenko.java3.lesson1.ex1.StackException;
+
 import ru.gb.AlexVasilenko.java3.lesson1.ex2.LengthComparator;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
+import static junit.framework.TestCase.assertEquals;
+
 
 /**
  * Created by vasilenko.aleksandr on 10.07.2016.

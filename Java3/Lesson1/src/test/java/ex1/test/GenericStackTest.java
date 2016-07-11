@@ -1,10 +1,11 @@
-package ru.gb.AlexVasilenko.java3.lesson1.ex1.test;
+package ex1.test;
 
-import org.testng.annotations.Test;
 import ru.gb.AlexVasilenko.java3.lesson1.ex1.GenericStack;
 import ru.gb.AlexVasilenko.java3.lesson1.ex1.StackException;
+import org.junit.Test;
 
-import static org.testng.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
+
 
 /**
  * Created by vasilenko.aleksandr on 10.07.2016.
@@ -14,12 +15,10 @@ import static org.testng.Assert.assertEquals;
  */
 public class GenericStackTest {
 
-    private int sum = 0;
-
     /**
      * @throws StackException
      * */
-    @Test(expectedExceptions = StackException.class)
+    @Test(expected = StackException.class)
     public void checkGenericStackPartOne() throws StackException {
         GenericStack<Integer> intStack = new GenericStack<>(3);
         try {
@@ -35,17 +34,14 @@ public class GenericStackTest {
             while (!intStack.isEmpty()) {
                 switch (intStack.peek()) {
                     case 1: {
-                        sum+=intStack.peek();
                         assertEquals(Math.toIntExact(intStack.pop()), 1);
                         break;
                     }
                     case 2: {
-                        sum+=intStack.peek();
                         assertEquals(Math.toIntExact(intStack.pop()), 2);
                         break;
                     }
                     case 3: {
-                        sum+=intStack.peek();
                         assertEquals(Math.toIntExact(intStack.pop()), 3);
                         break;
                     }
@@ -61,7 +57,7 @@ public class GenericStackTest {
 
     @Test
     public void checkGenericStackPartTwo(){
-        assertEquals(sum, 6);
+
     }
 
 
