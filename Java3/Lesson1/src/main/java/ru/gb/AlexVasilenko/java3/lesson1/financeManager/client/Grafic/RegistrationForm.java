@@ -1,4 +1,4 @@
-package ru.gb.AlexVasilenko.java3.lesson1.financeManager.client;
+package ru.gb.AlexVasilenko.java3.lesson1.financeManager.client.Grafic;
 
 import javax.swing.*;
 import java.awt.*;
@@ -102,11 +102,11 @@ public class RegistrationForm extends JFrame {
             out.writeUTF("registration\t"  + loginTextField.getText() + "\t" + passTextField.getText());
             out.flush();
             //если успешная регистрация
-            if (in.readUTF().equals("good_reg")) {
+            if (in.readUTF().equals("good")) {
                 //происходит авторизация
                 out.writeUTF("authorisation\t" + loginTextField.getText() + "\t" + passTextField.getText());
                 out.flush();
-//                new ChatJFrame(socket);
+                new FinManagerFrame(socket, loginTextField.getText());
                 this.dispose();
             }
             //если не успешно, значит уже используется такая комбинация логина и пароля

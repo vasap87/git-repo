@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 public class GenericStack<E> implements Stack<E> {
 
-    static Logger logger = LoggerFactory.getLogger(GenericStack.class);
+    private static Logger logger = LoggerFactory.getLogger(GenericStack.class);
     private ArrayDeque<E> stack;
     private int size;
 

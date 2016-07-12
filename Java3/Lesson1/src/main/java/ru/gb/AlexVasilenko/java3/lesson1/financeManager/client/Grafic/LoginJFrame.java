@@ -1,4 +1,4 @@
-package ru.gb.AlexVasilenko.java3.lesson1.financeManager.client;
+package ru.gb.AlexVasilenko.java3.lesson1.financeManager.client.Grafic;
 
 import javax.swing.*;
 import java.awt.*;
@@ -94,8 +94,8 @@ public class LoginJFrame extends JFrame {
             out.flush();
             String s = in.readUTF();
             if (s != null) {
-                if (!s.isEmpty()) {
-                    new FinManagerFrame(socket, s);
+                if (s.equals("good")) {
+                    new FinManagerFrame(socket, login);
                     this.dispose();
                 } else {
                     JOptionPane.showMessageDialog(getContentPane(), "На сервере не найдена указанная комбинация логина и пароля.", "Ошибка авторизации", JOptionPane.ERROR_MESSAGE);

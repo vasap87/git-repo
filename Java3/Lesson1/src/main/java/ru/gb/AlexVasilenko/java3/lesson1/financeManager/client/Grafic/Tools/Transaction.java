@@ -1,4 +1,4 @@
-package ru.gb.AlexVasilenko.java3.lesson1.financeManager.server;
+package ru.gb.AlexVasilenko.java3.lesson1.financeManager.client.Grafic.Tools;
 
 /**
  * Created by admin on 11.07.2016.
