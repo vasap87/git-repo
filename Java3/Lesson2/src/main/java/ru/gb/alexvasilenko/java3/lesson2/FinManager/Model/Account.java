@@ -9,15 +9,15 @@ public class Account {
     private int id;
     private String number;
     private double amount;
-    private String user;
+    private int userId;
     private String description;
     private List<Transaction> transactionList;
 
-    public Account(String number, String user, String description, List<Transaction> transactionArrayList) {
+    public Account(String number, int userId, String description, List<Transaction> transactionArrayList) {
         this.number = number;
 //        this.amount = amount;
         this.description = description;
-        this.user = user;
+        this.userId = userId;
         this.transactionList = transactionArrayList;
         for (Transaction transaction : transactionArrayList) {
             this.amount += transaction.getAmount();
@@ -32,8 +32,16 @@ public class Account {
         return amount;
     }
 
-    public String getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getDescription() {
