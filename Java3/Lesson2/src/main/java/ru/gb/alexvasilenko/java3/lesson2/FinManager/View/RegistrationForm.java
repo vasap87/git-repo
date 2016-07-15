@@ -115,6 +115,12 @@ public class RegistrationForm extends JFrame {
             }
         } catch (SQLException e) {
             logger.error("Error in method registration, detail: "+e.getMessage());
+        } finally {
+            try {
+                DBHelper.getInstance().closeConnection();
+            } catch (SQLException e) {
+                logger.error("Error at finalt part in method registration, detail: "+e.getMessage());
+            }
         }
     }
 }

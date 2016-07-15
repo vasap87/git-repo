@@ -98,6 +98,7 @@ public class DBHelper {
                     statement.execute(sql);
                 }
             }
+            statement.close();
         } catch (SQLException e) {
             logger.error("Error in method firstConnection, detail: " + e.getMessage());
         }

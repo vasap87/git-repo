@@ -43,15 +43,23 @@ public class SignInOn {
      * */
     public String authorisation(Connection connection, String login, String password) {
         String authLogin = null;
-        try (Statement statement = connection.createStatement()) {
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
             String sql = "SELECT LOGIN FROM USERS WHERE LOGIN ='" + login + "' AND PASS = '" + password + "';";
             ResultSet resultSet = statement.executeQuery(sql);
             if (resultSet.next()) {
                 authLogin = resultSet.getString(1);
-                logger.info("User with login " + authLogin + "auth complite");
+                logger.info("User with login " + authLogin + " auth complite");
             }
         } catch (SQLException e) {
             logger.error("Error in method authorisation, detail: " + e.getMessage());
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                logger.error("Error at finally part of method authorisation, detail: " + e.getMessage());
+            }
         }
         return authLogin;
     }
@@ -66,15 +74,30 @@ public class SignInOn {
      * */
     public String registration(Connection connection, String login, String password) {
         String newLogin = null;
-        try (Statement statement = connection.createStatement()) {
-            String sql = "INSERT INTO USERS (LOGIN,PASS) VALUES ('" + login + "', '" + password + "');";
-            int result = statement.executeUpdate(sql);
-            if (result == 1) {
-                newLogin = login;
-                logger.info("New user with login " + newLogin + " is register");
+        Statement statement = null;
+        try  {
+            statement = connection.createStatement();
+            String sql = "SELECT LOGIN FROM USERS WHERE LOGIN ='" + login + "';";
+            ResultSet resultSet = statement.executeQuery(sql);
+            if(resultSet.next()){
+                return null;
+            } else{
+                sql = "INSERT INTO USERS (LOGIN,PASS) VALUES ('" + login + "', '" + password + "');";
+                int result = statement.executeUpdate(sql);
+                if (result == 1) {
+                    newLogin = login;
+                    logger.info("New user with login " + newLogin + " is register");
+                }
             }
+
         } catch (SQLException e) {
             logger.error("Error in method registration, detail: " + e.getMessage());
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                logger.error("Error at finally part of method registration, detail: " + e.getMessage());
+            }
         }
         return newLogin;
     }
