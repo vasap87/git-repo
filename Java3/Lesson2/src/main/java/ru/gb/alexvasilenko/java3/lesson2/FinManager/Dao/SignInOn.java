@@ -3,6 +3,9 @@ package ru.gb.alexvasilenko.java3.lesson2.FinManager.Dao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,11 +49,11 @@ public class SignInOn {
         Statement statement = null;
         try {
             statement = connection.createStatement();
-            String sql = "SELECT LOGIN FROM USERS WHERE LOGIN ='" + login + "' AND PASS = '" + password + "';";
+            String sql = "SELECT LOGIN FROM USERS WHERE LOGIN ='" + login + "' AND PASS = '" + hashing(password) + "';";
             ResultSet resultSet = statement.executeQuery(sql);
             if (resultSet.next()) {
                 authLogin = resultSet.getString(1);
-                logger.info("User with login " + authLogin + " auth complite");
+                logger.info("User with login " + authLogin + " is authorized");
             }
         } catch (SQLException e) {
             logger.error("Error in method authorisation, detail: " + e.getMessage());
@@ -82,11 +85,11 @@ public class SignInOn {
             if(resultSet.next()){
                 return null;
             } else{
-                sql = "INSERT INTO USERS (LOGIN,PASS) VALUES ('" + login + "', '" + password + "');";
+                sql = "INSERT INTO USERS (LOGIN,PASS) VALUES ('" + login + "', '" + hashing(password) + "');";
                 int result = statement.executeUpdate(sql);
                 if (result == 1) {
                     newLogin = login;
-                    logger.info("New user with login " + newLogin + " is register");
+                    logger.info("New user with login " + newLogin + " is registered");
                 }
             }
 
@@ -100,5 +103,28 @@ public class SignInOn {
             }
         }
         return newLogin;
+    }
+
+    /**
+     * Method hashing string in SHA-224 algorithm
+     * @return String of hashig string
+     * */
+    private String hashing(String text) {
+        MessageDigest md = null;
+        byte[] hashingBytes = new byte[0];
+        try {
+            md = MessageDigest.getInstance("SHA-224");
+            md.reset();
+            md.update(text.getBytes());
+            hashingBytes = md.digest();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        BigInteger bi = new BigInteger(1, hashingBytes);
+        String sha_224 = bi.toString(16);
+        while (sha_224.length() < 32) {
+            sha_224 = "0" + sha_224;
+        }
+        return sha_224;
     }
 }

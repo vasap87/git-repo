@@ -6,14 +6,16 @@ package ru.gb.alexvasilenko.java3.lesson2.FinManager.Model;
 public class Transaction {
     private int id;
     private boolean isCheckIn;
+    private int account_id;
     private long dateAndTime;
     private double amount;
-    private Category category;
     private String desription;
+    private Category category;
 
-    public Transaction(int id, boolean isCheckIn, long dateAndTime, double amount, String desription, Category category) {
+    public Transaction(int id, boolean isCheckIn, int account_id, long dateAndTime, double amount, String desription, Category category) {
         this.id = id;
         this.isCheckIn = isCheckIn;
+        this.account_id=account_id;
         this.dateAndTime = dateAndTime;
         this.amount = amount;
         this.category = category;
@@ -34,6 +36,14 @@ public class Transaction {
 
     public void setCheckIn(boolean checkIn) {
         isCheckIn = checkIn;
+    }
+
+    public int getAccount_id() {
+        return account_id;
+    }
+
+    public void setAccount_id(int account_id) {
+        this.account_id = account_id;
     }
 
     public long getDateAndTime() {
@@ -60,6 +70,13 @@ public class Transaction {
         this.desription = desription;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     @Override
     public String toString() {

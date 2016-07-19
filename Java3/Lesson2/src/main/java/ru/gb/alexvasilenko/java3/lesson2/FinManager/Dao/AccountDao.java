@@ -92,14 +92,14 @@ public class AccountDao implements IGenericDao<Account> {
                         categoryName = resultSetCategory.getString(2);
                     }
                     transactions.add(new Transaction(resultSetTR.getInt("ID"), (resultSetTR.getInt("ISCHECKIN") == 0 ? false : true),
-                            resultSetTR.getInt("DATETIME") * 1000, resultSetTR.getDouble("AMOUNT"),
+                            id, resultSetTR.getInt("DATETIME") * 1000, resultSetTR.getDouble("AMOUNT"),
                             resultSetTR.getString("DESCR"), new Category(categoryName, resultSetTR.getInt("CATEGORY_ID"))));
                 }
                 logger.info("returned object Account with ID = "+id);
                 return new Account(resultSet.getString("NUMBER"), resultSet.getInt("USER_ID"), resultSet.getString("DESCR"), transactions);
             }
         } catch (SQLException e) {
-            logger.error("Error in method update, detail: " + e.getMessage());
+            logger.error("Error in method findById, detail: " + e.getMessage());
         }
         return null;
     }
@@ -122,13 +122,13 @@ public class AccountDao implements IGenericDao<Account> {
                         categoryName = resultSetCategory.getString(2);
                     }
                     transactions.add(new Transaction(resultSetTR.getInt("ID"), (resultSetTR.getInt("ISCHECKIN") == 0 ? false : true),
-                            resultSetTR.getInt("DATETIME") * 1000, resultSetTR.getDouble("AMOUNT"),
+                            resultSet.getInt("ID"), resultSetTR.getInt("DATETIME") * 1000, resultSetTR.getDouble("AMOUNT"),
                             resultSetTR.getString("DESCR"), new Category(categoryName, resultSetTR.getInt("CATEGORY_ID"))));
                 }
                 accounts.add(new Account(resultSet.getString("NUMBER"), resultSet.getInt("USER_ID"), resultSet.getString("DESCR"), transactions));
             }
         } catch (SQLException e) {
-            logger.error("Error in method update, detail: " + e.getMessage());
+            logger.error("Error in method getAll, detail: " + e.getMessage());
         }
         return accounts;
     }
