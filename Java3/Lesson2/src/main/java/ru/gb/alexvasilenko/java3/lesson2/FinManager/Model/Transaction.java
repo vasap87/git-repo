@@ -3,7 +3,7 @@ package ru.gb.alexvasilenko.java3.lesson2.FinManager.Model;
 /**
  * Created by admin on 11.07.2016.
  */
-public class Transaction {
+public class Transaction extends Finance {
     private int id;
     private boolean isCheckIn;
     private int account_id;

@@ -3,7 +3,7 @@ package ru.gb.alexvasilenko.java3.lesson2.FinManager.Model;
 /**
  * Created by Alex Vasilenko on 14.07.2016.
  */
-public class Category {
+public class Category extends Finance {
     private String name;
     private int id;
 

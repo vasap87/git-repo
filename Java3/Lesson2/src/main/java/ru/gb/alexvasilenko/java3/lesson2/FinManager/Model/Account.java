@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by admin on 12.07.2016.
  */
-public class Account {
+public class Account extends Finance{
     private int id;
     private String number;
     private double amount;
