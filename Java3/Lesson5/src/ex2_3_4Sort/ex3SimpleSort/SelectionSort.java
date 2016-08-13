@@ -9,7 +9,16 @@ public class SelectionSort implements ISort {
     private int[] arr;
 
     public SelectionSort(int[] arr){
+        this();
         this.arr=arr;
+    }
+
+    public SelectionSort(){
+
+    }
+
+    public void setArr(int[] arr) {
+        this.arr = arr;
     }
 
     @Override
