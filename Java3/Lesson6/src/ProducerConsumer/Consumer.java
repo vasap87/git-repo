@@ -1,5 +1,9 @@
 package ProducerConsumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -8,17 +12,38 @@ import java.util.concurrent.BlockingQueue;
 public class Consumer extends Thread {
     private BlockingQueue blockQueue;
     private String searchString;
+    private Thread thread;
+    private Logger log = LoggerFactory.getLogger(Consumer.class);
 
-    public Consumer(BlockingQueue blockQueue, String searchString) {
+    public Consumer(BlockingQueue blockQueue, String searchString, Thread thread) {
         super("CONSUMER");
         this.blockQueue = blockQueue;
         this.searchString = searchString;
-        start();
+        this.thread = thread;
+//        start();
     }
 
     @Override
     public void run() {
         //берём существующий элемент и ищем в нём подстроку
+        try {
+            boolean isFound = false;
+            StringBuilder sb;
+            sleep(100);
+            while(true){
+                sb = new StringBuilder((String) blockQueue.take());
+                log.info("CONSUMER забрал из очереди");
+                if(sb.indexOf(searchString)!=-1) {
+                    isFound = true;
+                    thread.interrupt();
+                    log.info("поток "+ this.getName() + " прерывает поток " + thread.getName());
+                    break;
+                }
+            }
+            System.out.println("Фраза: \""+searchString+"\" " + (isFound?"найдена":"не найдена"));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 }

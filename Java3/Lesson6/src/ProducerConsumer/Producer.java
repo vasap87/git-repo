@@ -1,5 +1,7 @@
 package ProducerConsumer;
 
+import org.slf4j.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,27 +14,33 @@ import java.util.concurrent.BlockingQueue;
 public class Producer extends Thread {
     private BlockingQueue blockQueue;
     private File file;
+    private Logger log = LoggerFactory.getLogger(Producer.class);
 
     public Producer(File file, BlockingQueue blockQueue){
         super("PRODUCER");
         this.blockQueue = blockQueue;
         this.file = file;
-        start();
+//        start();
     }
 
     @Override
     public void run() {
-        //читаем из файла 4кб данных и пишем в BlockingQueue
+        //читаем из файла 2кб данных и пишем в BlockingQueue
         try(FileInputStream fis = new FileInputStream(file)) {
-            byte[] arr = new byte[4096];
-            while(fis.read(arr)!=-1);
-            blockQueue.put(new String(arr));
+            byte[] arr = new byte[2048];
+            while(fis.read(arr)!=-1){
+                if(isInterrupted()) break;
+                log.info("PRODUCER положил в очередь");
+                blockQueue.put(new String(arr));
+                arr = new byte[2048];
+            }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            log.error("файл не найден");
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error("поток "+ this.getName()+ " прерван");
         }catch (IOException e) {
-            e.printStackTrace();
+            log.error("Иные исключения");
         }
+        log.info("PRODUCER завершил работу");
     }
 }
