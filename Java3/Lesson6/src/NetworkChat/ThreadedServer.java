@@ -11,6 +11,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ThreadedServer {
 
@@ -37,8 +39,10 @@ public class ThreadedServer {
 
             // создаем обработчик
             ClientHandler handler = new ClientHandler(this, socket, counter++);
+            //пул подключений максимум 3
+            ExecutorService executorService = Executors.newFixedThreadPool(3);
+            executorService.execute(handler);
             handlers.add(handler);
-            handler.start();
         }
     }
 

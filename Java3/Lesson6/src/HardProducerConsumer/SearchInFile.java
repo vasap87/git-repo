@@ -1,9 +1,9 @@
 package HardProducerConsumer;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Created by vasilenko.aleksandr on 17.08.2016.
@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 public class SearchInFile {
     private File file;
     private String searchStr;
-    private ExecutorService consumerService;
+    private List<Consumer> myConsumerService;
     private Producer producer;
 
     public SearchInFile(File file, String searchStr) {
@@ -21,12 +21,12 @@ public class SearchInFile {
 
     public void search(){
         ConcurrentLinkedQueue<String> partsOfFile = new ConcurrentLinkedQueue<>();
-        Producer producer = new Producer(file, partsOfFile);
+        producer = new Producer(file, partsOfFile);
         producer.start();
-        ExecutorService consumerService = Executors.newFixedThreadPool(10);
+        myConsumerService = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             Consumer consumer = new Consumer(partsOfFile, searchStr, this);
-            consumerService.execute(consumer);
+            myConsumerService.add(consumer);
         }
 
     }
@@ -35,7 +35,12 @@ public class SearchInFile {
         System.out.println("поиск в файле "+ file.getName()+ " "+ message);
     }
 
-//    public void closeThreads(){
-//        consumerService.shutdown();
-//    }
+    public void closeThreads(){
+        if(producer.isAlive()){
+            producer.interrupt();
+        }
+        for (Consumer consumer: myConsumerService) {
+            if(consumer.isAlive()) consumer.interrupt();
+        }
+    }
 }

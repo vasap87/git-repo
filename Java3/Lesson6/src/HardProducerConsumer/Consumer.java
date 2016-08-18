@@ -23,19 +23,22 @@ public class Consumer extends Thread {
         this.partsOfFile = partsOfFile;
         this.searchStr = searchStr;
         this.searchInFile = searchInFile;
+        this.start();
     }
 
     @Override
     public void run() {
         log.info("поток "+ getName() + " запустился");
         while(partsOfFile.size()!=0){
+            if(isInterrupted())break;
             String s = partsOfFile.poll();
             if(s.indexOf(searchStr)!=-1){
                 searchInFile.searchComplete("подстрока найдена");
-//                searchInFile.closeThreads();
+                searchInFile.closeThreads();
                 break;
             }
         }
+
         log.info("поток "+ getName() + " отработал");
     }
 }

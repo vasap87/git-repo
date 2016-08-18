@@ -16,7 +16,7 @@ public class FindInFile {
     private final static String SEARCH_STRING = "this text you have to search";
 
     public static void main(String[] args) {
-        BlockingQueue<String> blockQueue = new ArrayBlockingQueue<>(1 ,true);
+        BlockingQueue<String> blockQueue = new ArrayBlockingQueue<>(100 ,true);
         Producer producer = new Producer(FILE, blockQueue);
         Consumer consumer = new Consumer(blockQueue, SEARCH_STRING, producer);
         long start = System.nanoTime();

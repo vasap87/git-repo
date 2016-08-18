@@ -29,21 +29,21 @@ public class Consumer extends Thread {
         try {
             boolean isFound = false;
             StringBuilder sb;
-            sleep(100);
-            while(true){
+            sleep(10); //ждём, чтобы продюссер начал складывать в очередь куски
+            while(blockQueue.size()>0){
                 sb = new StringBuilder((String) blockQueue.take());
                 log.info("CONSUMER забрал из очереди");
                 if(sb.indexOf(searchString)!=-1) {
                     isFound = true;
-                    thread.interrupt();
-                    log.info("поток "+ this.getName() + " прерывает поток " + thread.getName());
                     break;
                 }
             }
+            thread.interrupt();
+            log.info("поток "+ this.getName() + " прерывает поток " + thread.getName());
             System.out.println("Фраза: \""+searchString+"\" " + (isFound?"найдена":"не найдена"));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        log.info("CONSUMER завершил работу");
     }
 }
