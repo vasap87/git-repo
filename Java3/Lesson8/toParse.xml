@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<house name="Дом" adress="Moscow" zipcode="000111">
+    <!--Описаны этажи дома-->
+    <floors>
+        <floor count="1">
+            <!--Описаны квартиры на этаже-->
+            <flats>
+                <flat>
+                    <property name="number" val="1"/>
+                    <property name="rooms" val="1"/>
+                </flat>
+                <flat>
+                    <property name="number" val="2"/>
+                    <property name="rooms" val="1"/>
+                </flat>
+                <flat>
+                    <property name="number" val="3"/>
+                    <property name="rooms" val="2"/>
+                </flat>
+                <flat>
+                    <property name="number" val="4"/>
+                    <property name="rooms" val="2"/>
+                </flat>
+                <flat>
+                    <property name="number" val="5"/>
+                    <property name="rooms" val="3"/>
+                </flat>
+            </flats>
+        </floor>
+        <floor count="2">
+            <!--Описаны квартиры на этаже-->
+            <flats>
+                <flat>
+                    <property name="number" val="6"/>
+                    <property name="rooms" val="1"/>
+                </flat>
+                <flat>
+                    <property name="number" val="7"/>
+                    <property name="rooms" val="1"/>
+                </flat>
+                <flat>
+                    <property name="number" val="8"/>
+                    <property name="rooms" val="1"/>
+                </flat>
+                <flat>
+                    <property name="number" val="9"/>
+                    <property name="rooms" val="3"/>
+                </flat>
+                <flat>
+                    <property name="number" val="10"/>
+                    <property name="rooms" val="3"/>
+                </flat>
+            </flats>
+        </floor>
+        <floor count="3">
+            <!--Описаны квартиры на этаже-->
+            <flats>
+                <flat>
+                    <property name="number" val="11"/>
+                    <property name="rooms" val="1"/>
+                </flat>
+                <flat>
+                    <property name="number" val="12"/>
+                    <property name="rooms" val="1"/>
+                </flat>
+                <flat>
+                    <property name="number" val="13"/>
+                    <property name="rooms" val="1"/>
+                </flat>
+                <flat>
+                    <property name="number" val="14"/>
+                    <property name="rooms" val="3"/>
+                </flat>
+                <flat>
+                    <property name="number" val="15"/>
+                    <property name="rooms" val="3"/>
+                </flat>
+            </flats>
+        </floor>
+    </floors>
+</house>

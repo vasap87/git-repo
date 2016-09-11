@@ -65,7 +65,6 @@ public class FlatParser {
                         propVal = name.getValue();
                     }
                 }
-                // TODO: 02.09.2016 вызвать нужный метод с нужным значением:
                 for (Method m : methods) {
                     String methodName = m.getName();
                     if (methodName.equalsIgnoreCase("set"+propName)){
