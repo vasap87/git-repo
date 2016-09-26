@@ -88,10 +88,6 @@
                         </goals>
                 <configuration>
                     <mainClass>ru.kotovalexandr.financemanager.Main</mainClass>
-                    <!-- версия исходников -->
-                    <source>1.8</source>
-                    <!-- целевая JVM -->
-                    <target>1.8</target>
                 </configuration>
                 </execution>
             </executions>

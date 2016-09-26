@@ -13,10 +13,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Created by vasilenko.aleksandr on 11.07.2016.
+ * Created by kotov.aleksandr on 11.07.2016.
  * Класс описывающий форму для регистрации
  * нового пользователя, получает на вход
- * тот же сокет, кторый создаётся на форме
+ * тот же сокет, который создаётся на форме
  * авторизации
  */
 public class RegistrationForm extends JFrame {
@@ -32,13 +32,13 @@ public class RegistrationForm extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
-        setTitle("Регистрация нового пользователя");
+        setTitle("Регистрация");
 
         setLayout(layout);
-        setBounds(200, 200, 300, 200);
+        setBounds(200, 200, 250, 100);
         setResizable(false);
 
-        JLabel welcomeLabel = new JLabel("Введите данные нового пользователя");
+        JLabel welcomeLabel = new JLabel("Введите данные пользователя");
         gbc.gridy = 0;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
@@ -69,7 +69,7 @@ public class RegistrationForm extends JFrame {
         gbc.gridx = 1;
         add(passTextField, gbc);
 
-        JButton okButton = new JButton("Зарегистрироваться и войти");
+        JButton okButton = new JButton("Готово");
         gbc.gridy = 4;
         gbc.gridx = 0;
         gbc.gridwidth = 1;
@@ -77,12 +77,11 @@ public class RegistrationForm extends JFrame {
             registration();
         });
         add(okButton, gbc);
-
-        JButton canselButton = new JButton("Oтмена");
+        JButton cancelButton = new JButton("Отмена");
         gbc.gridy = 4;
         gbc.gridx = 1;
-        canselButton.addActionListener(e -> System.exit(-2));
-        add(canselButton, gbc);
+        cancelButton.addActionListener(e -> System.exit(-2));
+        add(cancelButton, gbc);
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -119,7 +118,7 @@ public class RegistrationForm extends JFrame {
             try {
                 DBHelper.getInstance().closeConnection();
             } catch (SQLException e) {
-                logger.error("Error at finalt part in method registration, detail: "+e.getMessage());
+                logger.error("Error at final part in method registration, detail: "+e.getMessage());
             }
         }
     }

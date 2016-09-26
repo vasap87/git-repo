@@ -27,7 +27,7 @@ public class LoginJFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
-        setTitle("Вход в чат");
+        setTitle("Авторизация");
 
         setLayout(layout);
         setBounds(200, 200, 200, 150);
