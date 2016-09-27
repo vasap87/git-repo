@@ -1,21 +1,20 @@
 package ru.kotovalexandr.financemanager.View.AddEdit;
 
+
+
 import ru.kotovalexandr.financemanager.Controller.Account.AccountList;
+import ru.kotovalexandr.financemanager.Controller.Services.TransactionService;
 import ru.kotovalexandr.financemanager.Controller.Transaction.TransactionList;
-import ru.kotovalexandr.financemanager.Dao.DBHelper;
-import ru.kotovalexandr.financemanager.Dao.TransactionDao;
-import ru.kotovalexandr.financemanager.Model.Account;
-import ru.kotovalexandr.financemanager.Model.Category;
-import ru.kotovalexandr.financemanager.Model.Transaction;
+import ru.kotovalexandr.financemanager.Model.*;
 import ru.kotovalexandr.financemanager.View.Tools.DatePicker.MyDateTimeTicker;
 import ru.kotovalexandr.financemanager.View.Tools.JCategory.CategoryJComponent;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.util.Date;
 
 /**
  * Created by vasilenko.aleksandr on 27.07.2016.
@@ -23,6 +22,7 @@ import java.text.NumberFormat;
 public class AddEditTransaction extends JDialog implements ActionListener {
     private Account account;
     private Transaction transaction;
+    private int operID;
 
     private JRadioButton isCheckin;
     private JFormattedTextField amountTF;
@@ -36,6 +36,7 @@ public class AddEditTransaction extends JDialog implements ActionListener {
     public AddEditTransaction(JFrame owner, String title, boolean modal, Account account) {
         super(owner, title, modal);
         this.account = account;
+        operID = 0;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         setBounds(200,200,350,300);
@@ -97,7 +98,12 @@ public class AddEditTransaction extends JDialog implements ActionListener {
     public AddEditTransaction(JFrame owner, String title, boolean modal, Account account, Transaction transaction){
         this(owner, title, modal, account);
         this.transaction = transaction;
-
+        operID = 1;
+        isCheckin.setSelected(transaction.isCheckIn());
+        amountTF.setValue(transaction.getAmount().setScale(2,BigDecimal.ROUND_HALF_EVEN));
+        datetimeTF.setDate(new Date(transaction.getDateAndTime()));
+        categoryJComponent.setCategory(transaction.getCategory());
+        descrTA.setText(transaction.getDesription());
     }
 
     @Override
@@ -116,31 +122,20 @@ public class AddEditTransaction extends JDialog implements ActionListener {
                 }
                 if (transaction == null){
                     transaction = new Transaction(account.getId(),isCheckin.isSelected(),
-                            Double.parseDouble(amountTF.getValue().toString()), category,
+                            new BigDecimal(amountTF.getValue().toString()), category,
                             datetimeTF.getDate().getTime(), descrTA.getText());
                 }else {
-                    transaction.setAmount(Double.parseDouble(amountTF.getText()));
+                    transaction.setAmount(new BigDecimal(amountTF.getValue().toString()).setScale(2,BigDecimal.ROUND_HALF_EVEN));
                     transaction.setCategory(category);
                     transaction.setCheckIn(isCheckin.isSelected());
                     transaction.setDesription(descrTA.getText());
                 }
-                try {
-                    Connection connection = DBHelper.getInstance().getConnection();
-                    TransactionDao transactionDao = new TransactionDao(connection);
-                    transactionDao.save(transaction);
-                    DBHelper.getInstance().closeConnection();
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
+                TransactionService.getInstance().addOrUpdateTransaction(transaction, operID);
                 AccountList.getInstance().notifyObservers();
                 TransactionList.getInstance().notifyObservers();
                 this.dispose();
                 break;
             }
-//            case "category": {
-//                category = (Category) categoryJComboBox.getSelectedItem();
-//                break;
-//            }
         }
     }
 

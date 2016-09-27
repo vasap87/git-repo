@@ -1,5 +1,6 @@
 package ru.kotovalexandr.financemanager.View;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.kotovalexandr.financemanager.Controller.Account.AccountList;
@@ -27,16 +28,16 @@ public class FinManagerFrame extends JFrame {
     private static Logger logger = LoggerFactory.getLogger(FinManagerFrame.class);
 
     private String login;
-    private int loginID;
+    private int userID;
 
     private JLabel totalJLabel;
 
     private AccountJList accountJList;
     private TransactionJList transactionJList;
 
-    public FinManagerFrame(String login, int loginID) {
+    public FinManagerFrame(String login, int userID) {
         this.login = login;
-        this.loginID = loginID;
+        this.userID = userID;
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(WIDTH, HEIGHT));
         setBounds(200, 200, getMinimumSize().width, getMinimumSize().height);
@@ -62,7 +63,7 @@ public class FinManagerFrame extends JFrame {
     }
 
     private void updateNorthPanel() {
-        BigDecimal total = TotalAmount.getInstance().getTotalAmount(loginID);
+        BigDecimal total = TotalAmount.getInstance().getTotalAmount(userID);
         totalJLabel.setText("На текущий момент на ваших счетах "+ total.toPlainString() + " рублей");
     }
 
@@ -110,7 +111,7 @@ public class FinManagerFrame extends JFrame {
         //кнопки
         JPanel buttonAccoutPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton addAccountButton = new JButton("+");
-        addAccountButton.addActionListener(e -> new AddEditAccount(this, "Добавление счёта", true, loginID).setVisible(true));
+        addAccountButton.addActionListener(e -> new AddEditAccount(this, "Добавление счёта", true, userID).setVisible(true));
         buttonAccoutPanel.add(addAccountButton);
         JButton removeAccountButton = new JButton("-");
         removeAccountButton.addActionListener(e -> {
@@ -122,7 +123,7 @@ public class FinManagerFrame extends JFrame {
         buttonAccoutPanel.add(removeAccountButton);
         accountPanel.add(buttonAccoutPanel, BorderLayout.NORTH);
         //листбокс со счетами
-        accountJList = new AccountJList(this, loginID);
+        accountJList = new AccountJList(this, userID);
         accountJList.addListSelectionListener(e -> {
             accountJList.setIndex();
             TransactionList.getInstance().notifyObservers();

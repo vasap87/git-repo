@@ -1,5 +1,6 @@
 package ru.kotovalexandr.financemanager.View.Tools.JCategory;
 
+
 import ru.kotovalexandr.financemanager.Model.Category;
 
 import javax.swing.*;

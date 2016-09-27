@@ -51,5 +51,23 @@
       </plugin>
     </plugins>
   </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.16.6</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  <properties>
+    <swingx.version>1.6.1</swingx.version>
+    <hamcrest.version>5.1.0.Final</hamcrest.version>
+    <hibernate.version>5.1.0.Final</hibernate.version>
+    <slf4j.version>1.7.21</slf4j.version>
+    <SQLite.JDBC.version>3.7.2</SQLite.JDBC.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <lombok.version>1.16.6</lombok.version>
+    <junit.version>4.11</junit.version>
+  </properties>
 </project>
 

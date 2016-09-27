@@ -1,11 +1,13 @@
 package ru.kotovalexandr.financemanager.View.Tools.JList.Renders;
 
 
+
 import ru.kotovalexandr.financemanager.Model.Transaction;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -20,7 +22,8 @@ public class ListTransactionRender extends JTextPane implements ListCellRenderer
         StringBuilder sb = new StringBuilder();
         Date date = new Date(value.getDateAndTime());
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        sb.append("<html><head></head><body><b>Сумма: " + String.valueOf(value.getAmount()) + "</b><br><i>операция: </i>" + (value.isCheckIn()?"Пополнение":"Снятие") + "<br>" +
+        sb.append("<html><head></head><body><b>Сумма: " + String.valueOf(value.getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN))
+                + "</b><br><i>операция: </i>" + (value.isCheckIn()?"Пополнение":"Снятие") + "<br>" +
                 "<i>описание: </i>" + value.getDesription() + "<br>" +
                 "<i>дата: </i>" + dateFormat.format(date) + "    <i>категория:</i>"+value.getCategory().getName()+"</body></html>");
         setContentType("text/html");

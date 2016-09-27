@@ -1,10 +1,9 @@
 package ru.kotovalexandr.financemanager.View.AddEdit;
 
+
 import ru.kotovalexandr.financemanager.Controller.Account.AccountList;
-import ru.kotovalexandr.financemanager.Dao.AccountDao;
-import ru.kotovalexandr.financemanager.Dao.DBHelper;
+import ru.kotovalexandr.financemanager.Controller.Services.AccountService;
 import ru.kotovalexandr.financemanager.Model.Account;
-import ru.kotovalexandr.financemanager.Model.Transaction;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -12,8 +11,6 @@ import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -39,7 +36,7 @@ public class AddEditAccount extends JDialog implements ActionListener {
         this.userID = userID;
         operID = 0;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setSize(200, 200);
+        setSize(250, 200);
         JPanel panel = new JPanel(new BorderLayout(5, 5));
         fieldsPanel = Box.createVerticalBox();
         numberTF = new JTextField(20);
@@ -53,7 +50,7 @@ public class AddEditAccount extends JDialog implements ActionListener {
         fieldsPanel.add(descrTA);
         panel.add(fieldsPanel, BorderLayout.CENTER);
 
-        buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         cancelButton = new JButton("Отмена");
         cancelButton.setActionCommand("cancel");
         cancelButton.addActionListener(this);
@@ -90,26 +87,12 @@ public class AddEditAccount extends JDialog implements ActionListener {
                     if (account != null) {
                         account.setNumber(numberTF.getText());
                         account.setDescription(descrTA.getText());
+                    } else {
+                        account = new Account(numberTF.getText(), userID, descrTA.getText(), new ArrayList<>());
                     }
-                    try {
-                        Connection connection = DBHelper.getInstance().getConnection();
-                        AccountDao accountDao = new AccountDao(connection, userID);
-                        switch (operID) {
-                            case 0: {
-                                accountDao.save(new Account(numberTF.getText(), userID, descrTA.getText(), new ArrayList<Transaction>()));
-                                break;
-                            }
-                            case 1: {
-                                accountDao.update(account);
-                                break;
-                            }
-                        }
-                        DBHelper.getInstance().closeConnection();
-                        AccountList.getInstance().notifyObservers();
-                        this.dispose();
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
+                    AccountService.getInstance().addOrUpdateAccount(account, userID, operID);
+                    AccountList.getInstance().notifyObservers();
+                    this.dispose();
                 }
                 break;
             }

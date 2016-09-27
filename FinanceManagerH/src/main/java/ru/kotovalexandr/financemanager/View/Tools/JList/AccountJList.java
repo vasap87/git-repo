@@ -1,15 +1,14 @@
 package ru.kotovalexandr.financemanager.View.Tools.JList;
 
+
+
 import ru.kotovalexandr.financemanager.Controller.IObserver;
-import ru.kotovalexandr.financemanager.Dao.AccountDao;
-import ru.kotovalexandr.financemanager.Dao.DBHelper;
+import ru.kotovalexandr.financemanager.Controller.Services.AccountService;
 import ru.kotovalexandr.financemanager.Model.Account;
 import ru.kotovalexandr.financemanager.View.AddEdit.AddEditAccount;
 import ru.kotovalexandr.financemanager.View.Tools.JList.Renders.ListAccountRender;
 
 import javax.swing.*;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -56,21 +55,6 @@ public class AccountJList extends JList implements IObserver {
     }
 
 
-    @Override
-    public void handelEvent() {
-        try {
-            Connection connection = DBHelper.getInstance().getConnection();
-            AccountDao accountDao = new AccountDao(connection, userID);
-            accounts = accountDao.getAll();
-            Object arr[] = accounts.toArray();
-            setListData(arr);
-            setSelectedIndex(index);
-            DBHelper.getInstance().closeConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     /**
      * This method check, if there ara no items selected in {@link JList},
      * we selected first, and then we ask user by using {@link JOptionPane},
@@ -82,15 +66,8 @@ public class AccountJList extends JList implements IObserver {
         int answer = JOptionPane.showConfirmDialog(this, "Вы уверены что ходите удалить счёт №" + account.getNumber(),
                 "Подтверждение удаление эллемента", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (answer == 0) {
-            try {
-                Connection connection = DBHelper.getInstance().getConnection();
-                AccountDao accountDao = new AccountDao(connection, userID);
-                accountDao.delete(account);
-                handelEvent();
-                DBHelper.getInstance().closeConnection();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            AccountService.getInstance().remove(account, userID);
+            handelEvent();
         }
     }
 
@@ -103,5 +80,10 @@ public class AccountJList extends JList implements IObserver {
 
     public void setIndex() {
         index = getSelectedIndex();
+    }
+
+    @Override
+    public void handelEvent() {
+        AccountService.getInstance().updateList(this, userID);
     }
 }

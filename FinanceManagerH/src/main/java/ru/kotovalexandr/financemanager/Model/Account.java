@@ -1,5 +1,6 @@
 package ru.kotovalexandr.financemanager.Model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
 public class Account {
     private int id;
     private String number;
-    private double amount;
+    private BigDecimal amount = new BigDecimal(0);
     private int userId;
     private String description;
     private List<Transaction> transactionList;
@@ -21,11 +22,10 @@ public class Account {
         this.transactionList = transactionArrayList;
         for (Transaction transaction : transactionArrayList) {
             if(transaction.isCheckIn()){
-                this.amount += transaction.getAmount();
+                amount = amount.add(transaction.getAmount());
             }else{
-                this.amount -= transaction.getAmount();
+                amount = amount.subtract(transaction.getAmount());
             }
-
         }
     }
 
@@ -46,7 +46,7 @@ public class Account {
         return number;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
@@ -69,4 +69,5 @@ public class Account {
     public List<Transaction> getTransactionList() {
         return transactionList;
     }
+
 }

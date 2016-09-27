@@ -1,11 +1,13 @@
 package ru.kotovalexandr.financemanager.Dao;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.kotovalexandr.financemanager.Model.Account;
 import ru.kotovalexandr.financemanager.Model.Category;
 import ru.kotovalexandr.financemanager.Model.Transaction;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,7 +32,7 @@ public class TransactionDao implements IGenericDao<Transaction> {
         try (Statement statement = connection.createStatement()) {
             String sql = "INSERT INTO TRANSACTIONS (ACCOUNT_ID,CATEGORY_ID,ISCHECKIN,DATETIME,AMOUNT,DESCR) VALUES (" +
                     fin.getAccount_id() + ", " + fin.getCategory().getId() + ", " + (fin.isCheckIn() ? 1 : 0) + ", " +
-                    fin.getDateAndTime() / 1000 + ", " + fin.getAmount() + ", '" + fin.getDesription() + "');";
+                    fin.getDateAndTime() / 1000 + ", " + fin.getAmount().doubleValue() + ", '" + fin.getDesription() + "');";
             if (statement.executeUpdate(sql) > 0) {
                 logger.info("New transaction with sum: " + fin.getAmount() + " added");
                 sql = "SELECT ID FROM TRANSACTIONS WHERE ACCOUNT_ID = " + fin.getAccount_id() + " " +
@@ -65,9 +67,10 @@ public class TransactionDao implements IGenericDao<Transaction> {
     @Override
     public void update(Transaction fin) {
         try (Statement statement = connection.createStatement()) {
-            String sql = "UPDATE TRANSACTIONS SET ACCOUNT_ID = " + fin.getAccount_id() + ", CATEGORY_ID = " + fin.getCategory() +
+            String sql = "UPDATE TRANSACTIONS SET ACCOUNT_ID = " + fin.getAccount_id() + ", CATEGORY_ID = " + fin.getCategory().getId() +
                     ", ISCHECKIN = " + (fin.isCheckIn() ? 1 : 0) + ", DATETIME = " + fin.getDateAndTime() / 1000 + ", AMOUNT = " +
-                    fin.getAmount() + ", DESCR = '" + fin.getDesription() + "' WHERE ID = " + fin.getId() + ";";
+                    fin.getAmount().doubleValue() + ", DESCR = '" + fin.getDesription() + "' " +
+                    "WHERE ID = " + fin.getId() + ";";
             if (statement.executeUpdate(sql) > 0) {
                 logger.info("transaction with sum: " + fin.getAmount() + " updated");
             } else {
@@ -115,7 +118,7 @@ public class TransactionDao implements IGenericDao<Transaction> {
                 int transactionID = transactionRS.getInt("ID");
                 boolean transactionIsCheckin = transactionRS.getInt("ISCHECKIN") == 0 ? false : true;
                 long transactionDateTime = (long) transactionRS.getInt("DATETIME") * 1000;
-                double transactionAmount = transactionRS.getDouble("AMOUNT");
+                BigDecimal transactionAmount = new BigDecimal(transactionRS.getDouble("AMOUNT"));
                 String transactionDescr = transactionRS.getString("DESCR");
                 int transactionCategoryID = transactionRS.getInt("CATEGORY_ID");
                 sql = "SELECT NAME FROM CATEGORIES WHERE ID = " + transactionCategoryID;

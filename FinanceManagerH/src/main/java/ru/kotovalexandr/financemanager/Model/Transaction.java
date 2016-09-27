@@ -1,5 +1,7 @@
 package ru.kotovalexandr.financemanager.Model;
 
+import java.math.BigDecimal;
+
 /**
  * Created by admin on 11.07.2016.
  */
@@ -8,16 +10,16 @@ public class Transaction {
     private boolean isCheckIn;
     private int account_id;
     private long dateAndTime;
-    private double amount;
+    private BigDecimal amount;
     private String desription;
     private Category category;
 
-    public Transaction(int id, boolean isCheckIn, int account_id, long dateAndTime, double amount, String desription, Category category) {
+    public Transaction(int id, boolean isCheckIn, int account_id, long dateAndTime, BigDecimal amount, String desription, Category category) {
         this(account_id, isCheckIn, amount, category, dateAndTime, desription);
         this.id = id;
     }
 
-    public Transaction(int account_id, boolean isCheckIn, double amount, Category category, long dateAndTime, String desription) {
+    public Transaction(int account_id, boolean isCheckIn, BigDecimal amount, Category category, long dateAndTime, String desription) {
         this.id = -1;
         this.account_id = account_id;
         this.amount = amount;
@@ -59,11 +61,11 @@ public class Transaction {
         this.dateAndTime = dateAndTime;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -89,7 +91,7 @@ public class Transaction {
                 "\"id\":" + id +
                 ",\"isCheckIn\":" + isCheckIn +
                 ",\"dateAndTime\":" + dateAndTime +
-                ",\"amount\":" + amount +
+                ",\"amount\":" + amount.toString() +
                 ",\"desription\":" + desription +
                 '}';
     }

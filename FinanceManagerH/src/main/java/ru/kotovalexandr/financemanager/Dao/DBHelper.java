@@ -50,11 +50,9 @@ public class DBHelper {
 
     /**
      * Method close connection
-     * */
-    public void closeConnection() throws SQLException{
-        if(connection != null) {
-            connection.close();
-        }
+     */
+    public void closeConnection() throws SQLException, NullPointerException {
+        connection.close();
     }
 
     /**

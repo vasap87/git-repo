@@ -15,7 +15,7 @@ import java.sql.Statement;
  * Created by Alex Vasilenko on 14.07.2016.
  * <p>
  * Object of this class can exist in single instance.
- * Metod authorisation @return {@link String} with authorizated login,
+ * Method authorisation @return {@link String} with authorized login,
  * else return <b>null</b>.
  * Method registration @return {@link String} with login of new user,
  * else return <b>null</b>.
@@ -31,23 +31,23 @@ public class SignInOn {
         return instance;
     }
 
-    //closed construstor
+    //closed constructor
     private SignInOn() {
 
     }
 
     /**
      * Method to authorisation user
-     * @param connection {@link Connection}
      * @param login {@link String}
      * @param password {@link String}
      *
      * @return String of login user, else <b>null</b>
      * */
-    public int authorisation(Connection connection, String login, String password) {
+    public int authorisation(String login, String password) {
         int authLoginID = 0;
         Statement statement = null;
         try {
+            Connection connection = DBHelper.getInstance().getConnection();
             statement = connection.createStatement();
             String sql = "SELECT ID FROM USERS WHERE LOGIN ='" + login + "' AND PASS = '" + hashing(password) + "';";
             ResultSet resultSet = statement.executeQuery(sql);
@@ -59,6 +59,7 @@ public class SignInOn {
             logger.error("Error in method authorisation, detail: " + e.getMessage());
         } finally {
             try {
+                DBHelper.getInstance().closeConnection();
                 statement.close();
             } catch (SQLException e) {
                 logger.error("Error at finally part of method authorisation, detail: " + e.getMessage());
@@ -69,16 +70,16 @@ public class SignInOn {
 
     /**
      * Method to registration new user
-     * @param connection {@link Connection}
      * @param login {@link String}
      * @param password {@link String}
      *
      * @return String of login new user, else <b>null</b>
      * */
-    public int registration(Connection connection, String login, String password) {
+    public int registration(String login, String password) {
         int newLoginID = 0;
         Statement statement = null;
         try  {
+            Connection connection = DBHelper.getInstance().getConnection();
             statement = connection.createStatement();
             String sql = "SELECT ID FROM USERS WHERE LOGIN ='" + login + "';";
             ResultSet resultSet = statement.executeQuery(sql);
@@ -94,14 +95,13 @@ public class SignInOn {
                         newLoginID = resultSet.getInt(1);
                         logger.info("New user with login " + login + " is registered");
                     }
-
                 }
             }
-
         } catch (SQLException e) {
             logger.error("Error in method registration, detail: " + e.getMessage());
         } finally {
             try {
+                DBHelper.getInstance().closeConnection();
                 statement.close();
             } catch (SQLException e) {
                 logger.error("Error at finally part of method registration, detail: " + e.getMessage());
@@ -131,5 +131,27 @@ public class SignInOn {
             sha_224 = "0" + sha_224;
         }
         return sha_224;
+    }
+
+    public void removeUser(int userID){
+        Statement statement = null;
+        try {
+            Connection connection = DBHelper.getInstance().getConnection();
+            statement = connection.createStatement();
+            String sql = "DELETE FROM USERS WHERE ID = " + userID +";";
+            if(statement.executeUpdate(sql)>0){
+                logger.info("User with userID: "+ userID+ " was deleted.");
+            }
+            DBHelper.getInstance().closeConnection();
+        } catch (SQLException e) {
+            logger.error("Error in method removeUser, detail: " + e.getMessage());
+        } finally {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                logger.error("Error in finally part of method removeUser, detail: " + e.getMessage());
+            }
+        }
+
     }
 }

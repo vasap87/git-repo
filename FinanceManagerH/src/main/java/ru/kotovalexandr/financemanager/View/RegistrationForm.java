@@ -1,5 +1,6 @@
 package ru.kotovalexandr.financemanager.View;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.kotovalexandr.financemanager.Dao.DBHelper;
@@ -9,14 +10,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Created by kotov.aleksandr on 11.07.2016.
+ * Created by vasilenko.aleksandr on 11.07.2016.
  * Класс описывающий форму для регистрации
  * нового пользователя, получает на вход
- * тот же сокет, который создаётся на форме
+ * тот же сокет, кторый создаётся на форме
  * авторизации
  */
 public class RegistrationForm extends JFrame {
@@ -35,7 +35,7 @@ public class RegistrationForm extends JFrame {
         setTitle("Регистрация");
 
         setLayout(layout);
-        setBounds(200, 200, 250, 100);
+        setBounds(200, 200, 300, 200);
         setResizable(false);
 
         JLabel welcomeLabel = new JLabel("Введите данные пользователя");
@@ -69,7 +69,7 @@ public class RegistrationForm extends JFrame {
         gbc.gridx = 1;
         add(passTextField, gbc);
 
-        JButton okButton = new JButton("Готово");
+        JButton okButton = new JButton("Войти");
         gbc.gridy = 4;
         gbc.gridx = 0;
         gbc.gridwidth = 1;
@@ -77,6 +77,7 @@ public class RegistrationForm extends JFrame {
             registration();
         });
         add(okButton, gbc);
+
         JButton cancelButton = new JButton("Отмена");
         gbc.gridy = 4;
         gbc.gridx = 1;
@@ -89,7 +90,7 @@ public class RegistrationForm extends JFrame {
                 try {
                     DBHelper.getInstance().closeConnection();
                 } catch (SQLException e1) {
-                    logger.error("Error on window close, detail: "+e1.getMessage());
+                    logger.error("Error on window close, detail: " + e1.getMessage());
                 }
             }
         });
@@ -103,23 +104,12 @@ public class RegistrationForm extends JFrame {
      * регистрация нового пользователя и вход
      */
     private void registration() {
-        try {
-            Connection connection = DBHelper.getInstance().getConnection();
-            this.loginID = SignInOn.getInstance().registration(connection,loginTextField.getText(),passTextField.getText());
-            if(this.loginID !=0){
-                new FinManagerFrame(loginTextField.getText(), loginID);
-                this.dispose();
-            }else{
-                JOptionPane.showMessageDialog(getContentPane(), "На сервере уже используется указанный логин.", "Ошибка регистрации", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (SQLException e) {
-            logger.error("Error in method registration, detail: "+e.getMessage());
-        } finally {
-            try {
-                DBHelper.getInstance().closeConnection();
-            } catch (SQLException e) {
-                logger.error("Error at final part in method registration, detail: "+e.getMessage());
-            }
+        this.loginID = SignInOn.getInstance().registration(loginTextField.getText(), passTextField.getText());
+        if (this.loginID != 0) {
+            new FinManagerFrame(loginTextField.getText(), loginID);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(getContentPane(), "На сервере уже используется указанный логин.", "Ошибка регистрации", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

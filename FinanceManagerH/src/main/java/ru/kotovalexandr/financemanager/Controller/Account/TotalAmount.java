@@ -1,5 +1,6 @@
 package ru.kotovalexandr.financemanager.Controller.Account;
 
+
 import ru.kotovalexandr.financemanager.Dao.AccountDao;
 import ru.kotovalexandr.financemanager.Dao.DBHelper;
 import ru.kotovalexandr.financemanager.Model.Account;
@@ -21,18 +22,18 @@ public class TotalAmount {
 
 
     public BigDecimal getTotalAmount(int userID) {
-        double result = 0;
+        BigDecimal result = new BigDecimal(0);
         try {
             Connection connection = DBHelper.getInstance().getConnection();
             AccountDao accountDao = new AccountDao(connection, userID);
             List<Account> accounts = accountDao.getAll();
             for (Account account : accounts) {
-                result += account.getAmount();
+                result = result.add(account.getAmount());
             }
             DBHelper.getInstance().closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new BigDecimal(result);
+        return result.setScale(2, BigDecimal.ROUND_HALF_EVEN);
     }
 }

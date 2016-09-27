@@ -1,11 +1,14 @@
 package ru.kotovalexandr.financemanager.Dao;
 
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.kotovalexandr.financemanager.Model.Account;
 import ru.kotovalexandr.financemanager.Model.Category;
 import ru.kotovalexandr.financemanager.Model.Transaction;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -54,7 +57,7 @@ public class AccountDao implements IGenericDao<Account> {
             if (statement.executeUpdate(sql) > 0) {
                 logger.info("Account with number: " + fin.getNumber() + " deleted");
             } else {
-                logger.error("Account with number: " + fin.getNumber() + "not deleted");
+                logger.error("Account with number: " + fin.getNumber() + " not deleted");
             }
         } catch (SQLException e) {
             logger.error("Error in method delete, detail: " + e.getMessage());
@@ -68,7 +71,7 @@ public class AccountDao implements IGenericDao<Account> {
             if (statement.executeUpdate(sql) > 0) {
                 logger.info("Account with number: " + fin.getNumber() + " updated");
             } else {
-                logger.error("Account with number: " + fin.getNumber() + "not updated");
+                logger.error("Account with number: " + fin.getNumber() + " not updated");
             }
         } catch (SQLException e) {
             logger.error("Error in method update, detail: " + e.getMessage());
@@ -92,7 +95,7 @@ public class AccountDao implements IGenericDao<Account> {
                         categoryName = resultSetCategory.getString(2);
                     }
                     transactions.add(new Transaction(resultSetTR.getInt("ID"), (resultSetTR.getInt("ISCHECKIN") == 0 ? false : true),
-                            id, resultSetTR.getInt("DATETIME") * 1000, resultSetTR.getDouble("AMOUNT"),
+                            id, resultSetTR.getInt("DATETIME") * 1000, new BigDecimal(resultSetTR.getDouble("AMOUNT")),
                             resultSetTR.getString("DESCR"), new Category(categoryName, resultSetTR.getInt("CATEGORY_ID"))));
                 }
                 logger.info("returned object Account with ID = " + id);
@@ -123,7 +126,7 @@ public class AccountDao implements IGenericDao<Account> {
                     int transactionID = resultSetTR.getInt("ID");
                     boolean transactionIsCheckin = (resultSetTR.getInt("ISCHECKIN") == 0 ? false : true);
                     long transactionDateTime = (long) resultSetTR.getInt("DATETIME") * 1000;
-                    double transactionAmount = resultSetTR.getDouble("AMOUNT");
+                    BigDecimal transactionAmount = new BigDecimal(resultSetTR.getDouble("AMOUNT"));
                     String transactionDescr = resultSetTR.getString("DESCR");
                     int transactionCategoryID = resultSetTR.getInt("CATEGORY_ID");
                     sql = "SELECT NAME FROM CATEGORIES WHERE ID = " + transactionCategoryID;

@@ -1,9 +1,9 @@
 package ru.kotovalexandr.financemanager.Controller.Account;
 
+
 import ru.kotovalexandr.financemanager.Controller.IObservable;
 import ru.kotovalexandr.financemanager.Controller.IObserver;
 import ru.kotovalexandr.financemanager.View.Tools.JList.AccountJList;
-
 
 /**
  * Created by vasilenko.aleksandr on 26.07.2016.

@@ -1,5 +1,7 @@
 package ru.kotovalexandr.financemanager.View.Tools.JCategory;
 
+
+
 import ru.kotovalexandr.financemanager.Controller.Categories.CategoryList;
 import ru.kotovalexandr.financemanager.Model.Category;
 import ru.kotovalexandr.financemanager.View.AddEdit.AddEditCategory;
@@ -7,10 +9,7 @@ import ru.kotovalexandr.financemanager.View.Tools.JList.CategoryJList;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
 /**
  * Created by vasilenko.aleksandr on 27.07.2016.

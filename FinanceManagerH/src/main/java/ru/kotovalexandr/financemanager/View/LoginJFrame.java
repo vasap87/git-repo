@@ -1,5 +1,6 @@
 package ru.kotovalexandr.financemanager.View;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.kotovalexandr.financemanager.Dao.DBHelper;
@@ -9,7 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
@@ -65,10 +65,10 @@ public class LoginJFrame extends JFrame {
         });
         add(enterButton, gbc);
 
-        JButton canselButton = new JButton("Отмена");
+        JButton cancelButton = new JButton("Отмена");
         gbc.gridx = 1;
-        canselButton.addActionListener(e -> System.exit(3));
-        add(canselButton, gbc);
+        cancelButton.addActionListener(e -> System.exit(3));
+        add(cancelButton, gbc);
 
         JButton registrationButton = new JButton("Регистрация");
         gbc.gridy = 3;
@@ -86,7 +86,7 @@ public class LoginJFrame extends JFrame {
                 try {
                     DBHelper.getInstance().closeConnection();
                 } catch (SQLException e1) {
-                    logger.error("Error on window close, detail: "+e1.getMessage());
+                    logger.error("Error on window close, detail: " + e1.getMessage());
                 }
             }
         });
@@ -96,20 +96,13 @@ public class LoginJFrame extends JFrame {
     }
 
     private void authorisation(String login, String password) {
-        try {
-            Connection connection = DBHelper.getInstance().getConnection();
-            this.loginID = SignInOn.getInstance().authorisation(connection,login,password);
-            if(this.loginID!=0){
-                new FinManagerFrame(login, loginID);
-                this.dispose();
-            }else{
-                JOptionPane.showMessageDialog(getContentPane(), "На сервере не найдена указанная комбинация логина и пароля.", "Ошибка авторизации", JOptionPane.ERROR_MESSAGE);
-            }
-            DBHelper.getInstance().closeConnection();
-        } catch (SQLException e) {
-            logger.error("Error in method authorisation, detail: "+e.getMessage());
+        this.loginID = SignInOn.getInstance().authorisation(login, password);
+        if (this.loginID != 0) {
+            new FinManagerFrame(login, loginID);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(getContentPane(), "На сервере не найдена указанная комбинация логина и пароля.", "Ошибка авторизации", JOptionPane.ERROR_MESSAGE);
         }
-
     }
 }
 

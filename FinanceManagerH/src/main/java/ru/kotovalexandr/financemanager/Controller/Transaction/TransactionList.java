@@ -1,5 +1,6 @@
 package ru.kotovalexandr.financemanager.Controller.Transaction;
 
+
 import ru.kotovalexandr.financemanager.Controller.IObservable;
 import ru.kotovalexandr.financemanager.Controller.IObserver;
 import ru.kotovalexandr.financemanager.View.Tools.JList.TransactionJList;

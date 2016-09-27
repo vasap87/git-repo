@@ -1,5 +1,6 @@
 package ru.kotovalexandr.financemanager.Dao;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.kotovalexandr.financemanager.Model.Category;
@@ -46,9 +47,9 @@ public class CategoryDao implements IGenericDao<Category> {
         try (Statement statement = connection.createStatement()) {
             String sql = "DELETE FROM CATEGORIES WHERE ID = " + fin.getId() + ";";
             if (statement.executeUpdate(sql) > 0) {
-                logger.info("Category : " + fin.getName() + " deleted");
+                logger.info("Category: " + fin.getName() + " deleted");
             } else {
-                logger.error("Category: " + fin.getName() + "not deleted");
+                logger.error("Category: " + fin.getName() + " not deleted");
             }
         } catch (SQLException e) {
             logger.error("Error in method delete, detail: " + e.getMessage());
@@ -69,7 +70,17 @@ public class CategoryDao implements IGenericDao<Category> {
 
     @Override
     public Category findById(int id) {
-        return null;
+        Category category = null;
+        try (Statement statement = connection.createStatement()) {
+            String sql = "SELECT ID, NAME FROM CATEGORIES WHERE ID = "+id+";";
+            ResultSet resultSet = statement.executeQuery(sql);
+            if(resultSet.next()){
+                category = new Category(resultSet.getString("NAME"), id);
+            }
+        } catch (SQLException e) {
+            logger.error("Error in method update, detail: " + e.getMessage());
+        }
+        return category;
     }
 
     @Override

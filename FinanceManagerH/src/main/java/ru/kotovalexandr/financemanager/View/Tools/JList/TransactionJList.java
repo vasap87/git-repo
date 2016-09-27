@@ -1,17 +1,15 @@
 package ru.kotovalexandr.financemanager.View.Tools.JList;
 
-import ru.kotovalexandr.financemanager.Controller.Account.AccountList;
+
 import ru.kotovalexandr.financemanager.Controller.IObserver;
-import ru.kotovalexandr.financemanager.Dao.DBHelper;
-import ru.kotovalexandr.financemanager.Dao.TransactionDao;
+import ru.kotovalexandr.financemanager.Controller.Services.TransactionService;
 import ru.kotovalexandr.financemanager.Model.Account;
 import ru.kotovalexandr.financemanager.Model.Transaction;
 import ru.kotovalexandr.financemanager.View.AddEdit.AddEditTransaction;
 import ru.kotovalexandr.financemanager.View.Tools.JList.Renders.ListTransactionRender;
 
 import javax.swing.*;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -30,7 +28,7 @@ public class TransactionJList extends JList implements IObserver {
     /**
      * Constructor to create Swing Object of this class
      * with {@link JList} behavior;
-     * */
+     */
     public TransactionJList(JFrame frame, AccountJList accountJList) {
         super();
         this.frame = frame;
@@ -43,14 +41,14 @@ public class TransactionJList extends JList implements IObserver {
         JMenuItem edit = new JMenuItem("Редактировать");
         edit.addActionListener(e -> {
             Transaction transaction = null;
-            if(!isSelectionEmpty()) {
+            if (!isSelectionEmpty()) {
                 transaction = (Transaction) getSelectedValue();
-            }else{
+            } else {
                 setSelectedIndex(0);
-                transaction = (Transaction) getSelectedValue() ;
+                transaction = (Transaction) getSelectedValue();
             }
-                new AddEditTransaction(frame, "Добавление транзакции", true,
-                        (Account) accountJList.getSelectedValue(), transaction).setVisible(true);
+            new AddEditTransaction(frame, "Редактирование транзакции", true,
+                    (Account) accountJList.getSelectedValue(), transaction).setVisible(true);
 
         });
         JMenuItem delete = new JMenuItem("Удалить");
@@ -68,51 +66,25 @@ public class TransactionJList extends JList implements IObserver {
      * This method check, if there ara no items selected in {@link JList},
      * we selected first, and then we ask user by using {@link JOptionPane},
      * if hi want delete this item? we delete it.
-     * */
+     */
     @Override
     public void remove(int index) {
-        if(isSelectionEmpty()){
+        if (isSelectionEmpty()) {
             setSelectedIndex(0);
         }
         Transaction transaction = (Transaction) getSelectedValue();
         Date date = new Date(transaction.getDateAndTime());
-        SimpleDateFormat currentDate = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-        int answer = JOptionPane.showConfirmDialog(this, "Вы уверены что ходите удалить транзакцию на сумму "+ transaction.getAmount() +
-                " от " + currentDate.format(date) + " ?", "Подтверждение удаление элемента",
-                JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
-        if(answer == 0){
-            try {
-                Connection connection = DBHelper.getInstance().getConnection();
-                TransactionDao transactionDao = new TransactionDao(connection);
-                transactionDao.delete(transaction);
-                handelEvent();
-                AccountList.getInstance().notifyObservers();
-                DBHelper.getInstance().closeConnection();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd.MM.yyyy");
+        int answer = JOptionPane.showConfirmDialog(this, "Вы уверены что ходите удалить транзакцию на сумму " + transaction.getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN) +
+                        " от " + currentDate.format(date) + " ?", "Подтверждение удаление элемента",
+                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (answer == 0) {
+            TransactionService.getInstance().remove(transaction);
         }
-
-
     }
 
     @Override
     public void handelEvent() {
-        if(accountJList.isSelectionEmpty()){
-            accountJList.setSelectedIndex(0);
-        }
-        Account account = (Account) accountJList.getSelectedValue();
-        if(account!=null) {
-            try {
-                Connection connection = DBHelper.getInstance().getConnection();
-                TransactionDao transactionDao = new TransactionDao(connection);
-                transactions = transactionDao.getAllByAccout(account);
-                Object arr[] = transactions.toArray();
-                setListData(arr);
-                DBHelper.getInstance().closeConnection();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+        TransactionService.getInstance().updateList(this, accountJList);
     }
 }
