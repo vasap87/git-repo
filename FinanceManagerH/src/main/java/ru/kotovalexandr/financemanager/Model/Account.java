@@ -1,18 +1,28 @@
 package ru.kotovalexandr.financemanager.Model;
 
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.List;
 
 /**
  * Created by admin on 12.07.2016.
  */
+@Entity
+@Table(name = "ACCOUNTS")
 public class Account {
+    @Id
     private int id;
     private String number;
     private BigDecimal amount = new BigDecimal(0);
     private int userId;
     private String description;
     private List<Transaction> transactionList;
+
+    public Account() {
+    }
 
     public Account(String number, int userId, String description, List<Transaction> transactionArrayList){
         this.number = number;

@@ -1,7 +1,6 @@
 package ru.kotovalexandr.financemanager.Controller.Services;
 
 
-
 import ru.kotovalexandr.financemanager.Dao.CategoryDao;
 import ru.kotovalexandr.financemanager.Dao.DBHelper;
 import ru.kotovalexandr.financemanager.Model.Category;
@@ -68,5 +67,6 @@ public class CategoryService {
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
+
     }
 }
