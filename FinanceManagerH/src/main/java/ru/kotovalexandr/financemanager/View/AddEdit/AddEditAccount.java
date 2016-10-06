@@ -4,6 +4,7 @@ package ru.kotovalexandr.financemanager.View.AddEdit;
 import ru.kotovalexandr.financemanager.Controller.Account.AccountList;
 import ru.kotovalexandr.financemanager.Controller.Services.AccountService;
 import ru.kotovalexandr.financemanager.Model.Account;
+import ru.kotovalexandr.financemanager.Model.User;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -88,9 +89,9 @@ public class AddEditAccount extends JDialog implements ActionListener {
                         account.setNumber(numberTF.getText());
                         account.setDescription(descrTA.getText());
                     } else {
-                        account = new Account(numberTF.getText(), userID, descrTA.getText(), new ArrayList<>());
+                        account = new Account(numberTF.getText(), new User(), descrTA.getText(), new ArrayList<>());
                     }
-                    AccountService.getInstance().addOrUpdateAccount(account, userID, operID);
+                    AccountService.addOrUpdateAccount(account,  operID);
                     AccountList.getInstance().notifyObservers();
                     this.dispose();
                 }

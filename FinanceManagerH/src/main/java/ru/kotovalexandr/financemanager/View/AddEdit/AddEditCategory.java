@@ -73,7 +73,7 @@ public class AddEditCategory extends JDialog implements ActionListener {
                 }else {
                     category = new Category(name.getText());
                 }
-                CategoryService.getInstance().addOrUpdateCategory(category, operID);
+                CategoryService.addOrUpdateCategory(category, operID);
                 CategoryList.getInstance().notifyObservers();
                 this.dispose();
                 break;

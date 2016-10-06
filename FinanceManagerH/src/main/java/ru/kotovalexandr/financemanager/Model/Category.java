@@ -1,11 +1,25 @@
 package ru.kotovalexandr.financemanager.Model;
 
+import javax.persistence.*;
+import java.io.Serializable;
+
 /**
  * Created by Alex Vasilenko on 14.07.2016.
  */
-public class Category {
-    private String name;
+@Entity
+@Table(name = "CATEGORIES")
+public class Category  implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     private int id;
+
+    @Column(name = "NAME")
+    private String name;
+
+    public Category() {
+    }
 
     public Category(String name) {
         this.name = name;

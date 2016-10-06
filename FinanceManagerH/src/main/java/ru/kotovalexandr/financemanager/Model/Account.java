@@ -1,9 +1,7 @@
 package ru.kotovalexandr.financemanager.Model;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -12,23 +10,40 @@ import java.util.List;
  */
 @Entity
 @Table(name = "ACCOUNTS")
-public class Account {
+public class Account  implements Serializable {
     @Id
+    @GeneratedValue (strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     private int id;
+
+    @Column(name = "NUMBER")
     private String number;
+
+    @Column(name = "AMOUNT")
     private BigDecimal amount = new BigDecimal(0);
-    private int userId;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
+
+    @Column(name = "DESCR")
     private String description;
+
+    @OneToMany(targetEntity = ru.kotovalexandr.financemanager.Model.Transaction.class,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "id")
     private List<Transaction> transactionList;
 
     public Account() {
     }
 
-    public Account(String number, int userId, String description, List<Transaction> transactionArrayList){
+    public Account(String number, User user, String description, List<Transaction> transactionArrayList){
         this.number = number;
         this.id=-1;
         this.description = description;
-        this.userId = userId;
+        this.user = user;
+        user.addAccount(this);
         this.transactionList = transactionArrayList;
         for (Transaction transaction : transactionArrayList) {
             if(transaction.isCheckIn()){
@@ -39,8 +54,8 @@ public class Account {
         }
     }
 
-    public Account(int id, String number, int userId, String description, List<Transaction> transactionArrayList) {
-        this(number,userId,description, transactionArrayList);
+    public Account(int id, String number, User user, String description, List<Transaction> transactionArrayList) {
+        this(number,user,description, transactionArrayList);
         this.id = id;
     }
 
@@ -61,7 +76,7 @@ public class Account {
     }
 
     public int getUserId() {
-        return userId;
+        return user.getId();
     }
 
     public void setId(int id) {

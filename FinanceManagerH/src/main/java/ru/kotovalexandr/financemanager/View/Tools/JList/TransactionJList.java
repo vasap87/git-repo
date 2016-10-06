@@ -79,12 +79,12 @@ public class TransactionJList extends JList implements IObserver {
                         " от " + currentDate.format(date) + " ?", "Подтверждение удаление элемента",
                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (answer == 0) {
-            TransactionService.getInstance().remove(transaction);
+            TransactionService.remove(transaction);
         }
     }
 
     @Override
     public void handelEvent() {
-        TransactionService.getInstance().updateList(this, accountJList);
+        TransactionService.updateList(this, accountJList);
     }
 }

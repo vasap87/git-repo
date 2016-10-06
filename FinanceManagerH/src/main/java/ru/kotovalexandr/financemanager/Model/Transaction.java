@@ -1,18 +1,42 @@
 package ru.kotovalexandr.financemanager.Model;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * Created by admin on 11.07.2016.
  */
-public class Transaction {
+@Entity
+@Table(name = "TRANSACTIONS")
+public class Transaction implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     private int id;
+
+    @Column(name = "ISCHECKIN")
     private boolean isCheckIn;
+
+    @ManyToOne(targetEntity = ru.kotovalexandr.financemanager.Model.Account.class, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "ACCOUNT_ID")
     private int account_id;
+
+    @Column(name = "DATETIME")
     private long dateAndTime;
+
+    @Column(name = "AMOUNT")
     private BigDecimal amount;
+
+    @Column(name = "DESCR")
     private String desription;
+
+    @ManyToOne(targetEntity = ru.kotovalexandr.financemanager.Model.Category.class, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "CATEGORY_ID")
     private Category category;
+
+    public Transaction() {
+    }
 
     public Transaction(int id, boolean isCheckIn, int account_id, long dateAndTime, BigDecimal amount, String desription, Category category) {
         this(account_id, isCheckIn, amount, category, dateAndTime, desription);

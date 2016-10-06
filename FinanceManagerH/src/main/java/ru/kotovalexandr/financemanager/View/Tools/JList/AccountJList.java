@@ -5,6 +5,7 @@ package ru.kotovalexandr.financemanager.View.Tools.JList;
 import ru.kotovalexandr.financemanager.Controller.IObserver;
 import ru.kotovalexandr.financemanager.Controller.Services.AccountService;
 import ru.kotovalexandr.financemanager.Model.Account;
+import ru.kotovalexandr.financemanager.Model.User;
 import ru.kotovalexandr.financemanager.View.AddEdit.AddEditAccount;
 import ru.kotovalexandr.financemanager.View.Tools.JList.Renders.ListAccountRender;
 
@@ -66,7 +67,7 @@ public class AccountJList extends JList implements IObserver {
         int answer = JOptionPane.showConfirmDialog(this, "Вы уверены что ходите удалить счёт №" + account.getNumber(),
                 "Подтверждение удаление эллемента", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (answer == 0) {
-            AccountService.getInstance().remove(account, userID);
+            AccountService.remove(account);
             handelEvent();
         }
     }
@@ -84,6 +85,6 @@ public class AccountJList extends JList implements IObserver {
 
     @Override
     public void handelEvent() {
-        AccountService.getInstance().updateList(this, userID);
+        AccountService.updateList(this, new User());
     }
 }

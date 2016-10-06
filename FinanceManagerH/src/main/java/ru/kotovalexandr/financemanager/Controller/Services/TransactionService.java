@@ -18,17 +18,12 @@ import java.util.List;
 /**
  * Created by vasilenko.aleksandr on 24.08.2016.
  */
-public class TransactionService {
-    private static TransactionService ourInstance = new TransactionService();
-
-    public static TransactionService getInstance() {
-        return ourInstance;
-    }
+public final class TransactionService {
 
     private TransactionService() {
     }
 
-    public void updateList(TransactionJList transactionJList, AccountJList accountJList){
+    public static void updateList(TransactionJList transactionJList, AccountJList accountJList){
         if (accountJList.isSelectionEmpty()) {
             accountJList.setSelectedIndex(0);
         }
@@ -47,7 +42,7 @@ public class TransactionService {
         }
     }
 
-    public void remove(Transaction transaction) {
+    public static void remove(Transaction transaction) {
         try {
             Connection connection = DBHelper.getInstance().getConnection();
             TransactionDao transactionDao = new TransactionDao(connection);
@@ -60,7 +55,7 @@ public class TransactionService {
         }
     }
 
-    public void addOrUpdateTransaction(Transaction transaction, int operID) {
+    public static void addOrUpdateTransaction(Transaction transaction, int operID) {
         try {
             Connection connection = DBHelper.getInstance().getConnection();
             TransactionDao transactionDao = new TransactionDao(connection);

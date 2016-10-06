@@ -19,7 +19,7 @@ public class CategoryJList extends JList implements IObserver {
 
     @Override
     public void handelEvent() {
-        CategoryService.getInstance().updateList(this);
+        CategoryService.updateList(this);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class CategoryJList extends JList implements IObserver {
         int answer = JOptionPane.showConfirmDialog(this, "Вы уверены что ходите удалить категорию \"" + category.getName() +"\"",
                 "Подтверждение удаление эллемента", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (answer == 0) {
-            CategoryService.getInstance().remove(this, category);
+            CategoryService.remove(this, category);
         }
     }
 }

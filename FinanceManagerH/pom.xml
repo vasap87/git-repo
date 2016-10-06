@@ -12,7 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <SQLite.JDBC.version>3.7.2</SQLite.JDBC.version>
         <H2.version>1.4.191</H2.version>
-        <hibernate.version>4.2.19.Final</hibernate.version>
+        <hibernate.version>5.2.2.Final</hibernate.version>
         <hamcrest.version>5.1.0.Final</hamcrest.version>
         <slf4j.version>1.7.21</slf4j.version>
         <swingx.version>1.6.1</swingx.version>

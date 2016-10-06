@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import ru.kotovalexandr.financemanager.Model.Account;
 import ru.kotovalexandr.financemanager.Model.Category;
 import ru.kotovalexandr.financemanager.Model.Transaction;
+import ru.kotovalexandr.financemanager.Model.User;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -99,7 +100,7 @@ public class AccountDao implements IGenericDao<Account> {
                             resultSetTR.getString("DESCR"), new Category(categoryName, resultSetTR.getInt("CATEGORY_ID"))));
                 }
                 logger.info("returned object Account with ID = " + id);
-                return new Account(id, resultSet.getString("NUMBER"), resultSet.getInt("USER_ID"), resultSet.getString("DESCR"), transactions);
+                return new Account(id, resultSet.getString("NUMBER"), new User(), resultSet.getString("DESCR"), transactions);
             }
         } catch (SQLException e) {
             logger.error("Error in method findById, detail: " + e.getMessage());
@@ -142,7 +143,7 @@ public class AccountDao implements IGenericDao<Account> {
                             transactionDescr, new Category(categoryName, transactionCategoryID)));
                 }
                 transactionStatement.close();
-                accounts.add(new Account(accountID, accountNumber, userID, accountDescr, transactions));
+                accounts.add(new Account(accountID, accountNumber, new User(), accountDescr, transactions));
             }
             accountStatement.close();
         } catch (SQLException e) {

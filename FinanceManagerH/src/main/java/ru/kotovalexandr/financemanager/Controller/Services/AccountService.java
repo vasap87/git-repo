@@ -1,70 +1,55 @@
 package ru.kotovalexandr.financemanager.Controller.Services;
 
 
-
-import ru.kotovalexandr.financemanager.Dao.AccountDao;
-import ru.kotovalexandr.financemanager.Dao.DBHelper;
+import ru.kotovalexandr.financemanager.Hibernate.DAO.AccountDaoImpl;
+import ru.kotovalexandr.financemanager.Hibernate.DAO.CommonGenDaoImpl;
+import ru.kotovalexandr.financemanager.Hibernate.DAO.DAOFabric;
 import ru.kotovalexandr.financemanager.Model.Account;
+import ru.kotovalexandr.financemanager.Model.User;
 import ru.kotovalexandr.financemanager.View.Tools.JList.AccountJList;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
  * Created by vasilenko.aleksandr on 24.08.2016.
  */
-public class AccountService {
-    private static AccountService ourInstance = new AccountService();
-
-    public static AccountService getInstance() {
-        return ourInstance;
-    }
+public final class AccountService {
 
     private AccountService() {
     }
 
-    public void updateList(AccountJList accountJList, int userID) {
-        try {
-            Connection connection = DBHelper.getInstance().getConnection();
-            AccountDao accountDao = new AccountDao(connection, userID);
-            List<Account> accounts = accountDao.getAll();
-            Object arr[] = accounts.toArray();
-            accountJList.setListData(arr);
-            DBHelper.getInstance().closeConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    public static void updateList(AccountJList accountJList, User user) {
 
-    public void remove(Account account, int userID) {
-        try {
-            Connection connection = DBHelper.getInstance().getConnection();
-            AccountDao accountDao = new AccountDao(connection, userID);
-            accountDao.delete(account);
-            DBHelper.getInstance().closeConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void addOrUpdateAccount(Account account, int userID, int operID) {
-        try {
-            Connection connection = DBHelper.getInstance().getConnection();
-            AccountDao accountDao = new AccountDao(connection, userID);
-            switch (operID) {
-                case 0: {
-                    accountDao.save(account);
-                    break;
-                }
-                case 1: {
-                    accountDao.update(account);
-                    break;
-                }
+        AccountDaoImpl accountDao = DAOFabric.getAccountDao();
+        List<Account> accounts = accountDao.getAll();
+        for(Account account: accounts){
+            if(account.getUserId()!=user.getId()){
+                accounts.remove(account);
             }
-            DBHelper.getInstance().closeConnection();
-        } catch (SQLException e1) {
-            e1.printStackTrace();
+        }
+        Object arr[] = accounts.toArray();
+        accountJList.setListData(arr);
+
+    }
+
+    public static void remove(Account account) {
+        CommonGenDaoImpl commonDao = DAOFabric.getCommonDao();
+        commonDao.delete(account);
+    }
+
+    public static void addOrUpdateAccount(Account account, int operID) {
+        CommonGenDaoImpl commonDao = DAOFabric.getCommonDao();
+        switch (operID) {
+            case 0: {
+                commonDao.save(account);
+                break;
+            }
+            case 1: {
+                commonDao.update(account);
+                break;
+            }
         }
     }
+
+
 }

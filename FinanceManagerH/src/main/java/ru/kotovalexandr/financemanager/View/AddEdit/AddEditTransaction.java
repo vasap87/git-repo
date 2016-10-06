@@ -130,7 +130,7 @@ public class AddEditTransaction extends JDialog implements ActionListener {
                     transaction.setCheckIn(isCheckin.isSelected());
                     transaction.setDesription(descrTA.getText());
                 }
-                TransactionService.getInstance().addOrUpdateTransaction(transaction, operID);
+                TransactionService.addOrUpdateTransaction(transaction, operID);
                 AccountList.getInstance().notifyObservers();
                 TransactionList.getInstance().notifyObservers();
                 this.dispose();
