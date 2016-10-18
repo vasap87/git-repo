@@ -18,9 +18,9 @@ public class Transaction implements Serializable {
     @Column(name = "ISCHECKIN")
     private boolean isCheckIn;
 
-    @ManyToOne(targetEntity = ru.kotovalexandr.financemanager.Model.Account.class, cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(name = "ACCOUNT_ID")
-    private int account_id;
+    private Account account;
 
     @Column(name = "DATETIME")
     private long dateAndTime;
@@ -31,21 +31,21 @@ public class Transaction implements Serializable {
     @Column(name = "DESCR")
     private String desription;
 
-    @ManyToOne(targetEntity = ru.kotovalexandr.financemanager.Model.Category.class, cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(name = "CATEGORY_ID")
     private Category category;
 
     public Transaction() {
     }
 
-    public Transaction(int id, boolean isCheckIn, int account_id, long dateAndTime, BigDecimal amount, String desription, Category category) {
-        this(account_id, isCheckIn, amount, category, dateAndTime, desription);
+    public Transaction(int id, boolean isCheckIn, Account account, long dateAndTime, BigDecimal amount, String desription, Category category) {
+        this(account, isCheckIn, amount, category, dateAndTime, desription);
         this.id = id;
     }
 
-    public Transaction(int account_id, boolean isCheckIn, BigDecimal amount, Category category, long dateAndTime, String desription) {
+    public Transaction(Account account, boolean isCheckIn, BigDecimal amount, Category category, long dateAndTime, String desription) {
         this.id = -1;
-        this.account_id = account_id;
+        this.account = account;
         this.amount = amount;
         this.category = category;
         this.dateAndTime = dateAndTime;
@@ -70,20 +70,14 @@ public class Transaction implements Serializable {
     }
 
     public int getAccount_id() {
-        return account_id;
+        return account.getId();
     }
 
-    public void setAccount_id(int account_id) {
-        this.account_id = account_id;
-    }
 
     public long getDateAndTime() {
         return dateAndTime;
     }
 
-    public void setDateAndTime(long dateAndTime) {
-        this.dateAndTime = dateAndTime;
-    }
 
     public BigDecimal getAmount() {
         return amount;
@@ -107,6 +101,14 @@ public class Transaction implements Serializable {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     @Override

@@ -8,9 +8,9 @@ import ru.kotovalexandr.financemanager.Hibernate.util.HibernateUtil;
 /**
  * Created by alexkotov on 30.09.16.
  */
-public final class CommonGenDaoImpl<T> implements ICommonGenDao<T> {
+public final class CommonGenDaoImpl implements ICommonGenDao {
     @Override
-    public void save(T entity) {
+    public void save(Object entity) {
         Session session = null;
         try{
             session = HibernateUtil.getSession();
@@ -30,7 +30,7 @@ public final class CommonGenDaoImpl<T> implements ICommonGenDao<T> {
     }
 
     @Override
-    public void delete(T entity) {
+    public void delete(Object entity) {
         Session session = null;
         try{
             session = HibernateUtil.getSession();
@@ -50,7 +50,7 @@ public final class CommonGenDaoImpl<T> implements ICommonGenDao<T> {
     }
 
     @Override
-    public void update(T entity) {
+    public void update(Object entity) {
         Session session = null;
         try{
             session = HibernateUtil.getSession();

@@ -3,8 +3,10 @@ package ru.kotovalexandr.financemanager.View;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.kotovalexandr.financemanager.Controller.Services.SignInOnService;
 import ru.kotovalexandr.financemanager.Dao.DBHelper;
 import ru.kotovalexandr.financemanager.Dao.SignInOn;
+import ru.kotovalexandr.financemanager.Model.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +21,6 @@ import java.sql.SQLException;
 public class LoginJFrame extends JFrame {
     private static Logger logger = LoggerFactory.getLogger(LoginJFrame.class);
 
-    private int loginID;
 
     public LoginJFrame() {
 
@@ -60,9 +61,7 @@ public class LoginJFrame extends JFrame {
         JButton enterButton = new JButton("Вход");
         gbc.gridy = 2;
         gbc.gridx = 0;
-        enterButton.addActionListener(e -> {
-            authorisation(login.getText(), password.getText());
-        });
+        enterButton.addActionListener(e -> authorisation(login.getText(), password.getText()));
         add(enterButton, gbc);
 
         JButton cancelButton = new JButton("Отмена");
@@ -80,28 +79,20 @@ public class LoginJFrame extends JFrame {
         });
         add(registrationButton, gbc);
 
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                try {
-                    DBHelper.getInstance().closeConnection();
-                } catch (SQLException e1) {
-                    logger.error("Error on window close, detail: " + e1.getMessage());
-                }
-            }
-        });
-
         setVisible(true);
+        logger.info("Login form is visible.");
 
     }
 
     private void authorisation(String login, String password) {
-        this.loginID = SignInOn.getInstance().authorisation(login, password);
-        if (this.loginID != 0) {
-            new FinManagerFrame(login, loginID);
+        User user = SignInOnService.authorisationService(login,password);
+        if (user != null) {
+            new FinManagerFrame(user);
+            logger.info("User with login " + user.getLogin() + " is login.");
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(getContentPane(), "На сервере не найдена указанная комбинация логина и пароля.", "Ошибка авторизации", JOptionPane.ERROR_MESSAGE);
+            logger.info("User with login " + user.getLogin() + " and password is not register.");
         }
     }
 }

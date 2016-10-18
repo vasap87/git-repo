@@ -121,7 +121,7 @@ public class AddEditTransaction extends JDialog implements ActionListener {
                     category = categoryJComponent.getCategory();
                 }
                 if (transaction == null){
-                    transaction = new Transaction(account.getId(),isCheckin.isSelected(),
+                    transaction = new Transaction(account,isCheckin.isSelected(),
                             new BigDecimal(amountTF.getValue().toString()), category,
                             datetimeTF.getDate().getTime(), descrTA.getText());
                 }else {

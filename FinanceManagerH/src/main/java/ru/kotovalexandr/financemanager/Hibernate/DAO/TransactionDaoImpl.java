@@ -3,6 +3,7 @@ package ru.kotovalexandr.financemanager.Hibernate.DAO;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import ru.kotovalexandr.financemanager.Hibernate.util.HibernateUtil;
+import ru.kotovalexandr.financemanager.Model.Account;
 import ru.kotovalexandr.financemanager.Model.Transaction;
 
 import java.util.ArrayList;
@@ -38,12 +39,12 @@ public final class TransactionDaoImpl implements IGenDao<Transaction> {
 
     @Override
     public List<Transaction> getAll() {
-        List<Transaction> accounts = null;
+        List<Transaction> transactions = null;
         Session session = null;
         try{
             session = HibernateUtil.getSession();
             session.getTransaction().begin();
-            accounts = new ArrayList<>(session.createQuery("from Transaction").list());
+            transactions = new ArrayList<>(session.createQuery("from Transaction").list());
             session.getTransaction().commit();
         } catch (HibernateException e){
             if(session!=null){
@@ -54,6 +55,26 @@ public final class TransactionDaoImpl implements IGenDao<Transaction> {
                 session.close();
             }
         }
-        return accounts;
+        return transactions;
+    }
+
+    public List<Transaction> getAllbyAccount(Account account){
+        List<Transaction> transactions = null;
+        Session session = null;
+        try{
+            session = HibernateUtil.getSession();
+            session.getTransaction().begin();
+            transactions = new ArrayList<>(session.createQuery("from Transaction as t where t.account.id="+account.getId()).list());
+            session.getTransaction().commit();
+        } catch (HibernateException e){
+            if(session!=null){
+                session.getTransaction().rollback();
+            }
+        } finally {
+            if(session!=null){
+                session.close();
+            }
+        }
+        return transactions;
     }
 }

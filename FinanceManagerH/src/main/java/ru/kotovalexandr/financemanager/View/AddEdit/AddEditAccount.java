@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class AddEditAccount extends JDialog implements ActionListener {
 
-    private int userID;
+    private User user;
     private int operID;
 
     private Color color;
@@ -32,9 +32,9 @@ public class AddEditAccount extends JDialog implements ActionListener {
     private JButton okButton;
     private Account account;
 
-    public AddEditAccount(Frame owner, String title, boolean modal, int userID) {
+    public AddEditAccount(Frame owner, String title, boolean modal, User user) {
         super(owner, title, modal);
-        this.userID = userID;
+        this.user = user;
         operID = 0;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(250, 200);
@@ -66,8 +66,8 @@ public class AddEditAccount extends JDialog implements ActionListener {
         color = numberTF.getBackground();
     }
 
-    public AddEditAccount(Frame owner, String title, boolean modal, int userID, Account account) {
-        this(owner, title, modal, userID);
+    public AddEditAccount(Frame owner, String title, boolean modal, User user, Account account) {
+        this(owner, title, modal, user);
         this.account = account;
         operID = 1;
         numberTF.setText(account.getNumber());
@@ -89,7 +89,7 @@ public class AddEditAccount extends JDialog implements ActionListener {
                         account.setNumber(numberTF.getText());
                         account.setDescription(descrTA.getText());
                     } else {
-                        account = new Account(numberTF.getText(), new User(), descrTA.getText(), new ArrayList<>());
+                        account = new Account(numberTF.getText(), user, descrTA.getText());
                     }
                     AccountService.addOrUpdateAccount(account,  operID);
                     AccountList.getInstance().notifyObservers();

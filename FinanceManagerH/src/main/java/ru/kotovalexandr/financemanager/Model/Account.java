@@ -1,8 +1,12 @@
 package ru.kotovalexandr.financemanager.Model;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,33 +33,23 @@ public class Account  implements Serializable {
     @Column(name = "DESCR")
     private String description;
 
-    @OneToMany(targetEntity = ru.kotovalexandr.financemanager.Model.Transaction.class,
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            mappedBy = "id")
-    private List<Transaction> transactionList;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "account")
+    private List<Transaction> transactionList = new ArrayList<>();
 
     public Account() {
     }
 
-    public Account(String number, User user, String description, List<Transaction> transactionArrayList){
+    public Account(String number, User user, String description){
         this.number = number;
         this.id=-1;
         this.description = description;
         this.user = user;
         user.addAccount(this);
-        this.transactionList = transactionArrayList;
-        for (Transaction transaction : transactionArrayList) {
-            if(transaction.isCheckIn()){
-                amount = amount.add(transaction.getAmount());
-            }else{
-                amount = amount.subtract(transaction.getAmount());
-            }
-        }
+
     }
 
-    public Account(int id, String number, User user, String description, List<Transaction> transactionArrayList) {
-        this(number,user,description, transactionArrayList);
+    public Account(int id, String number, User user, String description) {
+        this(number,user,description);
         this.id = id;
     }
 
@@ -95,4 +89,13 @@ public class Account  implements Serializable {
         return transactionList;
     }
 
+    public void updateAmmount() {
+        for (Transaction transaction : transactionList) {
+            if(transaction.isCheckIn()){
+                amount = amount.add(transaction.getAmount());
+            }else{
+                amount = amount.subtract(transaction.getAmount());
+            }
+        }
+    }
 }

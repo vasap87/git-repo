@@ -11,7 +11,8 @@ import ru.kotovalexandr.financemanager.View.Tools.JList.AccountJList;
 import java.util.List;
 
 /**
- * Created by vasilenko.aleksandr on 24.08.2016.
+ * Created by Alexandr Kotov on 24.08.2016.
+ * This class is service to give data in view.
  */
 public final class AccountService {
 
@@ -21,11 +22,9 @@ public final class AccountService {
     public static void updateList(AccountJList accountJList, User user) {
 
         AccountDaoImpl accountDao = DAOFabric.getAccountDao();
-        List<Account> accounts = accountDao.getAll();
+        List<Account> accounts = accountDao.getAllbyUser(user);
         for(Account account: accounts){
-            if(account.getUserId()!=user.getId()){
-                accounts.remove(account);
-            }
+            account.updateAmmount();
         }
         Object arr[] = accounts.toArray();
         accountJList.setListData(arr);

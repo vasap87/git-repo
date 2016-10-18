@@ -1,6 +1,9 @@
 package ru.kotovalexandr.financemanager.Model;
 
+
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +24,7 @@ public class User implements Serializable {
     private String pass;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+//    @Cascade(CascadeType.REPLICATE)
     private List<Account> accounts = new ArrayList<>();
 
     public User() {

@@ -21,27 +21,24 @@ import java.util.List;
  */
 public class AccountJList extends JList implements IObserver {
 
-    private int userID;
-    private JFrame frame;
-    List<Account> accounts;
+    private User user;
     private int index;
 
     /**
      * Constructor to create Swing Object of this class
      * with {@link JList} behavior;
      */
-    public AccountJList(JFrame frame, int userID) {
+    public AccountJList(JFrame frame, User user) {
         super();
-        this.userID = userID;
-        this.frame = frame;
+        this.user = user;
         setCellRenderer(new ListAccountRender());
         JPopupMenu popupMenu = new JPopupMenu("Счёт");
         JMenuItem add = new JMenuItem("Добавить");
-        add.addActionListener(e -> new AddEditAccount(frame, "Добавление счёта", true, userID).setVisible(true));
+        add.addActionListener(e -> new AddEditAccount(frame, "Добавление счёта", true, user).setVisible(true));
         JMenuItem edit = new JMenuItem("Редактировать");
         edit.addActionListener(e -> {
             Account account = getSelectedAccount();
-            new AddEditAccount(frame, "Редактирование счёта", true, userID, account).setVisible(true);
+            new AddEditAccount(frame, "Редактирование счёта", true, user, account).setVisible(true);
 
         });
         JMenuItem delete = new JMenuItem("Удалить");
@@ -85,6 +82,6 @@ public class AccountJList extends JList implements IObserver {
 
     @Override
     public void handelEvent() {
-        AccountService.updateList(this, new User());
+        AccountService.updateList(this, user);
     }
 }

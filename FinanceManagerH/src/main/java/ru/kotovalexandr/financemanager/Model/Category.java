@@ -1,7 +1,12 @@
 package ru.kotovalexandr.financemanager.Model;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Alex Vasilenko on 14.07.2016.
@@ -17,6 +22,9 @@ public class Category  implements Serializable {
 
     @Column(name = "NAME")
     private String name;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
+    private List<Transaction> transactionList = new ArrayList<>();
 
     public Category() {
     }

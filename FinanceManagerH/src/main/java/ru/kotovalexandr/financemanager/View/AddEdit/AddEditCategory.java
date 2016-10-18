@@ -29,6 +29,7 @@ public class AddEditCategory extends JDialog implements ActionListener {
         operID = 0;
         setMinimumSize(new Dimension(200,100));
         setResizable(true);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         Box mainBox = Box.createVerticalBox();
         Box firstRow = Box.createHorizontalBox();
         firstRow.add(new JLabel("Описание"));

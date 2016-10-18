@@ -3,8 +3,10 @@ package ru.kotovalexandr.financemanager.View;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.kotovalexandr.financemanager.Controller.Services.SignInOnService;
 import ru.kotovalexandr.financemanager.Dao.DBHelper;
 import ru.kotovalexandr.financemanager.Dao.SignInOn;
+import ru.kotovalexandr.financemanager.Model.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +27,6 @@ public class RegistrationForm extends JFrame {
 
     private JTextField loginTextField;
     private JTextField passTextField;
-    private int loginID;
 
     public RegistrationForm() {
 
@@ -84,18 +85,8 @@ public class RegistrationForm extends JFrame {
         cancelButton.addActionListener(e -> System.exit(-2));
         add(cancelButton, gbc);
 
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                try {
-                    DBHelper.getInstance().closeConnection();
-                } catch (SQLException e1) {
-                    logger.error("Error on window close, detail: " + e1.getMessage());
-                }
-            }
-        });
-
         setVisible(true);
+        logger.info("Registration form is visible.");
 
 
     }
@@ -104,12 +95,14 @@ public class RegistrationForm extends JFrame {
      * регистрация нового пользователя и вход
      */
     private void registration() {
-        this.loginID = SignInOn.getInstance().registration(loginTextField.getText(), passTextField.getText());
-        if (this.loginID != 0) {
-            new FinManagerFrame(loginTextField.getText(), loginID);
+        User user = SignInOnService.registrationService(loginTextField.getText(), passTextField.getText());
+        if (user != null) {
+            new FinManagerFrame(user);
+            logger.info("New user with login " + user.getLogin() + " is register.");
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(getContentPane(), "На сервере уже используется указанный логин.", "Ошибка регистрации", JOptionPane.ERROR_MESSAGE);
+            logger.info("User with login " + user.getLogin() + " is already registered.");
         }
     }
 }

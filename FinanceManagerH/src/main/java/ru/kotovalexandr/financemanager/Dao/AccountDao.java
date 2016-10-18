@@ -95,12 +95,12 @@ public class AccountDao implements IGenericDao<Account> {
                     if (resultSetCategory.next()) {
                         categoryName = resultSetCategory.getString(2);
                     }
-                    transactions.add(new Transaction(resultSetTR.getInt("ID"), (resultSetTR.getInt("ISCHECKIN") == 0 ? false : true),
-                            id, resultSetTR.getInt("DATETIME") * 1000, new BigDecimal(resultSetTR.getDouble("AMOUNT")),
+                    transactions.add(new Transaction(9999, (resultSetTR.getInt("ISCHECKIN") == 0 ? false : true),
+                            new Account(), resultSetTR.getInt("DATETIME") * 1000, new BigDecimal(resultSetTR.getDouble("AMOUNT")),
                             resultSetTR.getString("DESCR"), new Category(categoryName, resultSetTR.getInt("CATEGORY_ID"))));
                 }
                 logger.info("returned object Account with ID = " + id);
-                return new Account(id, resultSet.getString("NUMBER"), new User(), resultSet.getString("DESCR"), transactions);
+                return new Account(id, resultSet.getString("NUMBER"), new User(), resultSet.getString("DESCR"));
             }
         } catch (SQLException e) {
             logger.error("Error in method findById, detail: " + e.getMessage());
@@ -139,11 +139,11 @@ public class AccountDao implements IGenericDao<Account> {
                     }
                     categoryStatement.close();
                     transactions.add(new Transaction(transactionID, transactionIsCheckin,
-                            accountID, transactionDateTime, transactionAmount,
+                            new Account(), transactionDateTime, transactionAmount,
                             transactionDescr, new Category(categoryName, transactionCategoryID)));
                 }
                 transactionStatement.close();
-                accounts.add(new Account(accountID, accountNumber, new User(), accountDescr, transactions));
+                accounts.add(new Account(accountID, accountNumber, new User(), accountDescr));
             }
             accountStatement.close();
         } catch (SQLException e) {

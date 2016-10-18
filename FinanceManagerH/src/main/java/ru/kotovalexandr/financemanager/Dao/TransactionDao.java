@@ -130,7 +130,7 @@ public class TransactionDao implements IGenericDao<Transaction> {
                 }
                 categoryStatement.close();
                 transactions.add(new Transaction(transactionID, transactionIsCheckin,
-                        account.getId(), transactionDateTime, transactionAmount,
+                        account, transactionDateTime, transactionAmount,
                         transactionDescr, new Category(categoryName, transactionCategoryID)));
             }
         } catch (SQLException e) {

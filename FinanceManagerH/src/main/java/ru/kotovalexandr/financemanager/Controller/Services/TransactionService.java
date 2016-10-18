@@ -32,10 +32,7 @@ public final class TransactionService {
         Account account = (Account) accountJList.getSelectedValue();
         if (account != null) {
             TransactionDaoImpl transactionDao = DAOFabric.getTransactionDao();
-            List<Transaction> transactions = transactionDao.getAll();
-            for (Transaction transaction : transactions) {
-                if (transaction.getAccount_id() != account.getId()) transactions.remove(transaction);
-            }
+            List<Transaction> transactions = transactionDao.getAllbyAccount(account);
             Object arr[] = transactions.toArray();
             transactionJList.setListData(arr);
 

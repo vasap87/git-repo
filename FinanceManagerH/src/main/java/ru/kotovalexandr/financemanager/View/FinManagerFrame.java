@@ -4,8 +4,9 @@ package ru.kotovalexandr.financemanager.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.kotovalexandr.financemanager.Controller.Account.AccountList;
-import ru.kotovalexandr.financemanager.Controller.Account.TotalAmount;
+import ru.kotovalexandr.financemanager.Controller.Services.TotalAmountService;
 import ru.kotovalexandr.financemanager.Controller.Transaction.TransactionList;
+import ru.kotovalexandr.financemanager.Model.User;
 import ru.kotovalexandr.financemanager.View.AddEdit.AddEditAccount;
 import ru.kotovalexandr.financemanager.View.AddEdit.AddEditTransaction;
 import ru.kotovalexandr.financemanager.View.Tools.JList.AccountJList;
@@ -27,23 +28,21 @@ public class FinManagerFrame extends JFrame {
 
     private static Logger logger = LoggerFactory.getLogger(FinManagerFrame.class);
 
-    private String login;
-    private int userID;
+    private User user;
 
     private JLabel totalJLabel;
 
     private AccountJList accountJList;
     private TransactionJList transactionJList;
 
-    public FinManagerFrame(String login, int userID) {
-        this.login = login;
-        this.userID = userID;
+    public FinManagerFrame(User user) {
+        this.user = user;
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(WIDTH, HEIGHT));
         setBounds(200, 200, getMinimumSize().width, getMinimumSize().height);
 
         setResizable(true);
-        setTitle("Финансы пользователя: " + this.login);
+        setTitle("Финансы пользователя: " + this.user.getLogin());
         setLayout(new BorderLayout(5, 5));
 
         addMenu();
@@ -63,7 +62,7 @@ public class FinManagerFrame extends JFrame {
     }
 
     private void updateNorthPanel() {
-        BigDecimal total = TotalAmount.getInstance().getTotalAmount(userID);
+        BigDecimal total = TotalAmountService.getTotalAmount(user);
         totalJLabel.setText("На текущий момент на ваших счетах "+ total.toPlainString() + " рублей");
     }
 
@@ -109,10 +108,10 @@ public class FinManagerFrame extends JFrame {
     private void addAccountPanel() {
         JPanel accountPanel = new JPanel(new BorderLayout());
         //кнопки
-        JPanel buttonAccoutPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel buttonAccountPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton addAccountButton = new JButton("+");
-        addAccountButton.addActionListener(e -> new AddEditAccount(this, "Добавление счёта", true, userID).setVisible(true));
-        buttonAccoutPanel.add(addAccountButton);
+        addAccountButton.addActionListener(e -> new AddEditAccount(this, "Добавление счёта", true, user).setVisible(true));
+        buttonAccountPanel.add(addAccountButton);
         JButton removeAccountButton = new JButton("-");
         removeAccountButton.addActionListener(e -> {
             if (accountJList.isSelectionEmpty()) {
@@ -120,10 +119,10 @@ public class FinManagerFrame extends JFrame {
             }
             accountJList.remove(accountJList.getSelectedIndex());
         });
-        buttonAccoutPanel.add(removeAccountButton);
-        accountPanel.add(buttonAccoutPanel, BorderLayout.NORTH);
+        buttonAccountPanel.add(removeAccountButton);
+        accountPanel.add(buttonAccountPanel, BorderLayout.NORTH);
         //листбокс со счетами
-        accountJList = new AccountJList(this, userID);
+        accountJList = new AccountJList(this, user);
         accountJList.addListSelectionListener(e -> {
             accountJList.setIndex();
             TransactionList.getInstance().notifyObservers();

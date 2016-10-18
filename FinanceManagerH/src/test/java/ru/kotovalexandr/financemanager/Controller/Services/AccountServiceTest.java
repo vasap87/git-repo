@@ -27,7 +27,7 @@ public class AccountServiceTest {
     @Before
     public void setUp() throws Exception {
         user = SignInOnService.registrationService("testUser", "testPas");
-        account = new Account(accountNumber, user, accountDescription, new ArrayList<>());
+        account = new Account(accountNumber, user, accountDescription);
     }
 
     @Test
@@ -35,12 +35,8 @@ public class AccountServiceTest {
         AccountService.addOrUpdateAccount(account, 0);
         //проверка добавления счёта
         AccountDaoImpl accountDao = DAOFabric.getAccountDao();
-        List<Account> accounts = accountDao.getAll();
-        for (Account account : accounts) {
-            if (account.getUserId() != user.getId()) {
-                accounts.remove(account);
-            }
-        }
+        List<Account> accounts = accountDao.getAllbyUser(user);
+
         Account account = accounts.get(0);
         assertEquals(this.account.getId(), account.getId());
     }
@@ -51,20 +47,20 @@ public class AccountServiceTest {
         account.setDescription("new description");
         AccountService.addOrUpdateAccount(account, 1);
         AccountDaoImpl accountDao = DAOFabric.getAccountDao();
-        List<Account> accounts = accountDao.getAll();
+        List<Account> accounts = accountDao.getAllbyUser(user);
         Account account = accounts.get(0);
         assertEquals(this.account.getDescription(), account.getDescription());
     }
 
     @Test
     public void removeAccountTest() throws Exception {
-        Account removableAccount = new Account(accountNumber + "remove", user, accountDescription, new ArrayList<>());
+        Account removableAccount = new Account(accountNumber + "remove", user, accountDescription);
         AccountService.addOrUpdateAccount(removableAccount, 0);
 
         AccountService.remove(removableAccount);
 
         AccountDaoImpl accountDao = DAOFabric.getAccountDao();
-        List<Account> accounts = accountDao.getAll();
+        List<Account> accounts = accountDao.getAllbyUser(user);
 
         assertEquals(accounts.size(), 0);
         AccountService.addOrUpdateAccount(account, 0);

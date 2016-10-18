@@ -43,7 +43,7 @@ public final class CategoryDaoImpl implements IGenDao<Category> {
         try{
             session = HibernateUtil.getSession();
             session.getTransaction().begin();
-            accounts = session.createQuery("from CATEGORIES").list();
+            accounts = session.createQuery("from Category").list();
             session.getTransaction().commit();
         } catch (HibernateException e){
             if(session!=null){
