@@ -4,15 +4,10 @@ package ru.kotovalexandr.financemanager.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.kotovalexandr.financemanager.Controller.Services.SignInOnService;
-import ru.kotovalexandr.financemanager.Dao.DBHelper;
-import ru.kotovalexandr.financemanager.Dao.SignInOn;
 import ru.kotovalexandr.financemanager.Model.User;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.sql.SQLException;
 
 /**
  * Created by vasilenko.aleksandr on 11.07.2016.

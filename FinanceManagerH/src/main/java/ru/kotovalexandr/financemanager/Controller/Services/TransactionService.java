@@ -3,8 +3,6 @@ package ru.kotovalexandr.financemanager.Controller.Services;
 
 import ru.kotovalexandr.financemanager.Controller.Account.AccountList;
 import ru.kotovalexandr.financemanager.Controller.Transaction.TransactionList;
-import ru.kotovalexandr.financemanager.Dao.DBHelper;
-import ru.kotovalexandr.financemanager.Dao.TransactionDao;
 import ru.kotovalexandr.financemanager.Hibernate.DAO.CommonGenDaoImpl;
 import ru.kotovalexandr.financemanager.Hibernate.DAO.DAOFabric;
 import ru.kotovalexandr.financemanager.Hibernate.DAO.TransactionDaoImpl;
@@ -13,8 +11,6 @@ import ru.kotovalexandr.financemanager.Model.Transaction;
 import ru.kotovalexandr.financemanager.View.Tools.JList.AccountJList;
 import ru.kotovalexandr.financemanager.View.Tools.JList.TransactionJList;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 /**

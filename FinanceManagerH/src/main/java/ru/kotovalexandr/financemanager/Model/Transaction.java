@@ -96,7 +96,11 @@ public class Transaction implements Serializable {
     }
 
     public Category getCategory() {
-        return category;
+        if(category!=null) {
+            return category;
+        }else{
+            return new Category();
+        }
     }
 
     public void setCategory(Category category) {
