@@ -18,7 +18,7 @@ public class Transaction implements Serializable {
     @Column(name = "ISCHECKIN")
     private boolean isCheckIn;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 

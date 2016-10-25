@@ -25,7 +25,8 @@ public class ListTransactionRender extends JTextPane implements ListCellRenderer
         sb.append("<html><head></head><body><b>Сумма: " + String.valueOf(value.getAmount().setScale(2, BigDecimal.ROUND_HALF_EVEN))
                 + "</b><br><i>операция: </i>" + (value.isCheckIn()?"Пополнение":"Снятие") + "<br>" +
                 "<i>описание: </i>" + value.getDesription() + "<br>" +
-                "<i>дата: </i>" + dateFormat.format(date) + "    <i>категория:</i>"+value.getCategory().getName()+"</body></html>");
+                "<i>дата: </i>" + dateFormat.format(date) + (value.getCategory().getName()==null?"    <i>категория не указана</i>":"<i>категория:</i>"+value.getCategory().getName())
+                +"</body></html>");
         setContentType("text/html");
         setEditable(false);
         setText(sb.toString());

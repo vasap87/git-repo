@@ -4,9 +4,12 @@ package ru.kotovalexandr.financemanager.View.Tools.JList;
 
 import ru.kotovalexandr.financemanager.Controller.IObserver;
 import ru.kotovalexandr.financemanager.Controller.Services.AccountService;
+import ru.kotovalexandr.financemanager.Controller.Services.TransactionService;
+import ru.kotovalexandr.financemanager.Controller.Transaction.TransactionList;
 import ru.kotovalexandr.financemanager.Model.Account;
 import ru.kotovalexandr.financemanager.Model.User;
 import ru.kotovalexandr.financemanager.View.AddEdit.AddEditAccount;
+import ru.kotovalexandr.financemanager.View.FinManagerFrame;
 import ru.kotovalexandr.financemanager.View.Tools.JList.Renders.ListAccountRender;
 
 import javax.swing.*;
@@ -23,6 +26,7 @@ public class AccountJList extends JList implements IObserver {
 
     private User user;
     private int index;
+    private FinManagerFrame frame;
 
     /**
      * Constructor to create Swing Object of this class
@@ -31,6 +35,7 @@ public class AccountJList extends JList implements IObserver {
     public AccountJList(JFrame frame, User user) {
         super();
         this.user = user;
+        this.frame = (FinManagerFrame) frame;
         setCellRenderer(new ListAccountRender());
         JPopupMenu popupMenu = new JPopupMenu("Счёт");
         JMenuItem add = new JMenuItem("Добавить");
@@ -65,6 +70,7 @@ public class AccountJList extends JList implements IObserver {
                 "Подтверждение удаление эллемента", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (answer == 0) {
             AccountService.remove(account);
+            TransactionList.getInstance().notifyObservers();
             handelEvent();
         }
     }

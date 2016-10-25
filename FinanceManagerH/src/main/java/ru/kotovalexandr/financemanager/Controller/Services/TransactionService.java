@@ -31,7 +31,9 @@ public final class TransactionService {
             List<Transaction> transactions = transactionDao.getAllbyAccount(account);
             Object arr[] = transactions.toArray();
             transactionJList.setListData(arr);
-
+        } else {
+            Object arr[] = new Object[0];
+            transactionJList.setListData(arr);
         }
     }
 

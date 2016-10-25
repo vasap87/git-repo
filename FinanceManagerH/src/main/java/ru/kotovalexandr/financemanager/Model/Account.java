@@ -33,7 +33,7 @@ public class Account  implements Serializable {
     @Column(name = "DESCR")
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "account")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "account", cascade = CascadeType.REMOVE)
     private List<Transaction> transactionList = new ArrayList<>();
 
     public Account() {

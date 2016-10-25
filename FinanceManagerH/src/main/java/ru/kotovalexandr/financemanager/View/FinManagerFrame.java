@@ -164,4 +164,11 @@ public class FinManagerFrame extends JFrame {
 
     }
 
+    public AccountJList getAccountJList() {
+        return accountJList;
+    }
+
+    public TransactionJList getTransactionJList() {
+        return transactionJList;
+    }
 }

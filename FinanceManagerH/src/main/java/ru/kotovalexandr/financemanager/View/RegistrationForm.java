@@ -61,6 +61,7 @@ public class RegistrationForm extends JFrame {
         add(passLabel, gbc);
 
         passTextField = new JTextField();
+        passTextField.addActionListener(e -> registration());
         gbc.gridy = 3;
         gbc.gridx = 1;
         add(passTextField, gbc);
