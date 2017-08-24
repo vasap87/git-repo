@@ -15,7 +15,7 @@ public class SQLTools {
     private static PreparedStatement preparedStatement;
     private static final String DBURL = "jdbc:postgresql://localhost:5432/postgres";
     private static final String USER = "postgres";
-    private static final String PASSWORD = "O33cle#$%";
+    private static final String PASSWORD = "postgres";
 
     public static SQLTools getInstance(){
         return instance;
